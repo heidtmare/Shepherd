@@ -1,0 +1,2810 @@
+{
+  "id": "uscis.i-765",
+  "form_number": "I-765",
+  "title": "Application for Employment Authorization",
+  "edition": "08/21/25",
+  "blank_pdf": "uscis/i-765.pdf",
+  "blank_sha256": "9ac0eae287749d4c2dfa0a591f464cc2124c18647c10e999b59484f090e0dc7d",
+  "pages": [
+    {
+      "number": 1,
+      "width": 612.0,
+      "height": 792.0
+    },
+    {
+      "number": 2,
+      "width": 612.0,
+      "height": 792.0
+    },
+    {
+      "number": 3,
+      "width": 612.0,
+      "height": 792.0
+    },
+    {
+      "number": 4,
+      "width": 612.0,
+      "height": 792.0
+    },
+    {
+      "number": 5,
+      "width": 612.0,
+      "height": 792.0
+    },
+    {
+      "number": 6,
+      "width": 612.0,
+      "height": 792.0
+    },
+    {
+      "number": 7,
+      "width": 612.0,
+      "height": 792.0
+    }
+  ],
+  "fields": [
+    {
+      "id": "form1[0].Page1[0].Line1a_FamilyName[0]",
+      "label": "Part 2. Information About You. Your Full Legal Name. 1. A. Enter Family Name, Last Name.",
+      "short_label": "1. A. Family Name, Last Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        120.002,
+        132.001,
+        294.001,
+        150.001
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line1b_GivenName[0]",
+      "label": "Part 2. Information About You. Your Full Legal Name. 1.B. Enter Given Name, First Name.",
+      "short_label": "1.B. Given Name, First Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        120.002,
+        108.006,
+        294.001,
+        126.006
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line1c_MiddleName[0]",
+      "label": "Part 2. Information About You. Your Full Legal Name. 1.C. Enter Middle Name.",
+      "short_label": "1.C. Middle Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        120.002,
+        84.005,
+        294.001,
+        102.005
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Part1_Checkbox[0]",
+      "label": "Part 1. Reason for Applying. I am applying for (select only one box). 1. A. Select Initial Permission to accept employment.",
+      "short_label": "1. A. Initial Permission to accept employment",
+      "group": "form1[0].Page1[0].Part1_Checkbox",
+      "section": "Part 1",
+      "page": 1,
+      "rect": [
+        61.0,
+        409.002,
+        71.0,
+        419.002
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Part1_Checkbox[1]",
+      "label": "Part 1. Reason for Applying. I am applying for (select only one box). 1.B. Select Replacement of lost, stolen, or damaged employment authorization document, or correction of my employment authorization document NOT DUE to U.S. Citizenship and Immigration Services (USCIS) error. NOTE: Replacement (correction) of an employment authorization document due to USCIS error does not require a new Form I-765 and filing fee. Refer to Replacement for Card Error in the What is the Filing Fee section of the Form I-765 Instructions for further details.",
+      "short_label": "1.B. Replacement of lost, stolen, or damaged employment authorization document, or corr...",
+      "group": "form1[0].Page1[0].Part1_Checkbox",
+      "section": "Part 1",
+      "page": 1,
+      "rect": [
+        61.0,
+        391.002,
+        71.0,
+        401.002
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Part1_Checkbox[2]",
+      "label": "Part 1. Reason for Applying. I am applying for (select only one box). 1.C. Select Renewal of my permission to accept employment. (Attach a copy of your previous employment authorization document.)",
+      "short_label": "1.C. Renewal of my permission to accept employment. (Attach a copy of your previous emp...",
+      "group": "form1[0].Page1[0].Part1_Checkbox",
+      "section": "Part 1",
+      "page": 1,
+      "rect": [
+        61.0,
+        246.999,
+        71.0,
+        256.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line2a_FamilyName[0]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 2. A. Enter Family Name, Last Name.",
+      "short_label": "2. A. Family Name, Last Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        366.001,
+        576.0,
+        384.001
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line2b_GivenName[0]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 2.B. Enter Given Name, First Name.",
+      "short_label": "2.B. Given Name, First Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        342.006,
+        576.0,
+        360.006
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line2c_MiddleName[0]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 2.C. Enter Middle Name.",
+      "short_label": "2.C. Middle Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        318.005,
+        576.0,
+        336.005
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line3c_MiddleName[0]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 4.C. Enter Middle Name.",
+      "short_label": "4.C. Middle Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        162.003,
+        576.0,
+        180.003
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line3b_GivenName[0]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 4.B. Enter Given Name, First Name.",
+      "short_label": "4.B. Given Name, First Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        186.004,
+        576.0,
+        204.004
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line3a_FamilyName[0]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 4. A. Enter Family Name, Last Name.",
+      "short_label": "4. A. Family Name, Last Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        209.999,
+        576.0,
+        227.999
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line3a_FamilyName[1]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 3. A. Enter Family Name, Last Name.",
+      "short_label": "3. A. Family Name, Last Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        288.0,
+        576.0,
+        306.0
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line3b_GivenName[1]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 3.B. Enter Given Name, First Name.",
+      "short_label": "3.B. Given Name, First Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        264.005,
+        576.0,
+        282.005
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Line3c_MiddleName[1]",
+      "label": "Part 2. Information About You. Other Names Used. Provide all other names you have ever used, including aliases, maiden name, and nicknames. If you need extra space to complete this section, use the space provided in Part 6. Additional Information. 3.C. Enter Middle Name.",
+      "short_label": "3.C. Middle Name",
+      "section": "Part 2",
+      "page": 1,
+      "rect": [
+        402.001,
+        240.004,
+        576.0,
+        258.004
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Attorney-Rep[0].CheckBox1[0]",
+      "label": "To be completed by an attorney or Board of Immigration Appeals (B I. A.)-accredited representative (if any). Select this box if Form G-28 is attached.",
+      "short_label": "this box if Form G-28 is attached",
+      "group": "form1[0].Page1[0].Attorney-Rep[0].CheckBox1",
+      "section": null,
+      "page": 1,
+      "rect": [
+        168.503,
+        529.001,
+        178.503,
+        539.001
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Attorney-Rep[0].attorneyBarNumber[0]",
+      "label": "Attorney State Bar Number (if applicable)",
+      "short_label": "Attorney State Bar Number (if applicable)",
+      "section": null,
+      "page": 1,
+      "rect": [
+        264.005,
+        498.005,
+        384.007,
+        516.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 15,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page1[0].Attorney-Rep[0].USCISELISAcctNumber[0]",
+      "label": "To be completed by an attorney or Board of Immigration Appeals (B I. A.)-accredited representative (if any). Enter Attorney or Accredited Representative U S C I S Online Number (if any). Enter 12 characters.",
+      "short_label": "12 characters",
+      "section": null,
+      "page": 1,
+      "rect": [
+        396.003,
+        498.002,
+        570.013,
+        516.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 12,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Part2Line5_Checkbox[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 6. Is your current mailing address the same as your physical address? Select No. NOTE: If you answered “No” to Item Number 6., provide your physical address below.",
+      "short_label": "6. Is your current mailing address the same as your physical address? No",
+      "group": "form1[0].Page2[0].Part2Line5_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        260.161,
+        514.001,
+        270.161,
+        524.001
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Part2Line5_Checkbox[1]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 6. Is your current mailing address the same as your physical address? Select Yes.",
+      "short_label": "6. Is your current mailing address the same as your physical address? Yes",
+      "group": "form1[0].Page2[0].Part2Line5_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        218.16,
+        514.001,
+        228.16,
+        524.001
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_Unit[0]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7. B. Select Suite.",
+      "short_label": "7. B. Suite",
+      "group": "form1[0].Page2[0].Pt2Line7_Unit",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        101.999,
+        405.998,
+        111.999,
+        415.998
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_Unit[1]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7. B. Select Designated Floor.",
+      "short_label": "7. B. Designated Floor",
+      "group": "form1[0].Page2[0].Pt2Line7_Unit",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        144.0,
+        405.998,
+        154.0,
+        415.998
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_AptSteFlrNumber[0]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7.B. Enter Apartment, Suite or Floor number.",
+      "short_label": "7.B. Apartment, Suite or Floor number",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        186.001,
+        401.998,
+        294.001,
+        419.998
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_Unit[2]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7. B. Select Apartment.",
+      "short_label": "7. B. Apartment",
+      "group": "form1[0].Page2[0].Pt2Line7_Unit",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        60.001,
+        406.001,
+        70.001,
+        416.001
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_CityOrTown[0]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7. C. Enter city or town.",
+      "short_label": "7. C. city or town",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        126.0,
+        378.0,
+        294.001,
+        396.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 20,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_State[0]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7. D. Select State from list of States.",
+      "short_label": "7. D. State from list of States",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        84.002,
+        354.002,
+        120.002,
+        372.002
+      ],
+      "kind": "choice",
+      "value_type": "choice",
+      "max_len": null,
+      "options": [
+        " ",
+        "AA",
+        "AE",
+        "AK",
+        "AL",
+        "AP",
+        "AR",
+        "AS",
+        "AZ",
+        "CA",
+        "CO",
+        "CT",
+        "DC",
+        "DE",
+        "FL",
+        "FM",
+        "GA",
+        "GU",
+        "HI",
+        "IA",
+        "ID",
+        "IL",
+        "IN",
+        "KS",
+        "KY",
+        "LA",
+        "MA",
+        "MD",
+        "ME",
+        "MH",
+        "MI",
+        "MN",
+        "MO",
+        "MP",
+        "MS",
+        "MT",
+        "NC",
+        "ND",
+        "NE",
+        "NH",
+        "NJ",
+        "NM",
+        "NV",
+        "NY",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "PW",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VA",
+        "VI",
+        "VT",
+        "WA",
+        "WI",
+        "WV",
+        "WY"
+      ],
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_ZipCode[0]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7. E. Enter ZIP Code.",
+      "short_label": "7. E. ZIP Code",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        192.002,
+        354.002,
+        294.001,
+        372.002
+      ],
+      "kind": "text",
+      "value_type": "zip",
+      "max_len": 5,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line7_StreetNumberName[0]",
+      "label": "Part 2. Information About You. U.S. Physical Address. 7. A. Enter Street Number and Name.",
+      "short_label": "7. A. Street Number and Name",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        126.0,
+        426.002,
+        294.001,
+        444.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 34,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line17b_CountryOfBirth[0]",
+      "label": "Part 2. Information About You. Your Country or Countries of Citizenship or Nationality. List all countries where you are currently a citizen or national. If you need extra space to complete this item, use the space provided in Part 6. Additional Information. 14. B. Enter the Country.",
+      "short_label": "14. B. Country",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        342.0,
+        359.997,
+        576.0,
+        377.997
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line17a_CountryOfBirth[0]",
+      "label": "Part 2. Information About You. Your Country or Countries of Citizenship or Nationality. List all countries where you are currently a citizen or national. If you need extra space to complete this item, use the space provided in Part 6. Additional Information. 14. A. Enter the Country.",
+      "short_label": "14. A. Country",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        342.0,
+        395.997,
+        576.0,
+        413.997
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line12b_SSN[0]",
+      "label": "Part 2. Information About You. Other Information. 13. Provide your Social Security Number (S S N) (if known). Enter 9 digit number.",
+      "short_label": "13. Provide your Social Security Number (S S N) (if known). 9 digit number",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        446.947,
+        516.002,
+        575.957,
+        534.002
+      ],
+      "kind": "text",
+      "value_type": "ssn",
+      "max_len": 9,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line5_Unit[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. C. Select Suite.",
+      "short_label": "5. C. Suite",
+      "group": "form1[0].Page2[0].Pt2Line5_Unit",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        102.002,
+        609.996,
+        112.002,
+        619.996
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line5_Unit[1]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. C. Select Designated Floor.",
+      "short_label": "5. C. Designated Floor",
+      "group": "form1[0].Page2[0].Pt2Line5_Unit",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        144.0,
+        609.996,
+        154.0,
+        619.996
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line5_AptSteFlrNumber[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. C. Enter Apartment, Suite or Floor Number.",
+      "short_label": "5. C. Apartment, Suite or Floor Number",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        186.001,
+        605.996,
+        294.001,
+        623.996
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line5_Unit[2]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. C. Select Apartment.",
+      "short_label": "5. C. Apartment",
+      "group": "form1[0].Page2[0].Pt2Line5_Unit",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        60.001,
+        609.999,
+        70.001,
+        619.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line5_CityOrTown[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. D. Enter City or Town.",
+      "short_label": "5. D. City or Town",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        126.0,
+        581.998,
+        294.001,
+        599.998
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 20,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line5_State[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. E Select state from list of states.",
+      "short_label": "5. E state from list of states",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        84.002,
+        558.0,
+        120.002,
+        576.0
+      ],
+      "kind": "choice",
+      "value_type": "choice",
+      "max_len": null,
+      "options": [
+        " ",
+        "AA",
+        "AE",
+        "AK",
+        "AL",
+        "AP",
+        "AR",
+        "AS",
+        "AZ",
+        "CA",
+        "CO",
+        "CT",
+        "DC",
+        "DE",
+        "FL",
+        "FM",
+        "GA",
+        "GU",
+        "HI",
+        "IA",
+        "ID",
+        "IL",
+        "IN",
+        "KS",
+        "KY",
+        "LA",
+        "MA",
+        "MD",
+        "ME",
+        "MH",
+        "MI",
+        "MN",
+        "MO",
+        "MP",
+        "MS",
+        "MT",
+        "NC",
+        "ND",
+        "NE",
+        "NH",
+        "NJ",
+        "NM",
+        "NV",
+        "NY",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "PW",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VA",
+        "VI",
+        "VT",
+        "WA",
+        "WI",
+        "WV",
+        "WY"
+      ],
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Pt2Line5_ZipCode[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. F. Enter Zip Code.",
+      "short_label": "5. F. Zip Code",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        192.002,
+        558.0,
+        294.001,
+        576.0
+      ],
+      "kind": "text",
+      "value_type": "zip",
+      "max_len": 5,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line4b_StreetNumberName[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. B. Enter Street Number and Name.",
+      "short_label": "5. B. Street Number and Name",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        126.0,
+        630.0,
+        294.001,
+        648.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 34,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line4a_InCareofName[0]",
+      "label": "Part 2. Information About You. Your U.S. Mailing Address. 5. A. Enter In Care of Name, if any.",
+      "short_label": "5. A. In Care of Name, if any",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        60.001,
+        653.998,
+        294.106,
+        671.998
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 34,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line7_AlienNumber[0]",
+      "label": "Part 2. Information About You. Other Information. 8. Enter Alien Registration Number (A. number(, if any. Enter 9 digit number.",
+      "short_label": "8. Alien Registration Number (A. number(, if any. Enter 9 digit number",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        445.19,
+        684.0,
+        575.83,
+        702.0
+      ],
+      "kind": "text",
+      "value_type": "a_number",
+      "max_len": 9,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line8_ElisAccountNumber[0]",
+      "label": "Part 2. Information About You. Other Information. 9. U SC I S Online Account Number, if any. Enter 12 characaters.",
+      "short_label": "9. U SC I S Online Account Number, if any. 12 characaters",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        402.007,
+        648.0,
+        576.017,
+        666.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 12,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line9_Checkbox[0]",
+      "label": "Part 2. Information About You. Other Information. 10. Sex. Select Female.",
+      "short_label": "10. Sex. Female",
+      "group": "form1[0].Page2[0].Line9_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        527.998,
+        628.002,
+        537.998,
+        638.002
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line9_Checkbox[1]",
+      "label": "Part 2. Information About You. Other Information. 10. Sex. Select Male.",
+      "short_label": "10. Sex. Male",
+      "group": "form1[0].Page2[0].Line9_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        479.999,
+        628.002,
+        489.999,
+        638.002
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line10_Checkbox[0]",
+      "label": "Part 2. Information About You. Other Information. 11. Marital Status. Select Widowed.",
+      "short_label": "11. Marital Status. Widowed",
+      "group": "form1[0].Page2[0].Line10_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        522.0,
+        591.999,
+        532.0,
+        601.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line10_Checkbox[1]",
+      "label": "Part 2. Information About You. Other Information. 11. Marital Status. Select Divorced.",
+      "short_label": "11. Marital Status. Divorced",
+      "group": "form1[0].Page2[0].Line10_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        455.998,
+        591.999,
+        465.998,
+        601.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line10_Checkbox[2]",
+      "label": "Part 2. Information About You. Other Information. 11. Marital Status. Select Single.",
+      "short_label": "11. Marital Status. Single",
+      "group": "form1[0].Page2[0].Line10_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        342.0,
+        591.999,
+        352.0,
+        601.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line10_Checkbox[3]",
+      "label": "Part 2. Information About You. Other Information. 11. Marital Status. Select Married.",
+      "short_label": "11. Marital Status. Married",
+      "group": "form1[0].Page2[0].Line10_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        396.0,
+        591.999,
+        406.0,
+        601.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line19_Checkbox[0]",
+      "label": "Part 2. Information About You. Other Information. 12. Have you previously filed Form I - 7 65? Select No.",
+      "short_label": "12. Have you previously filed Form I - 7 65? No",
+      "group": "form1[0].Page2[0].Line19_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        542.157,
+        556.002,
+        552.157,
+        566.002
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page2[0].Line19_Checkbox[1]",
+      "label": "Part 2. Information About You. Other Information. 12. Have you previously filed Form I - 7 65? Select Yes.",
+      "short_label": "12. Have you previously filed Form I - 7 65? Yes",
+      "group": "form1[0].Page2[0].Line19_Checkbox",
+      "section": "Part 2",
+      "page": 2,
+      "rect": [
+        500.159,
+        555.857,
+        510.159,
+        565.857
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line20c_TravelDoc[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 19. Enter your Travel Document Number (if any).",
+      "short_label": "19. Travel Document Number (if any)",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        372.002,
+        294.001,
+        390.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line21_DateOfLastEntry[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 22. Enter the Date of your Last Entry into the U.S. Enter the 2-digit Month, 2-digit Day and 4-digit Year.",
+      "short_label": "22. Date of your Last Entry into the U.S. the 2-digit Month, 2-digit Day and 4-digit Year",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        198.0,
+        264.002,
+        294.001,
+        282.002
+      ],
+      "kind": "text",
+      "value_type": "date",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line20e_ExpDate[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 21. Enter the Expiration Date for your Passport or Travel Document. Enter the 2-digit month, 2 digit-Day and 4-digit Year.",
+      "short_label": "21. Expiration Date for your Passport or Travel Document. the 2-digit month, 2 digit-Da...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        198.0,
+        300.008,
+        294.001,
+        318.008
+      ],
+      "kind": "text",
+      "value_type": "date",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line20d_CountryOfIssuance[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 20. Enter Country That Issued Your Passport or Travel Document.",
+      "short_label": "20. Country That Issued Your Passport or Travel Document",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        336.005,
+        294.001,
+        354.005
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line20b_Passport[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 18. Enter Passport Number of Your Most Recently Issued Passport.",
+      "short_label": "18. Passport Number of Your Most Recently Issued Passport",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        408.008,
+        294.001,
+        426.008
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line23_StatusLastEntry[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 24. Enter Immigration Status at Your Last Arrival (B - 2 visitor, F - 1 student or no status).",
+      "short_label": "24. Immigration Status at Your Last Arrival (B - 2 visitor, F - 1 student or no status)",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        180.0,
+        294.001,
+        198.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line24_CurrentStatus[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 25. Enter Your Current Immigration Status or Category (for example, B - 2 visitor, F - 1 student, parolee, deferred action, or no status or category).",
+      "short_label": "25. Your Current Immigration Status or Category (for example, B - 2 visitor, F - 1 stud...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        119.999,
+        294.001,
+        137.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line26_SEVISnumber[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 26. Enter Student and Exchange Visitor Information System (SEVIS) number (if any).",
+      "short_label": "26. Student and Exchange Visitor Information System (SEVIS) number (if any)",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        162.0,
+        72.0,
+        294.001,
+        90.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 11,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line27b_Everify[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 28. B. Enter your Employer's Name as Listed in E Verify.",
+      "short_label": "28. B. Employer's Name as Listed in E Verify",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        342.0,
+        522.003,
+        576.0,
+        540.003
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line27c_EverifyIDNumber[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 28.C. Enter your Employer's E Verify Company Identification Number or a valid E Verify Client Company Identification Number.",
+      "short_label": "28.C. Employer's E Verify Company Identification Number or a valid E Verify Client Comp...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        342.0,
+        474.001,
+        576.0,
+        492.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].PtLine29_YesNo[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 30. (c)(8) Eligibility Category. If you entered the eligibility category (c)(8) in Item Number 27., have you EVER been arrested for and/or convicted of any crime? Select Yes. NOTE: If you answered “Yes” to Item Number 30., refer to Special Filing Instructions for Those With Pending Asylum Applications (c)(8) in the Required Documentation section of the Form I - 7 65 Instructions for information about providing court dispositions.",
+      "short_label": "30. (c)(8) Eligibility Category. If you entered the eligibility category (c)(8) in Item...",
+      "group": "form1[0].Page3[0].PtLine29_YesNo",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        500.159,
+        333.998,
+        510.159,
+        343.998
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].PtLine29_YesNo[1]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 30. (c)(8) Eligibility Category. If you entered the eligibility category (c)(8) in Item Number 27., have you EVER been arrested for and/or convicted of any crime? Select No.",
+      "short_label": "30. (c)(8) Eligibility Category. If you entered the eligibility category (c)(8) in Item...",
+      "group": "form1[0].Page3[0].PtLine29_YesNo",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        541.919,
+        333.998,
+        551.919,
+        343.998
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line18a_Receipt[0].Line30a_ReceiptNumber[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 31. A. (c)(35) and (c)(36) Eligibility Category. If you entered the eligibility category (c)(35) in Item Number 27., please provide the receipt number of your Form I - 7 97 Notice for Form I - 1 40, Immigrant Petition for Alien Worker. If you entered the eligibility category (c)(36) in Item Number 27., please provide the receipt number of your spouse's or parent's Form I - 7 97 Notice for Form I - 1 40. Enter 13 Characters.",
+      "short_label": "31. A. (c)(35) and (c)(36) Eligibility Category. If you entered the eligibility categor...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        388.001,
+        155.999,
+        576.403,
+        173.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 13,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line28_ReceiptNumber[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 29. (c)(26) Eligibility Category. If you entered the eligibility category (c)(26) in Item Number 27., provide the receipt number of your H - 1 B spouse's most recent Form I - 7 97 Notice for Form I - 1 29, Petition for a Nonimmigrant Worker. Enter 13 Characters.",
+      "short_label": "29. (c)(26) Eligibility Category. If you entered the eligibility category (c)(26) in It...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        387.598,
+        389.996,
+        576.0,
+        407.996
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 13,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line27a_Degree[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 28. (c)(3)(C) STEM OPT Eligibility Category. If you entered the eligibility category (c)(3)(C) in Item Number 27., provide the information requested in Item Numbers 28. A. - 28. C. 28. A. Enter Degree,",
+      "short_label": "28. A. Degree,",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        378.0,
+        558.0,
+        576.0,
+        576.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 16,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line20a_I94Number[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 17. Enter Form I - 94 Arrival-Departure Record Number, if any. Enter 11 digit number.",
+      "short_label": "17. Form I - 94 Arrival-Departure Record Number, if any. Enter 11 digit number",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        132.001,
+        443.999,
+        292.107,
+        461.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 11,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line19_DOB[0]",
+      "label": "Part 2. Information About You. Place of Birth. List the city / town / village, state / province, and country where you were born. 16. Date of Birth . Enter the 2- digit Month, 2-digit Day and 4-digit Year.",
+      "short_label": "16. Date of Birth. 2- digit Month, 2-digit Day and 4-digit Year",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        210.002,
+        528.001,
+        294.004,
+        546.001
+      ],
+      "kind": "text",
+      "value_type": "date",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line18c_CountryOfBirth[0]",
+      "label": "Part 2. Information About You. Place of Birth . List the city / town / village, state / province, and country where you were born. 15. C. Enter Country of your Birth.",
+      "short_label": "15. C. Country of your Birth",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        551.996,
+        294.001,
+        569.996
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line18a_CityTownOfBirth[0]",
+      "label": "Part 2. Information About You. Place of Birth. List the city / town / village, state / province, and country where you were born. 15. A. Enter City / Town / Village of Birth.",
+      "short_label": "15. A. City / Town / Village of Birth",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        623.999,
+        293.817,
+        641.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].Line18b_CityTownOfBirth[0]",
+      "label": "Part 2. Information About You. Place of Birth. List the city / town / village, state / province, and country where you were born. 15. B. Enter State / Province of Birth.",
+      "short_label": "15. B. State / Province of Birth",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.185,
+        587.996,
+        294.001,
+        605.996
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].#area[1].section_1[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 27. Eligibility Category. Refer to the Who May File Form I - 7 65 section of the Form I - 7 65 Instructions to determine the appropriate eligibility category for this application. Enter the appropriate letter and number for your eligibility category below (for example, (A.)(8), (c)(17)(i i i )). Enter first four characters.",
+      "short_label": "27. Eligibility Category. Refer to the Who May File Form I - 7 65 section of the Form I...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        474.001,
+        636.001,
+        497.999,
+        654.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 4,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].#area[1].section_2[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 27. Eligibility Category. Refer to the Who May File Form I - 7 65 section of the Form I - 7 65 Instructions to determine the appropriate eligibility category for this application. Enter the appropriate letter and number for your eligibility category below (for example, (A.)(8), (c)(17)(i i i )). Enter middle three characters.",
+      "short_label": "27. Eligibility Category. Refer to the Who May File Form I - 7 65 section of the Form I...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        510.001,
+        636.001,
+        533.999,
+        654.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 3,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].#area[1].section_3[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 27. Eligibility Category. Refer to the Who May File Form I - 7 65 section of the Form I - 7 65 Instructions to determine the appropriate eligibility category for this application. Enter the appropriate letter and number for your eligibility category below (for example, (A.)(8), (c)(17)(i i i )). Enter Last three characters.",
+      "short_label": "27. Eligibility Category. Refer to the Who May File Form I - 7 65 section of the Form I...",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        546.001,
+        636.001,
+        569.999,
+        654.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 4,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].PtLine30b_YesNo[0]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 31. B. If you entered the eligibility category (c)(35) or (c)(36) in Item Number 27., have you EVER been arrested for and/or convicted of any crime? Select Yes. NOTE: If you answered “Yes” to Item Number 31. B., refer to Employment-Based Nonimmigrant Categories, Items 8. - 9., in the Who May File Form I - 7 65 section of the Form I - 7 65 Instructions for information about providing court dispositions.",
+      "short_label": "31. B. If you entered the eligibility category (c)(35) or (c)(36) in Item Number 27., h...",
+      "group": "form1[0].Page3[0].PtLine30b_YesNo",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        500.159,
+        112.0,
+        510.159,
+        122.0
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].PtLine30b_YesNo[1]",
+      "label": "Part 2. Information About You. Information About Your Eligibility Category. 31. B. If you entered the eligibility category (c)(35) or (c)(36) in Item Number 27., have you EVER been arrested for and/or convicted of any crime? Select No.",
+      "short_label": "31. B. If you entered the eligibility category (c)(35) or (c)(36) in Item Number 27., h...",
+      "group": "form1[0].Page3[0].PtLine30b_YesNo",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        541.919,
+        112.0,
+        551.919,
+        122.0
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page3[0].place_entry[0]",
+      "label": "Part 2. Information About You. Information About Your Last Arrival in the United States. 23. Enter Place of Last Arrival into the United States.",
+      "short_label": "23. Place of Last Arrival into the United States",
+      "section": "Part 2",
+      "page": 3,
+      "rect": [
+        60.001,
+        227.999,
+        294.001,
+        245.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt3Line1Checkbox[0]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. Applicant's Statement. 1. B. Select The interpreter named in Part 4. read to me every question and instruction on this application and my answer to every question in a language in which I am fluent, and I understood everything.",
+      "short_label": "1. B. The interpreter named in Part 4. read to me every question and instruction on thi...",
+      "group": "form1[0].Page4[0].Pt3Line1Checkbox",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        61.003,
+        529.001,
+        71.003,
+        539.001
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt3Line1Checkbox[1]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. NOTE: Read the Penalties section of the Form I - 7 65 Instructions before completing this section. You must file Form I - 7 65 while in the United States. Applicant's Statement. NOTE: Select the box for either Item Number 1. A. or 1. B. If applicable, select the box for Item Number 2. 1. A. Select I can read and understand English, and I have read and understand every question and instruction on this application and my answer to every question.",
+      "short_label": "1. A. I can read and understand English, and I have read and understand every question ...",
+      "group": "form1[0].Page4[0].Pt3Line1Checkbox",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        61.003,
+        571.002,
+        71.003,
+        581.002
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Part3_Checkbox[0]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. Applicant's Statement. 2. Select At my request, the preparer named in Part 5., prepared this application for me based only upon information I provided or authorized.",
+      "short_label": "2. At my request, the preparer named in Part 5., prepared this application for me based...",
+      "group": "form1[0].Page4[0].Part3_Checkbox",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        61.0,
+        444.999,
+        71.0,
+        454.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt3Line7b_DateofSignature[0]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. 7. B. Date of Signature. Enter the 2-digit Month, 2-digit Day and 4-digit Year. NOTE TO ALL APPLICANTS: If you do not completely fill out this application or fail to submit required documents listed in the Instructions, U S C I S may deny your application.",
+      "short_label": "7. B. Date of Signature. 2-digit Month, 2-digit Day and 4-digit Year",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        492.001,
+        306.0,
+        576.003,
+        324.0
+      ],
+      "kind": "text",
+      "value_type": "date",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt3Line3_DaytimePhoneNumber1[0]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. Applicant's Contact Information. 3. Enter Applicant's Daytime Telephone Number.",
+      "short_label": "3. Applicant's Daytime Telephone Number",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        59.893,
+        335.999,
+        294.227,
+        353.999
+      ],
+      "kind": "text",
+      "value_type": "phone",
+      "max_len": 10,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt3Line4_MobileNumber1[0]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. Applicant's Contact Information. 4. Enter Applicant's Mobile Telephone Number, (if any).",
+      "short_label": "4. Applicant's Mobile Telephone Number, (if any)",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        59.893,
+        300.002,
+        294.227,
+        318.002
+      ],
+      "kind": "text",
+      "value_type": "phone",
+      "max_len": 10,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt3Line5_Email[0]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. Applicant's Contact Information. 5. Enter Applicant's Email Address, (if any).",
+      "short_label": "5. Applicant's Email Address, (if any)",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        60.001,
+        263.999,
+        294.001,
+        281.999
+      ],
+      "kind": "text",
+      "value_type": "email",
+      "max_len": 38,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt4Line6_Checkbox[0]",
+      "label": "Part 3. Applicant's Statement, Contact Information, Declaration, Certification, and Signature. Applicant's Contact Information. 6. Select this box if you are a Salvadoran or Guatemalan national eligible for benefits under the. A. B C settlement agreement.",
+      "short_label": "6. this box if you are a Salvadoran or Guatemalan national eligible for benefits under ...",
+      "group": "form1[0].Page4[0].Pt4Line6_Checkbox",
+      "section": "Part 3",
+      "page": 4,
+      "rect": [
+        61.0,
+        246.999,
+        71.0,
+        256.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt4Line2_InterpreterBusinessorOrg[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Provide the following information concerning the interpreter: Interpreter's Full Name. 2. Enter Interpreter's Business or Organization Name (if any).",
+      "short_label": "2. Interpreter's Business or Organization Name (if any)",
+      "section": "Part 4",
+      "page": 4,
+      "rect": [
+        342.0,
+        54.0,
+        575.532,
+        72.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 34,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt4Line1b_InterpreterGivenName[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Provide the following information concerning the interpreter: Interpreter's Full Name. 1. B. Enter Interpreter's Given Name (First Name).",
+      "short_label": "1. B. Interpreter's Given Name (First Name)",
+      "section": "Part 4",
+      "page": 4,
+      "rect": [
+        342.0,
+        90.0,
+        575.532,
+        108.0
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page4[0].Pt4Line1a_InterpreterFamilyName[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Provide the following information about the interpreter: Interpreter's Full Name. 1. A. Enter Interpreter's Family Name (Last Name).",
+      "short_label": "1. A. Interpreter's Family Name (Last Name)",
+      "section": "Part 4",
+      "page": 4,
+      "rect": [
+        342.468,
+        126.0,
+        576.0,
+        144.0
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt4Line4_InterpreterDaytimeTelephone[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Contact Information. 4. Enter Interpreter's Daytime Telephone Number.",
+      "short_label": "4. Interpreter's Daytime Telephone Number",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        60.001,
+        426.002,
+        294.001,
+        444.002
+      ],
+      "kind": "text",
+      "value_type": "phone",
+      "max_len": 10,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt4Line6_Email[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Contact Information. 6. Enter Interpreter's Email Address (if any).",
+      "short_label": "6. Interpreter's Email Address (if any)",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        60.001,
+        354.002,
+        294.001,
+        372.002
+      ],
+      "kind": "text",
+      "value_type": "email",
+      "max_len": 38,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt4Line5_MobileNumber[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Contact Information. 5. Enter Interpreter's Mobile Telephone Number, (if any).",
+      "short_label": "5. Interpreter's Mobile Telephone Number, (if any)",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        59.893,
+        390.002,
+        294.227,
+        408.002
+      ],
+      "kind": "text",
+      "value_type": "phone",
+      "max_len": 10,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Part4_NameofLanguage[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Certification. I certify, under penalty of perjury, that I am fluent in English and (enter language) which is the same language specified in Part 3., Item Number 1.b., and I have read to this applicant in the identified language every question and instruction on this application and his or her answer to every question. The applicant informed me that he or she understands every instruction, question, and answer on the application, including the Applicant's Certification, and has verified the accuracy of every answer.",
+      "short_label": "The applicant informed me that he or she understands every instruction, question, and a...",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        144.0,
+        288.0,
+        289.998,
+        306.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line1b_PreparerGivenName[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Provide the following information about the preparer: Preparer's Full Name. 1. B. Enter Preparer's Given Name (First Name).",
+      "short_label": "1. B. Preparer's Given Name (First Name)",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        569.996,
+        576.0,
+        587.996
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line2_BusinessName[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Provide the following information about the preparer. Preparer's Full Name. 2. Enter Preparer's Business or Organization Name, if any.",
+      "short_label": "2. Preparer's Business or Organization Name, if any",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        533.999,
+        576.0,
+        551.999
+      ],
+      "kind": "text",
+      "value_type": "ssn",
+      "max_len": 34,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line1a_PreparerFamilyName[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Provide the following information concerning the preparer: Preparer's Full Name. 1. A. Enter Preparer's Family Name (Last Name).",
+      "short_label": "1. A. Preparer's Family Name (Last Name)",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        605.996,
+        576.0,
+        623.996
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3c_CityOrTown[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. C. Enter the City or Town.",
+      "short_label": "3. C. City or Town",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        402.001,
+        431.997,
+        576.0,
+        449.997
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 20,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3a_StreetNumberName[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. A. Enter Street Number and Name.",
+      "short_label": "3. A. Street Number and Name",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        407.999,
+        479.999,
+        576.0,
+        497.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 34,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3b_Unit[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. B. Select Floor.",
+      "short_label": "3. B. Floor",
+      "group": "form1[0].Page5[0].Pt6Line3b_Unit",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        425.999,
+        459.995,
+        435.999,
+        469.995
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3b_Unit[1]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. B. Select Apartment.",
+      "short_label": "3. B. Apartment",
+      "group": "form1[0].Page5[0].Pt6Line3b_Unit",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        459.995,
+        352.0,
+        469.995
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3b_AptSteFlrNumber[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. B. Enter Apartment, Suite or Floor number.",
+      "short_label": "3. B. Apartment, Suite or Floor number",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        468.0,
+        455.995,
+        576.0,
+        473.995
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3b_Unit[2]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. B. Select Suite.",
+      "short_label": "3. B. Suite",
+      "group": "form1[0].Page5[0].Pt6Line3b_Unit",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        384.001,
+        459.998,
+        394.001,
+        469.998
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3g_PostalCode[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. G. Enter the Postal Code.",
+      "short_label": "3. G. Postal Code",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        402.174,
+        359.997,
+        575.87,
+        377.997
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 9,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3e_ZipCode[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. E. Enter the ZIP code.",
+      "short_label": "3. E. ZIP code",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        473.998,
+        407.999,
+        575.997,
+        425.999
+      ],
+      "kind": "text",
+      "value_type": "zip",
+      "max_len": 5,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3d_State[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. D. Select state from list of states.",
+      "short_label": "3. D. state from list of states",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        365.998,
+        407.999,
+        401.998,
+        425.999
+      ],
+      "kind": "choice",
+      "value_type": "choice",
+      "max_len": null,
+      "options": [
+        " ",
+        "AA",
+        "AE",
+        "AK",
+        "AL",
+        "AP",
+        "AR",
+        "AS",
+        "AZ",
+        "CA",
+        "CO",
+        "CT",
+        "DC",
+        "DE",
+        "FL",
+        "FM",
+        "GA",
+        "GU",
+        "HI",
+        "IA",
+        "ID",
+        "IL",
+        "IN",
+        "KS",
+        "KY",
+        "LA",
+        "MA",
+        "MD",
+        "ME",
+        "MH",
+        "MI",
+        "MN",
+        "MO",
+        "MP",
+        "MS",
+        "MT",
+        "NC",
+        "ND",
+        "NE",
+        "NH",
+        "NJ",
+        "NM",
+        "NV",
+        "NY",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "PW",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VA",
+        "VI",
+        "VT",
+        "WA",
+        "WI",
+        "WV",
+        "WY"
+      ],
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3h_Country[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. H. Enter the Country.",
+      "short_label": "3. H. Country",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        324.0,
+        576.0,
+        342.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt6Line3f_Province[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Mailing Address. 3. F. Enter the Province.",
+      "short_label": "3. F. Province",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        402.174,
+        383.998,
+        575.87,
+        401.998
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 20,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line5_PreparerFaxNumber[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Contact Information. 5. Enter Preparer's Mobile Telephone Number (if any).",
+      "short_label": "5. Preparer's Mobile Telephone Number (if any)",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        222.001,
+        576.0,
+        240.001
+      ],
+      "kind": "text",
+      "value_type": "phone",
+      "max_len": 10,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line4_DaytimePhoneNumber1[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Contact Information. 4. Enter Preparer's Daytime Telephone Number.",
+      "short_label": "4. Preparer's Daytime Telephone Number",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        258.001,
+        576.0,
+        276.001
+      ],
+      "kind": "text",
+      "value_type": "phone",
+      "max_len": 10,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line6_Email[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Contact Information. 6. Enter Preparer's Email Address, (if any).",
+      "short_label": "6. Preparer's Email Address, (if any)",
+      "section": "Part 5",
+      "page": 5,
+      "rect": [
+        342.0,
+        186.004,
+        576.0,
+        204.004
+      ],
+      "kind": "text",
+      "value_type": "email",
+      "max_len": 38,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3c_CityOrTown[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. C. Enter City or Town.",
+      "short_label": "3. C. City or Town",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        119.999,
+        600.001,
+        294.001,
+        618.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 20,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3a_StreetNumberName[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. A. Enter Street Number and Name.",
+      "short_label": "3. A. Street Number and Name",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        126.0,
+        648.003,
+        294.001,
+        666.003
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 34,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3b_Unit[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. B. Select Floor.",
+      "short_label": "3. B. Floor",
+      "group": "form1[0].Page5[0].Pt5Line3b_Unit",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        144.0,
+        627.999,
+        154.0,
+        637.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3b_Unit[1]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. B. Select Apartment.",
+      "short_label": "3. B. Apartment",
+      "group": "form1[0].Page5[0].Pt5Line3b_Unit",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        60.001,
+        627.999,
+        70.001,
+        637.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3b_AptSteFlrNumber[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. B. Enter the Apartment, Suite or Floor number.",
+      "short_label": "3. B. Apartment, Suite or Floor number",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        186.001,
+        623.999,
+        294.001,
+        641.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3b_Unit[2]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. B. Select Suite.",
+      "short_label": "3. B. Suite",
+      "group": "form1[0].Page5[0].Pt5Line3b_Unit",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        101.999,
+        628.002,
+        111.999,
+        638.002
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3g_PostalCode[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. G. Enter the Postal Code.",
+      "short_label": "3. G. Postal Code",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        120.214,
+        528.001,
+        293.876,
+        546.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 9,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3e_ZipCode[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. E. Enter ZIP Code.",
+      "short_label": "3. E. ZIP Code",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        191.999,
+        576.003,
+        293.998,
+        594.003
+      ],
+      "kind": "text",
+      "value_type": "zip",
+      "max_len": 5,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3d_State[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. D. Select state from list of states.",
+      "short_label": "3. D. state from list of states",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        83.999,
+        576.003,
+        119.999,
+        594.003
+      ],
+      "kind": "choice",
+      "value_type": "choice",
+      "max_len": null,
+      "options": [
+        " ",
+        "AA",
+        "AE",
+        "AK",
+        "AL",
+        "AP",
+        "AR",
+        "AS",
+        "AZ",
+        "CA",
+        "CO",
+        "CT",
+        "DC",
+        "DE",
+        "FL",
+        "FM",
+        "GA",
+        "GU",
+        "HI",
+        "IA",
+        "ID",
+        "IL",
+        "IN",
+        "KS",
+        "KY",
+        "LA",
+        "MA",
+        "MD",
+        "ME",
+        "MH",
+        "MI",
+        "MN",
+        "MO",
+        "MP",
+        "MS",
+        "MT",
+        "NC",
+        "ND",
+        "NE",
+        "NH",
+        "NJ",
+        "NM",
+        "NV",
+        "NY",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "PR",
+        "PW",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VA",
+        "VI",
+        "VT",
+        "WA",
+        "WI",
+        "WV",
+        "WY"
+      ],
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3h_Country[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. H. Enter the Country.",
+      "short_label": "3. H. Country",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        60.001,
+        492.001,
+        294.001,
+        510.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt5Line3f_Province[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Mailing Address. 3. F. Enter the Province.",
+      "short_label": "3. F. Province",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        120.214,
+        552.002,
+        293.876,
+        570.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 20,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page5[0].Pt4Line6b_DateofSignature[0]",
+      "label": "Part 4. Interpreter's Contact Information, Certification, and Signature. Interpreter's Signature. 7. B. Date of Signature. Enter the 2-digit Month, 2-digit Day and 4-digit Year.",
+      "short_label": "7. B. Date of Signature. 2-digit Month, 2-digit Day and 4-digit Year",
+      "section": "Part 4",
+      "page": 5,
+      "rect": [
+        210.002,
+        114.001,
+        294.004,
+        132.001
+      ],
+      "kind": "text",
+      "value_type": "date",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page6[0].Part5Line7_Checkbox[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Statement. 7. A. Select I am not an attorney or accredited representative but have prepared this application on behalf of the applicant and with the applicant's consent.",
+      "short_label": "7. A. I am not an attorney or accredited representative but have prepared this applicat...",
+      "group": "form1[0].Page6[0].Part5Line7_Checkbox",
+      "section": "Part 5",
+      "page": 6,
+      "rect": [
+        61.0,
+        637.001,
+        71.0,
+        647.001
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page6[0].Part5Line7_Checkbox[1]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Statement. 7. B. Select I am an attorney or accredited representative and my representation of the applicant in this case extends or does not extend beyond the preparation of this application. NOTE: If you are an attorney or accredited you may need to submit a completed Form G - 28, Notice of Entry of Appearance as Attorney or Accredited Representative, with this application.",
+      "short_label": "7. B. I am an attorney or accredited representative and my representation of the applic...",
+      "group": "form1[0].Page6[0].Part5Line7_Checkbox",
+      "section": "Part 5",
+      "page": 6,
+      "rect": [
+        61.0,
+        595.0,
+        71.0,
+        605.0
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page6[0].Part5Line7b_Checkbox[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Statement. 7. B. Select I am an attorney or accredited representative and my representation of the applicant in this case extends beyond the preparation of this application.",
+      "short_label": "7. B. I am an attorney or accredited representative and my representation of the applic...",
+      "group": "form1[0].Page6[0].Part5Line7b_Checkbox",
+      "section": "Part 5",
+      "page": 6,
+      "rect": [
+        79.0,
+        570.999,
+        89.0,
+        580.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page6[0].Part5Line7b_Checkbox[1]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Statement. 7. B. Select I am an attorney or accredited representative and my representation of the applicant in this case does not extend beyond the preparation of this application.",
+      "short_label": "7. B. I am an attorney or accredited representative and my representation of the applic...",
+      "group": "form1[0].Page6[0].Part5Line7b_Checkbox",
+      "section": "Part 5",
+      "page": 6,
+      "rect": [
+        126.999,
+        570.999,
+        136.999,
+        580.999
+      ],
+      "kind": "checkbox",
+      "value_type": "checkbox",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page6[0].Pt5Line8b_DateofSignature[0]",
+      "label": "Part 5. Contact Information, Declaration, and Signature of the Person Preparing this Application, If Other Than the Applicant. Preparer's Signature. 8. B. Date of Signature. Enter the 2-digit Month, 2-digit Day and 4-digit Year.",
+      "short_label": "8. B. Date of Signature. 2-digit Month, 2-digit Day and 4-digit Year",
+      "section": "Part 5",
+      "page": 6,
+      "rect": [
+        210.002,
+        257.995,
+        294.004,
+        275.995
+      ],
+      "kind": "text",
+      "value_type": "date",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line3a_PageNumber[0]",
+      "label": "Part 6. Additional Information. 3. A. Enter Page Number.",
+      "short_label": "3. A. Page Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        60.001,
+        479.999,
+        114.001,
+        497.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 2,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line3b_PartNumber[0]",
+      "label": "Part 6. Additional Information. 3. B. Enter Part Number.",
+      "short_label": "3. B. Part Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        150.001,
+        479.999,
+        204.001,
+        497.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line3c_ItemNumber[0]",
+      "label": "Part 6. Additional Information. 3. C. Enter Item Number.",
+      "short_label": "3. C. Item Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        240.001,
+        479.999,
+        294.001,
+        497.999
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line4a_PageNumber[0]",
+      "label": "Part 6. Additional Information. 4. A. Enter Page Number.",
+      "short_label": "4. A. Page Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        60.001,
+        246.002,
+        114.001,
+        264.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 2,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line4b_PartNumber[0]",
+      "label": "Part 6. Additional Information. 4. B. Enter Part Number.",
+      "short_label": "4. B. Part Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        150.001,
+        246.002,
+        204.001,
+        264.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line4c_ItemNumber[0]",
+      "label": "Part 6. Additional Information. 4. C. Enter Item Number.",
+      "short_label": "4. C. Item Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        240.001,
+        246.002,
+        294.001,
+        264.002
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line4d_AdditionalInfo[0]",
+      "label": "Part 6. Additional Information. 4. D. Enter additional information.",
+      "short_label": "4. D. additional information",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        60.001,
+        60.001,
+        294.021,
+        240.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line5a_PageNumber[0]",
+      "label": "Part 6. Additional Information. 5. A. Enter Page Number.",
+      "short_label": "5. A. Page Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        342.0,
+        708.001,
+        396.0,
+        726.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 2,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line5b_PartNumber[0]",
+      "label": "Part 6. Additional Information. 5. B. Enter Part Number.",
+      "short_label": "5. B. Part Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        432.0,
+        708.001,
+        486.0,
+        726.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line5c_ItemNumber[0]",
+      "label": "Part 6. Additional Information. 5. C. Enter Item Number.",
+      "short_label": "5. C. Item Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        522.0,
+        708.001,
+        576.0,
+        726.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line5d_AdditionalInfo[0]",
+      "label": "Part 6. Additional Information. 5. D. Enter additional information.",
+      "short_label": "5. D. additional information",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        342.0,
+        576.0,
+        576.0,
+        702.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line6a_PageNumber[0]",
+      "label": "Part 6. Additional Information. 6. A. Enter Page Number.",
+      "short_label": "6. A. Page Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        342.0,
+        528.001,
+        396.0,
+        546.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 2,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line6b_PartNumber[0]",
+      "label": "Part 6. Additional Information. 6. B. Enter Part Number.",
+      "short_label": "6. B. Part Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        432.0,
+        528.001,
+        486.0,
+        546.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line6c_ItemNumber[0]",
+      "label": "Part 6. Additional Information. 6. C. Enter Item Number.",
+      "short_label": "6. C. Item Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        522.0,
+        528.001,
+        576.0,
+        546.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line6d_AdditionalInfo[0]",
+      "label": "Part 6. Additional Information. 6. D. Enter additional information.",
+      "short_label": "6. D. additional information",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        342.0,
+        360.0,
+        576.02,
+        522.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line7a_PageNumber[0]",
+      "label": "Part 6. Additional Information. 7. A. Enter Page Number.",
+      "short_label": "7. A. Page Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        342.0,
+        312.001,
+        396.0,
+        330.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 2,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line7b_PartNumber[0]",
+      "label": "Part 6. Additional Information. 7. B. Enter Part Number.",
+      "short_label": "7. B. Part Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        432.0,
+        312.001,
+        486.0,
+        330.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line7c_ItemNumber[0]",
+      "label": "Part 6. Additional Information. 7. C. Enter Item Number.",
+      "short_label": "7. C. Item Number",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        522.0,
+        312.001,
+        576.0,
+        330.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": 6,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line7d_AdditionalInfo[0]",
+      "label": "Part 6. Additional Information. 7. D. Enter additional information.",
+      "short_label": "7. D. additional information",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        342.0,
+        126.0,
+        576.02,
+        306.0
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].Page7[0].Pt6Line4d_AdditionalInfo[1]",
+      "label": "Part 6. Additional Information. 3. D. Enter additional information.",
+      "short_label": "3. D. additional information",
+      "section": "Part 6",
+      "page": 7,
+      "rect": [
+        60.001,
+        294.001,
+        294.021,
+        474.001
+      ],
+      "kind": "text",
+      "value_type": "text",
+      "max_len": null,
+      "required": false
+    }
+  ]
+}

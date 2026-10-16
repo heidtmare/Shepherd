@@ -1,0 +1,58 @@
+[workspace]
+resolver = "3"
+members = ["shepherd-common", "shepherd-storage", "shepherd-search", "shepherd-intake", "shepherd-stream", "shepherd-forms", "shepherd-workbench", "shepherd-notification", "shepherd-inference"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+publish = false
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+shepherd-common = { path = "shepherd-common" }
+shepherd-storage = { path = "shepherd-storage" }
+shepherd-forms = { path = "shepherd-forms" }
+
+anyhow = "1"
+ab_glyph = "0.2"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
+imageproc = { version = "0.27", default-features = false, features = ["text"] }
+lopdf = "0.42"
+ort = "=2.0.0-rc.13"
+pdfium-render = "0.9"
+async-nats = "0.50"
+axum = "0.8"
+base64 = "0.23"
+bytes = "1"
+figment = { version = "0.10", features = ["env"] }
+futures = "0.3"
+hex = "0.4"
+lettre = { version = "0.11", default-features = false, features = ["builder", "smtp-transport", "hostname", "tokio1-rustls", "aws-lc-rs", "webpki-roots"] }
+insta = "1"
+jsonpath-rust = "1"
+metrics = "0.24"
+metrics-exporter-prometheus = { version = "0.18", default-features = false }
+object_store = { version = "0.14", features = ["aws"] }
+reqwest = { version = "0.13", default-features = false, features = ["rustls", "json", "stream", "query"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.11"
+sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "tls-rustls", "postgres", "macros", "migrate", "uuid", "time", "json"] }
+testcontainers = "0.27"
+testcontainers-modules = { version = "0.15", features = ["postgres", "nats"] }
+thiserror = "2"
+time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["rt"] }
+toml = "1"
+tower = "0.5"
+tower-http = { version = "0.7", features = ["trace", "compression-gzip", "limit", "request-id", "util", "cors"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+utoipa = { version = "5", features = ["axum_extras", "uuid", "time"] }
+uuid = { version = "1", features = ["v7", "serde"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

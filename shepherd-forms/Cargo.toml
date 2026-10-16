@@ -1,0 +1,24 @@
+[package]
+name = "shepherd-forms"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[dependencies]
+ab_glyph.workspace = true
+anyhow.workspace = true
+clap = { version = "4", features = ["derive", "env"] }
+image.workspace = true
+imageproc.workspace = true
+lopdf.workspace = true
+ort.workspace = true
+pdfium-render.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+hex.workspace = true
+thiserror.workspace = true
+time.workspace = true
+tracing.workspace = true

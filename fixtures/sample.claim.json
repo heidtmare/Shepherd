@@ -1,0 +1,12 @@
+{
+  "schema": "inference.claim.v1",
+  "summary": "Water damage to kitchen ceiling after upstairs pipe failure.",
+  "document_type": "insurance_claim",
+  "status": "pending_review",
+  "received_at": "2026-08-28T14:30:00Z",
+  "totals": { "amount": 18450.75, "currency": "USD" },
+  "parties": [
+    { "role": "claimant", "name": "Jordan Alvarez" },
+    { "role": "insurer", "name": "Northwind Mutual" }
+  ]
+}

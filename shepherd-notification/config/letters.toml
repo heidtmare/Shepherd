@@ -1,0 +1,90 @@
+# Letter and e-mail text for shepherd-notification. Loaded and validated at startup.
+#
+# Placeholders, replaced in every string: {receipt_number}, {form_number}, {benefit},
+# {received_date}, {notice_date}, {due_date} (rfe, noid), {name}, {a_number}.
+# Unknown placeholders fail validation. Dates are written as "September 24, 2026".
+#
+# Per letter kind:
+#   title      heading under the address block
+#   body       paragraphs before the kind's generated content
+#   closing    paragraphs after it
+# Generated content: rfe/noid list the requested items and the officer's message; denial lists
+# the grounds and the rationale.
+
+[letterhead]
+# First line is set in bold. Replace with the issuing office's name and return address.
+lines = ["Shepherd Adjudication Office", "P.O. Box 1000", "Springfield, IL 62701"]
+signature = ["Director", "Shepherd Adjudication Office"]
+
+[kinds.receipt]
+title = "Notice of Action: Receipt"
+body = [
+  "We received your {form_number}, {benefit}, on {received_date}. Your case has been assigned the receipt number above.",
+  "This notice does not grant any immigration status or benefit. It confirms only that the request was received.",
+]
+closing = [
+  "Include the receipt number in all correspondence about this case. We will notify you in writing if we need more information and when a decision is made.",
+  "If your mailing address changes, notify us so that future notices reach you.",
+]
+
+[kinds.rfe]
+title = "Request for Evidence"
+body = [
+  "We are reviewing your {form_number}, {benefit}. The evidence submitted so far does not establish eligibility. Submit the evidence listed below.",
+]
+closing = [
+  "Your response must be received by {due_date}. Return a copy of this notice on top of your response, and submit all of the requested evidence at one time.",
+  "If you do not respond by the due date, we may deny the request as abandoned or decide it on the evidence in the record.",
+]
+
+[kinds.noid]
+title = "Notice of Intent to Deny"
+body = [
+  "We intend to deny your {form_number}, {benefit}, for the reasons below. You may submit evidence or arguments in rebuttal.",
+]
+closing = [
+  "Your response must be received by {due_date}. Return a copy of this notice on top of your response.",
+  "If you do not respond by the due date, we will decide the case on the evidence in the record, and it may be denied.",
+]
+
+[kinds.approval]
+title = "Notice of Action: Approval"
+body = [
+  "Your {form_number}, {benefit}, has been approved.",
+]
+closing = [
+  "Keep this notice for your records. If any document is to be issued as a result of this approval, it will be mailed separately to the address on file.",
+]
+
+[kinds.denial]
+title = "Decision: Denial"
+body = [
+  "After review of the record, your {form_number}, {benefit}, is denied for the reasons below.",
+]
+closing = [
+  "If you believe this decision is incorrect, you may file a motion to reopen or reconsider, or an appeal where one is available, within 30 days of the date of this notice (33 days if this notice was mailed).",
+]
+
+[kinds.withdrawal]
+title = "Notice of Action: Withdrawal Acknowledged"
+body = [
+  "We have recorded the withdrawal of your {form_number}, {benefit}. No further action will be taken on this case.",
+]
+closing = [
+  "A withdrawal cannot be revoked. A new request must be filed if you wish to seek this benefit in the future.",
+]
+
+# E-mail sent to the address on an e-notification request (G-1145) when the receipt notice is
+# generated. It carries no personal data beyond the receipt number.
+[email.receipt]
+subject = "Case accepted: {receipt_number}"
+body = """
+Your {form_number} has been accepted.
+
+Receipt number: {receipt_number}
+Received: {received_date}
+
+A receipt notice has been mailed to the address on file. Use the receipt number in all correspondence about this case.
+
+This mailbox is not monitored.
+"""

@@ -1,0 +1,24 @@
+# Rules evaluated by shepherd-inference. Loaded and validated at startup.
+#
+# One table per rule id. Rules not listed here are off. Keys:
+#   enabled    default true
+#   severity   low, medium or high
+#   other keys are the rule's parameters; unknown keys fail validation.
+# Changing this file re-evaluates every case at the next start.
+
+# The same A-Number is recorded for people whose names do not match: on another case, or for the
+# other party of the same case. Names match when their tokens agree ignoring order, case,
+# diacritics and punctuation, when one name's tokens are a subset of the other's (missing middle
+# name or second surname), or when tokens differ by a few characters (typos, handwriting
+# recognition).
+[a_number_name_mismatch]
+severity = "high"
+# Edits allowed per token, as a fraction of the longer token's length (rounded down):
+# 0.25 allows one edit in 4 to 7 letters, two in 8 to 11.
+edit_ratio = 0.25
+
+# An A-Number is recorded on more cases than A_NUMBER_CASE_LIMIT (env, default 50): a placeholder,
+# a recurring misread or a shared identity. Such A-Numbers are not joined across cases, so
+# a_number_name_mismatch does not compare them; with this rule off they go unreported.
+[a_number_widely_shared]
+severity = "medium"

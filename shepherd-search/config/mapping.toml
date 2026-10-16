@@ -1,0 +1,94 @@
+# Maps derived artifacts (by schema) onto search.cards.
+# Paths are RFC 9535 JSONPath evaluated against the artifact body.
+# `[schema.columns]` keys must be declared in the top-level `[columns]` table.
+# When several schemas set the same column, the first schema listed wins; pages come from the
+# first schema that yields any.
+# Every card also gets the facet `schema/<name>` for each derived schema present.
+# `fields = false` keeps a schema's body out of `cards.fields` (default true; unmapped schemas are
+# always kept). Use it for bulky bodies whose text is already indexed through `content`/`pages`.
+# Top-level `ignore = ["<schema>", ...]` (before the first [[schema]]) skips fetching those bodies;
+# they keep only the `schema/<name>` facet. An ignored schema cannot also be mapped.
+
+# Typed card columns, filterable and (with `sort = true`) sortable. `type` is text, numeric or
+# timestamp (RFC 3339 or YYYY-MM-DD in the source). Columns and their indexes are created on
+# startup; values for existing cards appear after a rebuild. Removing a column stops filling it
+# but does not drop it. Text columns are not sortable.
+[columns]
+status = { type = "text" }
+amount = { type = "numeric", sort = true }
+received_at = { type = "timestamp", sort = true }
+
+# Benefit case projection (shepherd-workbench), on the case's primary document. Listed first so
+# its status and received date win.
+[[schema]]
+name = "workbench.case.v1"
+content = ["$.receipt_number", "$.benefit", "$.form_number",
+           "$.applicant.family_name", "$.applicant.given_name", "$.applicant.a_number",
+           "$.beneficiary.family_name", "$.beneficiary.given_name", "$.beneficiary.a_number"]
+
+[schema.columns]
+status = "$.status"
+received_at = "$.received_at"
+
+[schema.facets]
+case_status = "$.status"
+benefit = "$.form_type"
+decision = "$.decision.outcome"
+
+# Rule findings (shepherd-inference) on the case's primary document: open, not dismissed.
+[[schema]]
+name = "inference.findings.v1"
+
+[schema.facets]
+finding = "$.findings[*].rule"
+finding_severity = "$.findings[*].severity"
+
+# Text extraction output of shepherd-intake.
+[[schema]]
+name = "intake.ir.v1"
+fields = false        # full page text; already in content and search.pages
+content = ["$.title", "$.metadata.subject", "$.metadata.keywords", "$.metadata.author"]
+
+[schema.pages]
+path = "$.pages[*]"   # each match is one page
+number = "$.number"   # relative to the page; defaults to 1-based position
+text = "$.text"
+
+[schema.facets]
+needs_ocr = "$.flags.needs_ocr"
+
+# Domain enrichment (produced by inference; shape is provisional).
+[[schema]]
+name = "inference.claim.v1"
+content = ["$.summary", "$.parties[*].name"]
+
+[schema.columns]
+status = "$.status"
+amount = "$.totals.amount"
+received_at = "$.received_at"
+
+[schema.facets]
+type = "$.document_type"
+status = "$.status"
+party_role = "$.parties[*].role"
+
+# Human-verified form values (shepherd-workbench). Listed before recognition so its values win.
+[[schema]]
+name = "receipting.form.v1"
+content = ["$.values.*"]
+
+[schema.facets]
+form = "$.form_type"         # form type; editions share it
+form_edition = "$.template_id"
+receipted = "$.mode"
+
+# Machine recognition of handwritten form fields (shepherd-intake).
+[[schema]]
+name = "intake.form.v1"
+content = ["$.fields[?@.status == 'filled'].value"]
+
+# `form_type` is absent in recognitions recorded before form editions; those carry the form type
+# as `template_id` (form_edition) and get `form` when re-recognized.
+[schema.facets]
+form = "$.form.form_type"
+form_edition = "$.form.template_id"

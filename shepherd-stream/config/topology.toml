@@ -1,0 +1,72 @@
+# JetStream topology, applied by shepherd-stream at startup (create or update).
+# Consumers bind to these durables by name; tune retries and ack timeouts here.
+
+[[stream]]
+name = "SHEPHERD_EVENTS"
+subjects = ["shepherd.storage.>", "shepherd.intake.>", "shepherd.search.>", "shepherd.workbench.>", "shepherd.notification.>", "shepherd.inference.>"]
+storage = "file"
+max_age_days = 0            # retain indefinitely; events are the audit trail of processing
+duplicate_window_secs = 120 # storage outbox sets Nats-Msg-Id; duplicates within this window are dropped
+
+[[stream]]
+name = "SHEPHERD_DLQ"
+subjects = ["shepherd.dlq.>"]
+storage = "file"
+max_age_days = 30
+
+[[consumer]]
+stream = "SHEPHERD_EVENTS"
+name = "search-indexer"
+filter_subjects = ["shepherd.storage.>"]
+ack_wait_secs = 60
+max_deliver = 10
+max_ack_pending = 10000
+
+[[consumer]]
+stream = "SHEPHERD_EVENTS"
+name = "intake-extractor"
+filter_subjects = ["shepherd.storage.document.created.*", "shepherd.intake.extraction.requested.*"]
+ack_wait_secs = 300         # upper bound for one extraction
+max_deliver = 5
+max_ack_pending = 256
+
+[[consumer]]
+stream = "SHEPHERD_EVENTS"
+name = "intake-recognizer"
+filter_subjects = ["shepherd.storage.document.created.*", "shepherd.intake.recognition.requested.*"]
+ack_wait_secs = 600         # multi-page handwriting recognition on CPU
+max_deliver = 3
+max_ack_pending = 64
+
+[[consumer]]
+stream = "SHEPHERD_EVENTS"
+name = "workbench-receipting"
+filter_subjects = ["shepherd.intake.recognition.completed.*"]
+ack_wait_secs = 60
+max_deliver = 10
+max_ack_pending = 1000
+
+[[consumer]]
+stream = "SHEPHERD_EVENTS"
+name = "notification-correspondence"
+filter_subjects = ["shepherd.workbench.case.opened.*", "shepherd.workbench.notice.issued.*", "shepherd.workbench.case.decided.*"]
+deliver_from = "new"        # no letters for cases that predate the consumer
+ack_wait_secs = 60
+max_deliver = 10
+max_ack_pending = 1000
+
+[[consumer]]
+stream = "SHEPHERD_EVENTS"
+name = "workbench-correspondence"
+filter_subjects = ["shepherd.notification.>"]
+ack_wait_secs = 30
+max_deliver = 10
+max_ack_pending = 1000
+
+[[consumer]]
+stream = "SHEPHERD_EVENTS"
+name = "inference-rules"
+filter_subjects = ["shepherd.storage.artifact.created.*"]  # acts on workbench.case.v1 only
+ack_wait_secs = 60
+max_deliver = 10
+max_ack_pending = 1000

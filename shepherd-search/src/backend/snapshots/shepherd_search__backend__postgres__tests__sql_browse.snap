@@ -1,0 +1,6 @@
+---
+source: shepherd-search/src/backend/postgres.rs
+assertion_line: 569
+expression: "build_hits(&plan(json!({})), 2000, &columns()).into_string()"
+---
+SELECT h.doc_id, h.score, h.sort_key::text AS sort_key, c.filename, c."amount"::text AS "col_amount", c."received_at" AS "col_received_at", c."status" AS "col_status", c.facets, c.schemas, c.created_at, c.updated_at, NULL::text AS highlight, '{}'::int[] AS matched_pages FROM (SELECT c.doc_id, 0::real AS score, c.updated_at AS sort_key FROM search.cards c WHERE TRUE ORDER BY c.updated_at DESC, c.doc_id DESC LIMIT 21) h JOIN search.cards c ON c.doc_id = h.doc_id ORDER BY h.sort_key DESC, h.doc_id DESC

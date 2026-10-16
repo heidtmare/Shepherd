@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shepherd Intake</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --text: #1b1f24; --muted: #5d6673; --line: #dde1e6;
+    --accent: #2f6fdb; --accent-soft: #e6eefc; --ok: #1f8a4c; --warn: #b26a00; --err: #c0392b;
+    --radius: 10px; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111418; --panel: #1a1e24; --text: #e6e9ed; --muted: #9aa3ae; --line: #2c323a;
+      --accent: #6b9cf0; --accent-soft: #1f2a3d; --ok: #4cc27f; --warn: #e0a040; --err: #ef6b5b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 12px; color: var(--muted); }
+  .opts select, .opts input { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; margin-left: 6px; }
+  .drop {
+    display: block; border: 2px dashed var(--line); border-radius: var(--radius); background: var(--panel);
+    padding: 36px 16px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s;
+  }
+  .drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+  .drop strong { color: var(--accent); }
+  .drop input { display: none; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  #jobs { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 12px; }
+  .job { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .job header { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .job .name { font-weight: 600; overflow-wrap: anywhere; }
+  .job .meta { color: var(--muted); font-size: 12px; font-family: var(--mono); white-space: nowrap; }
+  .bar { height: 4px; background: var(--line); border-radius: 2px; margin: 10px 0 4px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .1s; }
+  .stages { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; }
+  .stage { display: grid; grid-template-columns: 18px 110px 1fr; gap: 8px; align-items: baseline; font-size: 14px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--line); margin-top: 4px; }
+  .stage[data-state="active"] .dot { border-color: var(--accent); animation: pulse 1s infinite alternate; }
+  .stage[data-state="done"] .dot { border-color: var(--ok); background: var(--ok); }
+  .stage[data-state="warn"] .dot { border-color: var(--warn); background: var(--warn); }
+  .stage[data-state="failed"] .dot { border-color: var(--err); background: var(--err); }
+  .stage .label { color: var(--muted); }
+  .stage[data-state="done"] .label, .stage[data-state="active"] .label { color: var(--text); }
+  .stage .detail { color: var(--muted); overflow-wrap: anywhere; }
+  .stage[data-state="failed"] .detail { color: var(--err); }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 12px; font-size: 13px; }
+  .actions a { color: var(--accent); text-decoration: none; }
+  .actions a:hover { text-decoration: underline; }
+  .actions button {
+    font: inherit; color: var(--accent); background: none; border: 1px solid var(--line);
+    border-radius: 6px; padding: 2px 10px; cursor: pointer;
+  }
+  .actions button:disabled { color: var(--muted); cursor: default; }
+  .error { color: var(--err); margin-top: 8px; font-size: 14px; }
+  @keyframes pulse { from { opacity: .35; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .stage[data-state="active"] .dot { animation: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Shepherd intake</h1>
+  <p class="sub">Upload PDFs to store them, extract their text layer and index them for search.</p>
+
+  <div class="opts">
+    <label>Form type
+      <select id="form-type"><option value="">Detect automatically</option></select>
+    </label>
+    <label>Receipt number
+      <input type="text" id="receipt-number" placeholder="Optional, e.g. IOE2612345678" maxlength="16" spellcheck="false">
+    </label>
+    <label>Received
+      <input type="date" id="received-date">
+    </label>
+  </div>
+
+  <label class="drop" id="drop">
+    <input type="file" id="file" accept="application/pdf,.pdf" multiple>
+    <div><strong>Choose PDFs</strong> or drop them here</div>
+    <div class="hint">Files are streamed to storage. Progress below updates live from the event stream.</div>
+  </label>
+
+  <ul id="jobs"></ul>
+</main>
+
+<template id="job-tpl">
+  <li class="job">
+    <header><span class="name"></span><span class="meta"></span></header>
+    <div class="bar"><span></span></div>
+    <ol class="stages">
+      <li class="stage" data-stage="stored"><span class="dot"></span><span class="label">Stored</span><span class="detail"></span></li>
+      <li class="stage" data-stage="extracted"><span class="dot"></span><span class="label">Extracted</span><span class="detail"></span></li>
+      <li class="stage" data-stage="recognized" hidden><span class="dot"></span><span class="label">Form fields</span><span class="detail"></span></li>
+      <li class="stage" data-stage="receipting" hidden><span class="dot"></span><span class="label">Receipting</span><span class="detail"></span></li>
+      <li class="stage" data-stage="indexed"><span class="dot"></span><span class="label">Searchable</span><span class="detail"></span></li>
+    </ol>
+    <div class="actions" hidden></div>
+    <div class="error" hidden></div>
+  </li>
+</template>
+
+<script>
+"use strict";
+const IR_SCHEMA = "intake.ir.v1";
+const T = {
+  DOC_CREATED: "shepherd.storage.document.created",
+  ARTIFACT_CREATED: "shepherd.storage.artifact.created",
+  EX_STARTED: "shepherd.intake.extraction.started",
+  EX_COMPLETED: "shepherd.intake.extraction.completed",
+  EX_FAILED: "shepherd.intake.extraction.failed",
+  INDEXED: "shepherd.search.card.indexed",
+  REC_STARTED: "shepherd.intake.recognition.started",
+  REC_COMPLETED: "shepherd.intake.recognition.completed",
+  REC_FAILED: "shepherd.intake.recognition.failed",
+  RECEIPT_REQUIRED: "shepherd.workbench.receipting.required",
+  RECEIPT_COMPLETED: "shepherd.workbench.receipting.completed",
+  CASE_OPENED: "shepherd.workbench.case.opened",
+};
+const formSelect = document.getElementById("form-type");
+const formTypes = fetch("/v1/form-types").then(r => r.json()).catch(() => []);
+// One option per form type; recognition picks the edition.
+formTypes.then(list => [...new Map(list.map(t => [t.form_type, t])).values()].forEach(t => {
+  const o = document.createElement("option");
+  o.value = t.form_type; o.textContent = `${t.form_number} · ${t.title}`;
+  formSelect.append(o);
+}));
+const cfgReady = fetch("/ui/config.json").then(r => r.json());
+const jobsEl = document.getElementById("jobs");
+const drop = document.getElementById("drop");
+const input = document.getElementById("file");
+
+input.addEventListener("change", () => { [...input.files].forEach(start); input.value = ""; });
+["dragenter", "dragover"].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", ev => [...ev.dataTransfer.files].forEach(start));
+
+function fmtBytes(n) {
+  if (n < 1024) return n + " B";
+  if (n < 1048576) return (n / 1024).toFixed(1) + " KB";
+  return (n / 1048576).toFixed(1) + " MB";
+}
+
+function makeJob(file) {
+  const el = document.getElementById("job-tpl").content.firstElementChild.cloneNode(true);
+  el.querySelector(".name").textContent = file.name;
+  el.querySelector(".meta").textContent = fmtBytes(file.size);
+  jobsEl.prepend(el);
+  const stage = name => el.querySelector(`[data-stage="${name}"]`);
+  return {
+    el,
+    progress: pct => { el.querySelector(".bar > span").style.width = pct + "%"; },
+    set(name, state, detail) {
+      const s = stage(name);
+      s.hidden = false;
+      s.dataset.state = state;
+      if (detail !== undefined) s.querySelector(".detail").textContent = detail;
+    },
+    fail(msg) { const e = el.querySelector(".error"); e.textContent = msg; e.hidden = false; },
+    actions: el.querySelector(".actions"),
+  };
+}
+
+function link(parent, href, text) {
+  const a = document.createElement("a");
+  a.href = href; a.textContent = text; a.target = "_blank"; a.rel = "noopener";
+  parent.append(a);
+  return a;
+}
+
+function upload(file, job) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    const q = new URLSearchParams({ filename: file.name });
+    if (formSelect.value) q.set("form_type", formSelect.value);
+    const rn = document.getElementById("receipt-number").value.trim();
+    if (rn) q.set("receipt_number", rn);
+    const rd = document.getElementById("received-date").value;
+    if (rd) q.set("received_date", rd);
+    xhr.open("POST", "/v1/intake?" + q);
+    xhr.setRequestHeader("Content-Type", "application/pdf");
+    xhr.upload.onprogress = e => { if (e.lengthComputable) job.progress(Math.round(e.loaded / e.total * 100)); };
+    xhr.onload = () => {
+      let body = null;
+      try { body = JSON.parse(xhr.responseText); } catch (_) {}
+      if (xhr.status === 202 && body) resolve(body);
+      else reject(new Error((body && body.message) || `upload failed (${xhr.status})`));
+    };
+    xhr.onerror = () => reject(new Error("network error"));
+    xhr.send(file);
+  });
+}
+
+async function start(file) {
+  const job = makeJob(file);
+  if (file.type && file.type !== "application/pdf") { job.fail("Not a PDF."); return; }
+  job.set("stored", "active", "uploading");
+  let accepted;
+  try {
+    accepted = await upload(file, job);
+  } catch (e) {
+    job.set("stored", "failed", e.message);
+    return;
+  }
+  job.progress(100);
+  const cfg = await cfgReady;
+  const id = accepted.document_id;
+  job.el.querySelector(".meta").textContent = `${fmtBytes(file.size)} · ${id.slice(0, 8)}`;
+  job.set("stored", "done", `sha256 ${accepted.sha256.slice(0, 12)}…`);
+  job.set("extracted", "active", "queued");
+  if (cfg.recognition_enabled) job.set("recognized", "active", "queued");
+
+  const a = job.actions;
+  a.hidden = false;
+  link(a, `${cfg.storage_url}/v1/documents/${id}/source`, "Source PDF");
+  const irLink = link(a, "#", "IR JSON");
+  irLink.hidden = true;
+  link(a, `${cfg.storage_url}/v1/documents/${id}`, "Document");
+  link(a, `${cfg.search_url}/v1/cards/${id}`, "Search card");
+  const receiptLink = link(a, "#", "Open receipting");
+  receiptLink.hidden = true;
+  const caseLink = link(a, "#", "Open case");
+  caseLink.hidden = true;
+  let extracted = false;
+  const btn = document.createElement("button");
+  btn.textContent = "Reprocess";
+  btn.onclick = async () => {
+    btn.disabled = true;
+    extracted = false;
+    job.set("extracted", "active", "reprocess requested");
+    job.set("indexed", "", "");
+    const r = await fetch(`/v1/intake/${id}/reprocess`, { method: "POST" });
+    if (!r.ok) job.set("extracted", "failed", `reprocess failed (${r.status})`);
+    btn.disabled = false;
+  };
+  a.append(btn);
+
+  const es = new EventSource(accepted.events_url);
+  es.onmessage = msg => {
+    const ev = JSON.parse(msg.data);
+    const d = ev.data || {};
+    switch (ev.type) {
+      case T.EX_STARTED:
+        job.set("extracted", "active", "extracting text");
+        break;
+      case T.ARTIFACT_CREATED:
+        if (d.schema === IR_SCHEMA) {
+          irLink.href = `${cfg.storage_url}/v1/artifacts/${d.artifact_id}/content`;
+          irLink.textContent = `IR JSON (v${d.version})`;
+          irLink.hidden = false;
+        }
+        break;
+      case T.EX_COMPLETED: {
+        extracted = true;
+        const ocr = d.needs_ocr ? ` · ${d.pages - d.text_pages} without text layer (OCR needed)` : "";
+        job.set("extracted", d.needs_ocr ? "warn" : "done",
+          `${d.text_pages}/${d.pages} pages with text · v${d.version} · ${d.duration_ms} ms${ocr}`);
+        job.set("indexed", "active", "indexing");
+        break;
+      }
+      case T.EX_FAILED:
+        job.set("extracted", d.terminal ? "failed" : "active",
+          d.terminal ? d.error : `attempt ${d.attempt} failed, retrying: ${d.error}`);
+        break;
+      case T.REC_STARTED:
+        job.set("recognized", "active", "reading handwriting");
+        break;
+      case T.REC_COMPLETED:
+        if (!d.form_type) job.set("recognized", "warn", "not a known form type");
+        else if (d.requires_receipting) job.set("recognized", "warn",
+          `${d.filled} read, ${d.requires_receipting} of ${d.fields} fields require receipting · ${(d.duration_ms / 1000).toFixed(1)} s`);
+        else job.set("recognized", "done", `${d.filled} fields read, none require receipting`);
+        if (d.requires_receipting || !d.form_type) job.set("receipting", "active", "waiting for task");
+        break;
+      case T.REC_FAILED:
+        job.set("recognized", d.terminal ? "failed" : "active", d.terminal ? d.error : `retrying: ${d.error}`);
+        break;
+      case T.RECEIPT_REQUIRED: {
+        job.set("receipting", "warn", `${d.flagged_fields} field(s) need review`);
+        receiptLink.href = `${cfg.workbench_url}/#/tasks/${d.task_id}`;
+        receiptLink.hidden = false;
+        break;
+      }
+      case T.CASE_OPENED:
+        caseLink.textContent = `Case ${d.receipt_number}`;
+        caseLink.href = `${cfg.workbench_url}/#/cases/${d.case_id}`;
+        caseLink.hidden = false;
+        break;
+      case T.RECEIPT_COMPLETED:
+        job.set("receipting", "done", `receipted by ${d.receipted_by} (${d.mode}, ${d.changed_fields} changed)`);
+        break;
+      case T.INDEXED:
+        if (extracted && (d.schemas || []).includes(IR_SCHEMA)) {
+          job.set("indexed", "done", "card updated");
+        }
+        break;
+    }
+  };
+  es.onerror = () => {
+    if (es.readyState === EventSource.CLOSED) job.fail("Event stream disconnected.");
+  };
+}
+</script>
+</body>
+</html>

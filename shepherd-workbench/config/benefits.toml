@@ -1,0 +1,224 @@
+# Benefit definitions for case workbench. Validated against forms/templates at startup.
+#
+# A recognized or receipted document whose form type is listed here opens a case. A form type
+#   covers all editions of the form (see shepherd-forms README, Editions).
+# `facts` maps case fact keys to template field ids; fact values are derived from the primary
+#   document's latest receipt (or its recognition when no receipt exists). Keys: family_name,
+#   given_name, a_number, date_of_birth, and the same with a `beneficiary_` prefix; mailing_in_care_of,
+#   mailing_street, mailing_unit, mailing_city, mailing_state, mailing_zip, mailing_province,
+#   mailing_postal_code, mailing_country (the applicant's or petitioner's address for notices).
+#   A field may be a list of candidate ids, tried in order against the edition the values were
+#   read with, for editions whose field ids differ: `family_name = ["<2026 id>", "<2025 id>"]`.
+#   Every fact must resolve in every edition (checked at startup).
+# `highlights` are form values shown on the case overview. `fields` may mix ids of several
+#   editions; each edition must have at least one.
+# `criteria` are assessed by the officer. Approval requires every criterion met, or n/a where
+#   `required = false`.
+# `grounds` are the denial grounds an officer may cite.
+# `e_notification` names the form requesting e-mail notice of acceptance; a case document of that
+#   form type supplies the contact shown on the case and used by shepherd-notification. `email`
+#   and `mobile_phone` take candidate lists like facts.
+
+[e_notification]
+form_type = "uscis.g-1145"
+email = "form1[0].#subform[0].Email[0]"
+mobile_phone = "form1[0].#subform[0].MobilePhoneNumber[0]"
+
+[[grounds]]
+id = "ineligible"
+label = "Statutory or regulatory eligibility requirements not met"
+
+[[grounds]]
+id = "insufficient_evidence"
+label = "Evidence does not establish eligibility by a preponderance"
+
+[[grounds]]
+id = "abandonment"
+label = "Abandonment: no response to a request for evidence or notice of intent to deny"
+
+[[grounds]]
+id = "misrepresentation"
+label = "Fraud or willful misrepresentation of a material fact"
+
+[[grounds]]
+id = "inadmissibility"
+label = "Inadmissibility or bar applies"
+
+[[grounds]]
+id = "discretion"
+label = "Denied as a matter of discretion"
+
+[[grounds]]
+id = "other"
+label = "Other (explained in the rationale)"
+
+[[benefit]]
+form_type = "uscis.i-765"
+name = "Employment Authorization"
+
+[benefit.facts]
+family_name = "form1[0].Page1[0].Line1a_FamilyName[0]"
+given_name = "form1[0].Page1[0].Line1b_GivenName[0]"
+a_number = "form1[0].Page2[0].Line7_AlienNumber[0]"
+date_of_birth = "form1[0].Page3[0].Line19_DOB[0]"
+mailing_in_care_of = "form1[0].Page2[0].Line4a_InCareofName[0]"
+mailing_street = "form1[0].Page2[0].Line4b_StreetNumberName[0]"
+mailing_unit = "form1[0].Page2[0].Pt2Line5_AptSteFlrNumber[0]"
+mailing_city = "form1[0].Page2[0].Pt2Line5_CityOrTown[0]"
+mailing_state = "form1[0].Page2[0].Pt2Line5_State[0]"
+mailing_zip = "form1[0].Page2[0].Pt2Line5_ZipCode[0]"
+
+[[benefit.highlights]]
+label = "Eligibility category"
+fields = ["form1[0].Page3[0].#area[1].section_1[0]", "form1[0].Page3[0].#area[1].section_2[0]", "form1[0].Page3[0].#area[1].section_3[0]"]
+
+[[benefit.highlights]]
+label = "Current status"
+fields = ["form1[0].Page3[0].Line24_CurrentStatus[0]"]
+
+[[benefit.highlights]]
+label = "Last entry"
+fields = ["form1[0].Page3[0].Line21_DateOfLastEntry[0]"]
+
+[[benefit.criteria]]
+id = "identity"
+label = "Identity and biographic data established"
+
+[[benefit.criteria]]
+id = "eligibility_category"
+label = "Eligibility category (Item 27) valid and supported by evidence"
+
+[[benefit.criteria]]
+id = "category_prerequisite"
+label = "Underlying application, status or grant for the category is established"
+
+[[benefit.criteria]]
+id = "prior_ead"
+label = "Prior EAD history consistent (renewal or replacement)"
+required = false
+
+[[benefit.criteria]]
+id = "security_checks"
+label = "Background and security checks resolved"
+
+[[benefit.criteria]]
+id = "fee"
+label = "Fee paid, or waiver or exemption applies"
+
+[[benefit.criteria]]
+id = "signature"
+label = "Form properly signed"
+
+[[benefit]]
+form_type = "uscis.i-130"
+name = "Petition for Alien Relative"
+
+[benefit.facts]
+family_name = "form1[0].#subform[0].Pt2Line4a_FamilyName[0]"
+given_name = "form1[0].#subform[0].Pt2Line4b_GivenName[0]"
+a_number = "form1[0].#subform[0].#area[4].Pt2Line1_AlienNumber[0]"
+date_of_birth = "form1[0].#subform[1].Pt2Line8_DateofBirth[0]"
+beneficiary_family_name = "form1[0].#subform[4].Pt4Line4a_FamilyName[0]"
+beneficiary_given_name = "form1[0].#subform[4].Pt4Line4b_GivenName[0]"
+beneficiary_a_number = "form1[0].#subform[4].#area[6].Pt4Line1_AlienNumber[0]"
+beneficiary_date_of_birth = "form1[0].#subform[4].Pt4Line9_DateOfBirth[0]"
+mailing_in_care_of = "form1[0].#subform[1].Pt2Line10_InCareofName[0]"
+mailing_street = "form1[0].#subform[1].Pt2Line10_StreetNumberName[0]"
+mailing_unit = "form1[0].#subform[1].Pt2Line10_AptSteFlrNumber[0]"
+mailing_city = "form1[0].#subform[1].Pt2Line10_CityOrTown[0]"
+mailing_state = "form1[0].#subform[1].Pt2Line10_State[0]"
+mailing_zip = "form1[0].#subform[1].Pt2Line10_ZipCode[0]"
+mailing_province = "form1[0].#subform[1].Pt2Line10_Province[0]"
+mailing_postal_code = "form1[0].#subform[1].Pt2Line10_PostalCode[0]"
+mailing_country = "form1[0].#subform[1].Pt2Line10_Country[0]"
+
+[[benefit.highlights]]
+label = "Petitioner is U.S. citizen"
+fields = ["form1[0].#subform[2].Pt2Line36_USCitizen[0]"]
+
+[[benefit.highlights]]
+label = "Petitioner is LPR"
+fields = ["form1[0].#subform[2].Pt2Line36_LPR[0]"]
+
+[[benefit.highlights]]
+label = "Filing for spouse"
+fields = ["form1[0].#subform[0].Pt1Line1_Spouse[0]"]
+
+[[benefit.criteria]]
+id = "petitioner_status"
+label = "Petitioner is a U.S. citizen or lawful permanent resident"
+
+[[benefit.criteria]]
+id = "relationship"
+label = "Qualifying family relationship established"
+
+[[benefit.criteria]]
+id = "bona_fide_marriage"
+label = "Marriage entered in good faith (spousal petitions)"
+required = false
+
+[[benefit.criteria]]
+id = "prior_petitions"
+label = "No bar from prior petitions or marriage fraud (INA 204(c))"
+
+[[benefit.criteria]]
+id = "security_checks"
+label = "Background and security checks resolved"
+
+[[benefit.criteria]]
+id = "fee"
+label = "Fee paid"
+
+[[benefit.criteria]]
+id = "signature"
+label = "Form properly signed"
+
+[[benefit]]
+form_type = "uscis.i-90"
+name = "Replace Permanent Resident Card"
+
+[benefit.facts]
+family_name = "form1[0].#subform[0].P1_Line3a_FamilyName[0]"
+given_name = "form1[0].#subform[0].P1_Line3b_GivenName[0]"
+a_number = "form1[0].#subform[0].#area[1].P1_Line1_AlienNumber[0]"
+date_of_birth = "form1[0].#subform[1].P1_Line9_DateOfBirth[0]"
+mailing_in_care_of = "form1[0].#subform[0].P1_Line6a_InCareofName[0]"
+mailing_street = "form1[0].#subform[0].P1_Line6b_StreetNumberName[0]"
+mailing_city = "form1[0].#subform[0].P1_Line6d_CityOrTown[0]"
+mailing_state = "form1[0].#subform[0].P1_Line6e_State[0]"
+mailing_zip = "form1[0].#subform[0].P1_Line6f_ZipCode[0]"
+mailing_province = "form1[0].#subform[0].P1_Line6g_Province[0]"
+mailing_postal_code = "form1[0].#subform[0].P1_Line6h_PostalCode[0]"
+mailing_country = "form1[0].#subform[0].P1_Line6i_Country[0]"
+
+[[benefit.highlights]]
+label = "Lawful permanent resident"
+fields = ["form1[0].#subform[1].P2_checkbox1[0]"]
+
+[[benefit.highlights]]
+label = "Conditional permanent resident"
+fields = ["form1[0].#subform[1].P2_checkbox1[2]"]
+
+[[benefit.criteria]]
+id = "lpr_status"
+label = "Permanent resident status verified and not abandoned or rescinded"
+
+[[benefit.criteria]]
+id = "replacement_reason"
+label = "Reason for replacement or renewal established"
+
+[[benefit.criteria]]
+id = "identity"
+label = "Identity established"
+
+[[benefit.criteria]]
+id = "biometrics"
+label = "Biometrics captured"
+
+[[benefit.criteria]]
+id = "security_checks"
+label = "Background and security checks resolved"
+
+[[benefit.criteria]]
+id = "fee"
+label = "Fee paid, or exemption applies"

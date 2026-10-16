@@ -1,0 +1,1786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shepherd Workbench</title>
+<style>
+  :root {
+    --bg: #f5f6f8; --panel: #fff; --text: #1b1f24; --muted: #5d6673; --line: #dde1e6; --hover: #f0f3f7;
+    --accent: #2f6fdb; --accent-soft: #e6eefc;
+    --flag: #c0392b; --flag-soft: #fdecea; --ok: #1f8a4c; --ok-soft: #e6f5ec; --warn: #b26a00; --warn-soft: #fff3df;
+    --machine: #2f6fdb; --radius: 8px; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111418; --panel: #1a1e24; --text: #e6e9ed; --muted: #9aa3ae; --line: #2c323a; --hover: #222831;
+      --accent: #6b9cf0; --accent-soft: #1f2a3d;
+      --flag: #ef6b5b; --flag-soft: #3a1f1c; --ok: #4cc27f; --ok-soft: #173024; --warn: #e0a040; --warn-soft: #3a2c14;
+      --machine: #6b9cf0;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; display: flex; flex-direction: column; }
+  button, select, input { font: inherit; color: inherit; }
+  button { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+  button:hover:not(:disabled) { background: var(--hover); }
+  button:disabled { opacity: .5; cursor: default; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.primary:hover:not(:disabled) { filter: brightness(1.08); background: var(--accent); }
+  button.link { border: none; background: none; color: var(--accent); padding: 0 4px; }
+  select, input[type=text], input[type=date], input[type=search], textarea { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; font: inherit; color: inherit; }
+  input[type=text]:focus, input[type=date]:focus, input[type=search]:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+  textarea { width: 100%; resize: vertical; min-height: 60px; }
+  button.danger { color: var(--flag); border-color: var(--flag); }
+  button.ok { color: var(--ok); border-color: var(--ok); }
+  a { color: var(--accent); }
+  .muted { color: var(--muted); }
+  .mono { font-family: var(--mono); font-size: 12px; }
+
+  header.top { display: flex; align-items: center; gap: 16px; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  header.top h1 { font-size: 16px; margin: 0; }
+  header.top h1 a { color: inherit; text-decoration: none; }
+  header.top .counts { display: flex; gap: 8px; }
+  header.top .spacer { flex: 1; }
+  header.top nav { display: flex; gap: 4px; }
+  header.top nav a { padding: 4px 10px; border-radius: 6px; text-decoration: none; color: var(--muted); }
+  header.top nav a[aria-current=page] { background: var(--accent-soft); color: var(--accent); }
+  .pill { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 12px; border: 1px solid var(--line); white-space: nowrap; }
+  .pill.flag { color: var(--flag); border-color: var(--flag); background: var(--flag-soft); }
+  .pill.ok { color: var(--ok); border-color: var(--ok); background: var(--ok-soft); }
+  .pill.warn { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+  .pill.info { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+  main { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .queue { padding: 16px; max-width: 1100px; width: 100%; margin: 0 auto; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .tabs { display: flex; gap: 4px; }
+  .tabs button[aria-pressed=true] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { font-size: 12px; color: var(--muted); font-weight: 600; background: var(--bg); }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: var(--hover); }
+  tbody tr:last-child td { border-bottom: none; }
+  .empty { padding: 40px; text-align: center; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+
+  .bench { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .bench-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  .bench-head .title { font-weight: 600; }
+  .bench-head .spacer { flex: 1; }
+  .banner { padding: 8px 16px; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .banner.flag { background: var(--flag-soft); }
+  .banner.warn { background: var(--warn-soft); }
+  .banner.ok { background: var(--ok-soft); }
+  .split { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(360px, 1fr); }
+  .viewer { min-height: 0; display: flex; flex-direction: column; border-right: 1px solid var(--line); }
+  .pagebar { display: flex; gap: 4px; padding: 8px 12px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .pagebar button[aria-pressed=true] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .pagebar button .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--flag); margin-left: 4px; vertical-align: 1px; }
+  .scroll { flex: 1; overflow: auto; padding: 16px; }
+  .page { position: relative; margin: 0 auto; max-width: 980px; box-shadow: 0 1px 4px rgba(0,0,0,.2); background: #fff; }
+  .page img { display: block; width: 100%; height: auto; user-select: none; }
+  .box { position: absolute; border: 1.5px solid transparent; border-radius: 2px; cursor: pointer; }
+  .box.machine { border-color: color-mix(in srgb, var(--machine) 45%, transparent); background: color-mix(in srgb, var(--machine) 6%, transparent); }
+  .box.flag { border-color: var(--flag); background: color-mix(in srgb, var(--flag) 14%, transparent); }
+  .box.resolved { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, transparent); }
+  .box.changed { border-color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+  .box.blank { border-color: color-mix(in srgb, var(--muted) 35%, transparent); border-style: dashed; }
+  .box.active { outline: 3px solid var(--accent); outline-offset: 1px; z-index: 2; animation: pulse 1.2s ease-out 1; }
+  @keyframes pulse { 0% { outline-offset: 8px; } 100% { outline-offset: 1px; } }
+
+  .fields { min-height: 0; display: flex; flex-direction: column; background: var(--panel); }
+  .fieldbar { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+  .fieldbar .row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .fieldbar .row input[type=text] { flex: 1; min-width: 120px; }
+  .filters button[aria-pressed=true] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .progress { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .progress > span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .2s; }
+  .list { flex: 1; overflow: auto; }
+  .group-head { position: sticky; top: 0; z-index: 1; background: var(--bg); color: var(--muted); font-size: 12px; font-weight: 600; padding: 4px 12px; border-bottom: 1px solid var(--line); }
+  .field { padding: 8px 12px 8px 9px; border-left: 3px solid transparent; border-bottom: 1px solid var(--line); display: grid; gap: 4px; }
+  .field.active { background: var(--accent-soft); }
+  .field.flag { border-left-color: var(--flag); }
+  .field.resolved { border-left-color: var(--ok); }
+  .field.changed { border-left-color: var(--warn); }
+  .field .label { font-weight: 500; }
+  .field .label .meta { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+  .field .control { display: flex; gap: 6px; align-items: center; }
+  .field .control input[type=text], .field .control select { flex: 1; min-width: 0; }
+  .field .control input[type=checkbox] { width: 18px; height: 18px; }
+  .field .hint { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
+  .field .err { color: var(--flag); font-size: 12px; }
+  .field.readonly .control input, .field.readonly .control select { pointer-events: none; opacity: .85; }
+  .foot { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--panel); }
+  .foot .spacer { flex: 1; }
+
+  dialog { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); color: var(--text); padding: 0; width: min(640px, 94vw); }
+  dialog::backdrop { background: rgba(0,0,0,.35); }
+  dialog header { padding: 12px 16px; border-bottom: 1px solid var(--line); font-weight: 600; }
+  dialog .body { padding: 12px 16px; display: grid; gap: 10px; max-height: 60vh; overflow: auto; }
+  dialog footer { padding: 10px 16px; border-top: 1px solid var(--line); display: flex; gap: 8px; justify-content: flex-end; }
+  .doclist { display: grid; gap: 4px; }
+  .doclist label { display: flex; gap: 8px; align-items: center; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+  .doclist label:hover { background: var(--hover); }
+  .history li { margin: 2px 0; }
+  .toast { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 8px 14px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 10; }
+  .toast.show { opacity: .95; }
+  /* cases */
+  .toolbar .grow { flex: 1; }
+  .kv { display: grid; grid-template-columns: minmax(120px, 38%) 1fr; gap: 6px 10px; align-items: center; }
+  .kv .k { color: var(--muted); font-size: 12px; }
+  .kv input[type=text], .kv input[type=date], .kv select { width: 100%; min-width: 0; }
+  .section { padding: 12px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+  .section h3 { margin: 0; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .section h3 .spacer { flex: 1; }
+  .ptabs { display: flex; gap: 2px; padding: 6px 8px 0; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+  .ptabs button { border: none; border-bottom: 2px solid transparent; border-radius: 0; background: none; padding: 6px 10px; color: var(--muted); }
+  .ptabs button[aria-pressed=true] { color: var(--accent); border-bottom-color: var(--accent); }
+  .pane { flex: 1; overflow: auto; }
+  .docbar { display: flex; gap: 4px; padding: 8px 12px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; align-items: center; }
+  .docbar button[aria-pressed=true] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .doc-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; padding: 8px; border: 1px solid var(--line); border-radius: 6px; }
+  .doc-row .meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--muted); }
+  .crit { border: 1px solid var(--line); border-radius: 6px; padding: 8px; display: grid; gap: 6px; }
+  .crit.met { border-left: 3px solid var(--ok); }
+  .crit.not_met { border-left: 3px solid var(--flag); }
+  .crit.na { border-left: 3px solid var(--muted); }
+  .crit .row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .seg button[aria-pressed=true].met { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .seg button[aria-pressed=true].not_met { background: var(--flag-soft); border-color: var(--flag); color: var(--flag); }
+  .seg button[aria-pressed=true].na { background: var(--hover); border-color: var(--muted); }
+  .action { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px; display: grid; gap: 8px; }
+  .action h4 { margin: 0; font-size: 13px; }
+  .checks { display: grid; gap: 4px; font-size: 13px; }
+  .checks .bad { color: var(--flag); }
+  .checks .good { color: var(--ok); }
+  .errs { color: var(--flag); font-size: 12px; display: grid; gap: 2px; }
+  .timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .timeline li { display: grid; gap: 2px; padding-left: 10px; border-left: 2px solid var(--line); }
+  .timeline .when { font-size: 12px; color: var(--muted); }
+  .timeline .note { white-space: pre-wrap; background: var(--bg); border-radius: 6px; padding: 6px 8px; }
+  .results { display: grid; gap: 8px; }
+  .hit { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; display: grid; gap: 4px; cursor: pointer; }
+  .hit:hover { background: var(--hover); }
+  .hit .head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .hit .snip { font-size: 13px; color: var(--muted); }
+  .hit mark { background: var(--warn-soft); color: var(--text); border-radius: 2px; }
+  .search-grid { display: grid; grid-template-columns: 220px 1fr; gap: 16px; }
+  .facets { display: grid; gap: 12px; align-content: start; }
+  .facets h4 { margin: 0 0 4px; font-size: 12px; color: var(--muted); }
+  .facets button { display: flex; justify-content: space-between; width: 100%; border: none; background: none; padding: 2px 4px; text-align: left; }
+  .facets button[aria-pressed=true] { color: var(--accent); font-weight: 600; }
+  .filters-row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+  .filters-row label { display: flex; gap: 4px; align-items: center; font-size: 13px; }
+  .receipt { font-family: var(--mono); font-weight: 600; letter-spacing: .02em; }
+  .decision-box { border-radius: var(--radius); padding: 10px 12px; display: grid; gap: 6px; }
+  .decision-box.approved { background: var(--ok-soft); }
+  .decision-box.denied { background: var(--flag-soft); }
+  .decision-box.withdrawn, .decision-box.closed { background: var(--hover); }
+  .pre { white-space: pre-wrap; }
+  @media (max-width: 900px) {
+    .search-grid { grid-template-columns: 1fr; }
+    .split { grid-template-columns: 1fr; grid-template-rows: 45vh 1fr; }
+    .viewer { border-right: none; border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1><a href="#/">Shepherd · Workbench</a></h1>
+  <nav id="nav">
+    <a href="#/" data-nav="cases">Cases</a>
+    <a href="#/search" data-nav="search">Search</a>
+    <a href="#/receipting" data-nav="receipting">Receipting</a>
+    <a href="#/workload" data-nav="workload">Workload</a>
+  </nav>
+  <div class="counts" id="counts"></div>
+  <div class="spacer"></div>
+  <button class="link" id="user-btn" title="Change your name"></button>
+</header>
+<main id="app"></main>
+<div class="toast" id="toast"></div>
+
+<dialog id="user-dlg">
+  <form method="dialog">
+    <header>Your name</header>
+    <div class="body">
+      <p class="muted" style="margin:0">Recorded on every receipt, assessment and decision.</p>
+      <input type="text" id="user-input" autocomplete="name" required maxlength="64">
+      <label><input type="checkbox" id="user-manager"> Manager (assigns cases, manages workers and rules)</label>
+    </div>
+    <footer><button class="primary" value="ok">Save</button></footer>
+  </form>
+</dialog>
+
+<dialog id="manual-dlg">
+  <form method="dialog">
+    <header>Manual receipting</header>
+    <div class="body">
+      <label>Form type <select id="manual-form"></select></label>
+      <div class="muted">Choose a stored document:</div>
+      <div class="doclist" id="manual-docs"></div>
+    </div>
+    <footer><button value="cancel">Cancel</button><button class="primary" value="ok" id="manual-ok" disabled>Open task</button></footer>
+  </form>
+</dialog>
+
+<dialog id="open-case-dlg">
+  <form method="dialog">
+    <header id="open-case-title">Open case</header>
+    <div class="body">
+      <div class="kv" id="open-case-opts"></div>
+      <input type="search" id="open-case-filter" placeholder="Filter documents…">
+      <div class="doclist" id="open-case-docs"></div>
+    </div>
+    <footer><button value="cancel">Cancel</button><button class="primary" value="ok" id="open-case-ok" disabled>Open case</button></footer>
+  </form>
+</dialog>
+
+<dialog id="reason-dlg">
+  <form method="dialog">
+    <header id="reason-title">Reason</header>
+    <div class="body">
+      <div class="muted" id="reason-help"></div>
+      <textarea id="reason-input" rows="4" maxlength="2000"></textarea>
+    </div>
+    <footer><button value="cancel">Cancel</button><button class="primary" value="ok">Save</button></footer>
+  </form>
+</dialog>
+
+<dialog id="form-dlg">
+  <form method="dialog">
+    <header id="form-title"></header>
+    <div class="body" id="form-body"></div>
+    <footer><button value="cancel">Cancel</button><button class="primary" value="ok" id="form-ok">Save</button></footer>
+  </form>
+</dialog>
+
+<dialog id="history-dlg">
+  <form method="dialog">
+    <header>Task history</header>
+    <div class="body"><ul class="history" id="history-list"></ul></div>
+    <footer><button value="ok">Close</button></footer>
+  </form>
+</dialog>
+
+<script>
+"use strict";
+// ---------- utilities ----------
+const $ = (sel, root = document) => root.querySelector(sel);
+function el(tag, attrs = {}, ...children) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === undefined || v === null || v === false) continue;
+    if (k === "class") e.className = v;
+    else if (k === "text") e.textContent = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (k === "dataset") Object.assign(e.dataset, v);
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of children.flat()) if (c !== null && c !== undefined && c !== false) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2600);
+}
+function ago(iso) {
+  if (!iso) return "";
+  const s = (Date.now() - Date.parse(iso)) / 1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return Math.floor(s / 60) + " min ago";
+  if (s < 86400) return Math.floor(s / 3600) + " h ago";
+  return Math.floor(s / 86400) + " d ago";
+}
+const pct = x => x == null ? "" : Math.round(x * 100) + "%";
+
+// ---------- identity ----------
+function getUser() { try { return localStorage.getItem("shepherd.user") || ""; } catch (_) { return ""; } }
+function setUser(u) { try { localStorage.setItem("shepherd.user", u); } catch (_) {} renderUser(); }
+function isManager() { try { return localStorage.getItem("shepherd.roles") === "manager"; } catch (_) { return false; } }
+function setManager(on) { try { localStorage.setItem("shepherd.roles", on ? "manager" : ""); } catch (_) {} }
+function renderUser() { $("#user-btn").textContent = getUser() ? "Signed in as " + getUser() + (isManager() ? " (manager)" : "") : "Set your name"; }
+function askUser() {
+  return new Promise(resolve => {
+    const d = $("#user-dlg"); $("#user-input").value = getUser(); $("#user-manager").checked = isManager();
+    d.onclose = () => {
+      const v = $("#user-input").value.trim(), roleChanged = $("#user-manager").checked !== isManager();
+      setManager($("#user-manager").checked); if (v) setUser(v); else renderUser();
+      resolve(getUser());
+      if (roleChanged) route();
+    };
+    d.showModal();
+  });
+}
+async function ensureUser() { return getUser() || await askUser(); }
+$("#user-btn").onclick = askUser;
+
+// ---------- api ----------
+async function api(method, path, body) {
+  const headers = { "X-User": getUser() };
+  if (isManager()) headers["X-Roles"] = "manager";
+  if (body !== undefined) headers["Content-Type"] = "application/json";
+  const r = await fetch(path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+  const text = await r.text();
+  let data = null; try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
+  if (!r.ok) { const e = new Error((data && data.message) || `${r.status}`); e.status = r.status; e.data = data; throw e; }
+  return data;
+}
+let templatesCache = null;
+const tplLabel = t => `${t.form_number} · ${t.title}${t.edition ? ` (ed. ${t.edition})` : ""}`;
+// Recognition and receipts may record a template's former id.
+const sameTemplate = (tpl, id) => !!tpl && (tpl.id === id || (tpl.aliases || []).includes(id));
+async function templates() { return templatesCache ||= await api("GET", "/v1/templates"); }
+
+async function refreshCounts() {
+  try {
+    const [cases, tasks] = await Promise.all([api("GET", "/v1/cases?limit=1"), api("GET", "/v1/tasks?limit=1")]);
+    const c = Object.fromEntries(cases.counts.map(x => [x.key, x.count]));
+    const t = Object.fromEntries(tasks.counts.map(x => [x.status, x.count]));
+    $("#counts").replaceChildren(
+      getUser() ? el("a", { class: "pill info", href: "#/", text: `${cases.mine} mine`, style: "text-decoration:none" }) : null,
+      el("span", { class: "pill", text: `${c.open || 0} unassigned` }),
+      el("span", { class: "pill warn", text: `${c.awaiting_response || 0} awaiting response` }),
+      cases.overdue ? el("a", { class: "pill flag", href: "#/", onclick: e => { e.preventDefault(); worklistState.tab = "overdue"; if ((location.hash || "#/") === "#/") route(); else location.hash = "#/"; }, text: `${cases.overdue} overdue`, style: "text-decoration:none" }) : null,
+      el("a", { class: "pill flag", href: "#/receipting", text: `${(t.open || 0) + (t.in_progress || 0)} to receipt`, style: "text-decoration:none" }));
+  } catch (_) {}
+}
+function setNav(k) {
+  for (const a of document.querySelectorAll("#nav a")) {
+    if (a.dataset.nav === k) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  }
+}
+// Receipting opened from a case returns there.
+function setReturn(h) { try { sessionStorage.setItem("shepherd.return", h); } catch (_) {} }
+function returnTarget() { try { return sessionStorage.getItem("shepherd.return") || ""; } catch (_) { return ""; } }
+function takeReturn() { const h = returnTarget(); try { sessionStorage.removeItem("shepherd.return"); } catch (_) {} return h; }
+
+// ---------- router ----------
+let leaveHook = null;
+async function route() {
+  if (leaveHook) { await leaveHook(); leaveHook = null; }
+  const h = location.hash.replace(/^#/, "") || "/";
+  const [path, query] = h.split("?");
+  const m = path.match(/^\/tasks\/([0-9a-f-]{36})$/);
+  const d = path.match(/^\/documents\/([0-9a-f-]{36})$/);
+  const c = path.match(/^\/cases\/([0-9a-f-]{36})$/);
+  refreshCounts();
+  if (c) { setNav("cases"); return caseView(c[1]); }
+  if (path === "/search") { setNav("search"); return discovery(new URLSearchParams(query || "")); }
+  if (path === "/receipting") { setNav("receipting"); return queue(); }
+  if (path === "/workload") { setNav("workload"); return workload(); }
+  if (m) { setNav("receipting"); return bench(m[1]); }
+  if (d) {
+    const tasks = await api("GET", `/v1/documents/${d[1]}/tasks`).catch(() => []);
+    if (tasks.length) { location.replace(`#/tasks/${tasks[0].id}`); return; }
+    $("#app").replaceChildren(el("div", { class: "queue" }, el("div", { class: "empty", text: "No receipting task for this document." })));
+    return;
+  }
+  setNav("cases");
+  return worklist();
+}
+window.addEventListener("hashchange", route);
+
+// ---------- queue ----------
+const queueState = { status: "open,in_progress", form: "" };
+async function queue() {
+  const tpls = await templates();
+  const app = $("#app");
+  const tabs = [["open,in_progress", "Needs receipting"], ["completed", "Completed"], ["cancelled", "Cancelled"], ["all", "All"]];
+  const formSel = el("select", { onchange: e => { queueState.form = e.target.value; load(); } },
+    el("option", { value: "", text: "All form types" }),
+    tpls.map(t => el("option", { value: t.id, text: tplLabel(t), selected: t.id === queueState.form })));
+  const body = el("div");
+  const tabBtns = tabs.map(([v, label]) => el("button", {
+    "aria-pressed": String(queueState.status === v), text: label,
+    onclick: () => { queueState.status = v; tabBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === v))); load(); },
+    dataset: { v } }));
+  app.replaceChildren(el("div", { class: "queue" }, el("div", { class: "toolbar" }, el("div", { class: "tabs" }, tabBtns), formSel,
+    el("div", { class: "grow" }), el("button", { text: "Manual receipting", onclick: openManual })), body));
+  const names = Object.fromEntries(tpls.flatMap(t => [t.id, ...(t.aliases || [])].map(i => [i, tplLabel(t)])));
+
+  async function load() {
+    const q = new URLSearchParams({ status: queueState.status, limit: "200" });
+    if (queueState.form) q.set("form_type", queueState.form);
+    const d = await api("GET", "/v1/tasks?" + q);
+    if (!d.items.length) { body.replaceChildren(el("div", { class: "empty", text: "Nothing here." })); return; }
+    body.replaceChildren(el("table", {},
+      el("thead", {}, el("tr", {}, ["Document", "Form", "Receipting", "Status", "Updated"].map(h => el("th", { text: h })))),
+      el("tbody", {}, d.items.map(t => el("tr", { onclick: () => location.hash = `#/tasks/${t.id}` },
+        el("td", {}, el("div", { text: t.filename || "(no filename)" }), el("div", { class: "mono muted", text: t.document_id.slice(0, 8) })),
+        el("td", { text: t.form_type ? (names[t.form_type] || t.form_type) : "" }, t.form_type ? null : el("span", { class: "pill warn", text: "unrecognized" })),
+        el("td", {}, t.kind === "manual" || t.kind === "amend"
+          ? el("span", { class: "pill info", text: t.kind })
+          : !t.form_type
+            ? el("span", { class: "pill warn", text: "form type needed" })
+            : el("span", { class: "pill " + (t.flagged_fields ? "flag" : "ok"), text: `${t.flagged_fields} of ${t.total_fields} fields flagged` })),
+        el("td", {}, el("span", { class: "pill " + ({ open: "flag", in_progress: "info", completed: "ok" }[t.status] || ""), text: t.status.replace("_", " ") }),
+          t.assignee ? el("span", { class: "muted", text: " " + t.assignee }) : null),
+        el("td", { class: "muted", text: ago(t.completed_at || t.updated_at) }))))));
+  }
+  await load();
+}
+
+// ---------- manual receipting ----------
+async function openManual() {
+  if (!await ensureUser()) return;
+  const dlg = $("#manual-dlg"), list = $("#manual-docs"), sel = $("#manual-form"), ok = $("#manual-ok");
+  const tpls = await templates();
+  sel.replaceChildren(el("option", { value: "", text: "Use recognized type" }), ...tpls.map(t => el("option", { value: t.id, text: tplLabel(t) })));
+  list.replaceChildren(el("div", { class: "muted", text: "Loading…" }));
+  ok.disabled = true;
+  dlg.showModal();
+  const docs = await api("GET", "/v1/documents/recent").catch(() => []);
+  list.replaceChildren(...(docs.length ? docs.map(d => el("label", {},
+    el("input", { type: "radio", name: "doc", value: d.id, onchange: () => { ok.disabled = false; const ft = d.labels && d.labels.form_type; if (ft) sel.value = (tpls.find(t => t.id === ft || t.form_type === ft) || {}).id || ""; } }),
+    el("span", { style: "flex:1" }, el("div", { text: d.filename || "(no filename)" }), el("div", { class: "mono muted", text: `${d.id.slice(0, 8)} · ${ago(d.created_at)}` })),
+    d.active_task ? el("span", { class: "pill info", text: "has task" }) : null)) : [el("div", { class: "muted", text: "No documents stored." })]));
+  dlg.onclose = async () => {
+    if (dlg.returnValue !== "ok") return;
+    const doc = list.querySelector("input[name=doc]:checked");
+    if (!doc) return;
+    try {
+      const t = await api("POST", "/v1/tasks", { document_id: doc.value, form_type: sel.value || null });
+      location.hash = `#/tasks/${t.id}`;
+    } catch (e) {
+      if (e.status === 409 && e.data && e.data.task_id) location.hash = `#/tasks/${e.data.task_id}`;
+      else toast(e.message);
+    }
+  };
+}
+
+// ---------- workbench ----------
+async function bench(id) {
+  const app = $("#app");
+  app.replaceChildren(el("div", { class: "queue" }, el("div", { class: "empty", text: "Loading task…" })));
+  let d;
+  try { d = await api("GET", `/v1/tasks/${id}`); } catch (e) { app.replaceChildren(el("div", { class: "queue" }, el("div", { class: "empty", text: e.message }))); return; }
+  const user = await ensureUser();
+  const task = d.task, tpl = d.template;
+  const active = task.status === "open" || task.status === "in_progress";
+
+  // Machine results apply only when recognition used the task's template.
+  const recOk = d.recognition && d.recognition.form && sameTemplate(tpl, d.recognition.form.template_id);
+  const machine = recOk ? Object.fromEntries(d.recognition.fields.map(f => [f.id, f])) : {};
+  const shifts = recOk ? d.recognition.form.page_shifts : [];
+  const S = {
+    mode: recOk ? "review" : "full",
+    // id -> { value: string|null } for fields the reviewer touched
+    touched: new Map(),
+    filter: "flagged", query: "", page: 1, active: null, errors: {}, readonly: !active, dirty: false,
+  };
+  if (d.draft) {
+    S.mode = d.draft.mode;
+    for (const [k, v] of Object.entries(d.draft.values || {})) S.touched.set(k, { value: v });
+  }
+  if (S.mode === "full") S.filter = "all";
+
+  // claim
+  let claimNote = null;
+  if (active && tpl) {
+    if (task.assignee && task.assignee !== user) {
+      claimNote = `Claimed by ${task.assignee}.`;
+    }
+    try { Object.assign(task, await api("POST", `/v1/tasks/${id}/claim`)); claimNote = null; }
+    catch (e) { if (e.status === 409) { S.readonly = true; claimNote = e.message + ". Opened read-only."; } }
+  }
+  leaveHook = async () => { clearTimeout(saveTimer); if (S.dirty && !S.readonly) await saveDraft(); };
+
+  // ----- field model -----
+  const fields = tpl ? tpl.fields : [];
+  const byId = Object.fromEntries(fields.map(f => [f.id, f]));
+  const isFlag = f => S.mode === "review" && machine[f.id] && machine[f.id].status === "requires_receipting";
+  function current(f) {
+    if (S.touched.has(f.id)) return S.touched.get(f.id).value;
+    if (S.mode === "full") return null;
+    const m = machine[f.id];
+    return m && m.value != null ? m.value : null;
+  }
+  function state(f) {
+    const t = S.touched.has(f.id), m = machine[f.id];
+    if (S.mode === "full") return t ? "resolved" : "blank";
+    if (isFlag(f)) return t ? "resolved" : "flag";
+    if (t && (S.touched.get(f.id).value || null) !== ((m && m.value) || null)) return "changed";
+    if (m && m.status === "filled") return "machine";
+    return "blank";
+  }
+  const flagged = () => fields.filter(isFlag);
+  const unresolved = () => flagged().filter(f => !S.touched.has(f.id));
+
+  // ----- layout -----
+  const head = el("div", { class: "bench-head" },
+    el("a", { href: returnTarget() || "#/receipting", text: returnTarget() ? "← Case" : "← Queue" }),
+    el("div", {}, el("div", { class: "title", text: task.filename || "(no filename)" }),
+      el("div", { class: "muted", text: tpl ? `${tpl.form_number} · ${tpl.title}${tpl.edition ? " · Edition " + tpl.edition : ""}` : "Form type not set" })),
+    el("span", { class: "pill " + ({ open: "flag", in_progress: "info", completed: "ok" }[task.status] || ""), text: task.status.replace("_", " ") }),
+    task.assignee ? el("span", { class: "muted", text: task.assignee }) : null,
+    el("div", { class: "spacer" }),
+    el("a", { href: `/v1/documents/${task.document_id}/pages/1`, target: "_blank", rel: "noopener", text: "Page image" }),
+    el("button", { text: "History", onclick: showHistory }),
+    active && !S.readonly ? el("button", { text: "Release", onclick: async () => { await saveDraft(); await api("POST", `/v1/tasks/${id}/release`); location.hash = takeReturn() || "#/receipting"; } }) : null,
+    active && !S.readonly ? el("button", { text: "Cancel task", onclick: async () => { if (confirm("Cancel this receipting task?")) { await api("POST", `/v1/tasks/${id}/cancel`); location.hash = takeReturn() || "#/receipting"; } } }) : null);
+
+  const banners = el("div");
+  if (claimNote) banners.append(el("div", { class: "banner warn", text: claimNote }));
+  if (!tpl) {
+    const tpls = await templates();
+    const sel = el("select", {}, tpls.map(t => el("option", { value: t.id, text: tplLabel(t) })));
+    banners.append(el("div", { class: "banner warn" },
+      el("strong", { text: "Form type not recognized." }), "Choose the form:", sel,
+      el("button", { text: "Set type", disabled: !active, onclick: async () => { await api("PATCH", `/v1/tasks/${id}`, { form_type: sel.value }); bench(id); } }),
+      el("button", { text: "Set type and re-run recognition", disabled: !active, onclick: async () => {
+        await api("PATCH", `/v1/tasks/${id}`, { form_type: sel.value });
+        await api("POST", `/v1/tasks/${id}/recognize`, { form_type: sel.value });
+        toast("Recognition queued; this task refreshes when it completes."); pollRecognition(); } })));
+  } else if (d.recognition && !recOk && active) {
+    banners.append(el("div", { class: "banner warn" }, "Recognition used a different form type. Values must be entered manually.",
+      el("button", { text: "Re-run recognition as " + tpl.form_number, onclick: async () => {
+        await api("POST", `/v1/tasks/${id}/recognize`, { form_type: tpl.id }); toast("Recognition queued."); pollRecognition(); } })));
+  }
+  if (d.receipt) {
+    const r = d.receipt;
+    banners.append(el("div", { class: "banner ok" },
+      el("strong", { text: "Receipted" }), ` by ${r.receipted_by} ${ago(r.receipted_at)} · ${r.mode} mode · ${r.stats.human} entered, ${r.stats.confirmed} confirmed, ${r.stats.machine} machine, ${r.stats.changed} changed`));
+    for (const f of r.fields) if (f.provenance !== "machine") S.touched.set(f.id, { value: f.value });
+    S.mode = r.mode; S.filter = "filled";
+  }
+
+  const pagebar = el("div", { class: "pagebar" });
+  const pageEl = el("div", { class: "page" });
+  const scroll = el("div", { class: "scroll" }, pageEl);
+  const viewer = el("div", { class: "viewer" }, pagebar, scroll);
+
+  const modeSel = el("select", { disabled: S.readonly || !tpl, onchange: e => switchMode(e.target.value) },
+    el("option", { value: "review", text: "Review flagged fields", disabled: !recOk }),
+    el("option", { value: "full", text: "Full manual receipting" }));
+  const filterBtns = {};
+  const filterRow = el("div", { class: "row filters" }, ["flagged", "filled", "empty", "all"].map(k => filterBtns[k] = el("button", { onclick: () => { S.filter = k; renderList(); } })));
+  const search = el("input", { type: "text", placeholder: "Filter fields…", oninput: e => { S.query = e.target.value.toLowerCase(); renderList(); } });
+  const progressBar = el("span");
+  const progressText = el("span", { class: "muted" });
+  const list = el("div", { class: "list" });
+  const saveNote = el("span", { class: "muted" });
+  const submitBtn = el("button", { class: "primary", text: "Complete receipting", onclick: submit, disabled: S.readonly || !tpl });
+  const panel = el("div", { class: "fields" },
+    el("div", { class: "fieldbar" },
+      el("div", { class: "row" }, el("label", {}, "Mode ", modeSel), progressText),
+      el("div", { class: "progress" }, progressBar), filterRow, el("div", { class: "row" }, search)),
+    list,
+    el("div", { class: "foot" }, saveNote, el("div", { class: "spacer" }), submitBtn));
+  const root = el("div", { class: "bench" }, head, banners, el("div", { class: "split" }, viewer, panel));
+  app.replaceChildren(root);
+  modeSel.value = S.mode;
+
+  // ----- pages -----
+  const pageCount = Math.max(d.pages.length, 1);
+  function pageHasFlags(n) { return fields.some(f => f.page === n && state(f) === "flag"); }
+  function renderPagebar() {
+    pagebar.replaceChildren(el("span", { class: "muted", text: "Page" }),
+      ...Array.from({ length: pageCount }, (_, i) => i + 1).map(n => el("button", {
+        "aria-pressed": String(n === S.page), onclick: () => showPage(n) }, String(n), pageHasFlags(n) ? el("span", { class: "dot", title: "Needs receipting" }) : null)));
+  }
+  const boxes = new Map();
+  function showPage(n, focusId) {
+    S.page = n;
+    renderPagebar();
+    const pinfo = d.pages[n - 1] || (tpl && tpl.pages[n - 1]) || { width: 612, height: 792 };
+    const img = el("img", { src: `/v1/documents/${task.document_id}/pages/${n}`, alt: `Page ${n}` });
+    boxes.clear();
+    const [dx, dy] = shifts[n - 1] || [0, 0];
+    const overlays = fields.filter(f => f.page === n).map(f => {
+      const [x0, y0, x1, y1] = f.rect;
+      const b = el("div", { class: "box", title: f.short_label, onclick: () => focusField(f.id, false) });
+      Object.assign(b.style, {
+        left: ((x0 + dx) / pinfo.width * 100) + "%", top: ((pinfo.height - (y1 + dy)) / pinfo.height * 100) + "%",
+        width: ((x1 - x0) / pinfo.width * 100) + "%", height: ((y1 - y0) / pinfo.height * 100) + "%" });
+      boxes.set(f.id, b);
+      return b;
+    });
+    pageEl.replaceChildren(img, ...overlays);
+    paintBoxes();
+    if (focusId) scrollToBox(focusId);
+  }
+  function paintBoxes() {
+    for (const [fid, b] of boxes) {
+      const st = state(byId[fid]);
+      b.className = "box " + st + (S.active === fid ? " active" : "");
+    }
+  }
+  function scrollToBox(fid) {
+    const b = boxes.get(fid); if (!b) return;
+    const img = pageEl.querySelector("img");
+    const go = () => b.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+    if (img && !img.complete) img.addEventListener("load", go, { once: true }); else go();
+  }
+
+  // ----- field list -----
+  const rows = new Map();
+  function matches(f) {
+    const st = state(f);
+    if (S.filter === "flagged" && !(st === "flag" || (isFlag(f)))) return false;
+    if (S.filter === "filled" && current(f) == null) return false;
+    if (S.filter === "empty" && current(f) != null) return false;
+    if (S.query && !(f.short_label + " " + f.label + " " + f.id).toLowerCase().includes(S.query)) return false;
+    return true;
+  }
+  function renderCounts() {
+    const fl = flagged().length, un = unresolved().length;
+    const filled = fields.filter(f => current(f) != null).length;
+    const empty = fields.length - filled;
+    filterBtns.flagged.textContent = `Flagged (${fl})`; filterBtns.flagged.disabled = S.mode === "full";
+    filterBtns.filled.textContent = `Filled (${filled})`;
+    filterBtns.empty.textContent = `Empty (${empty})`;
+    filterBtns.all.textContent = `All (${fields.length})`;
+    for (const [k, b] of Object.entries(filterBtns)) b.setAttribute("aria-pressed", String(S.filter === k));
+    if (S.mode === "review") {
+      progressText.textContent = fl ? `${fl - un} of ${fl} flagged fields resolved` : "No flagged fields";
+      progressBar.style.width = (fl ? (fl - un) / fl * 100 : 100) + "%";
+      submitBtn.disabled = S.readonly || !tpl || un > 0;
+      submitBtn.title = un ? `${un} flagged field(s) still require receipting` : "";
+    } else {
+      const done = fields.filter(f => S.touched.has(f.id)).length;
+      progressText.textContent = `${done} of ${fields.length} fields entered by hand; the rest are submitted blank`;
+      progressBar.style.width = (fields.length ? done / fields.length * 100 : 0) + "%";
+      submitBtn.disabled = S.readonly || !tpl;
+      submitBtn.title = "";
+    }
+  }
+  function renderList() {
+    renderCounts();
+    rows.clear();
+    const shown = fields.filter(matches);
+    if (!shown.length) { list.replaceChildren(el("div", { class: "empty", style: "margin:16px", text: S.filter === "flagged" ? "All flagged fields resolved." : "No fields match." })); return; }
+    const out = []; let key = null;
+    for (const f of shown) {
+      const k = `Page ${f.page}${f.section ? " · " + f.section : ""}`;
+      if (k !== key) { out.push(el("div", { class: "group-head", text: k })); key = k; }
+      out.push(row(f));
+    }
+    list.replaceChildren(...out);
+  }
+  function row(f) {
+    const m = machine[f.id];
+    const st = state(f);
+    const val = current(f);
+    let input;
+    const commit = v => {
+      S.touched.set(f.id, { value: v === "" ? null : v });
+      delete S.errors[f.id];
+      markDirty(); refreshRow(f.id); renderCounts(); paintBoxes(); renderPagebar();
+    };
+    if (f.kind === "checkbox") {
+      input = el("input", { type: "checkbox", checked: val === "true", onchange: e => commit(e.target.checked ? "true" : "false") });
+    } else if (f.options && f.options.length) {
+      input = el("select", { onchange: e => commit(e.target.value) }, el("option", { value: "", text: "—" }),
+        f.options.map(o => el("option", { value: o, text: o, selected: o === val })));
+      if (val && !f.options.includes(val)) input.prepend(el("option", { value: val, text: val, selected: true }));
+    } else {
+      input = el("input", { type: "text", value: val ?? (st === "flag" && m && m.value ? m.value : ""), maxlength: f.max_len || undefined, spellcheck: "false",
+        placeholder: S.mode === "full" ? "" : (m && m.status === "empty" ? "blank" : ""),
+        onchange: e => commit(e.target.value.trim()),
+        onkeydown: e => { if (e.key === "Enter") { e.preventDefault(); commit(e.target.value.trim()); nextFlag(f.id); } } });
+    }
+    input.addEventListener("focus", () => focusField(f.id, true));
+    const hint = el("div", { class: "hint" });
+    if (m && S.mode === "review" && m.source) {
+      const read = m.raw != null && m.source === "htr" ? m.raw : m.value;
+      if (read != null) hint.append(el("span", {}, "Read: ", el("span", { class: "mono", text: read })));
+      if (m.confidence != null) hint.append(el("span", { class: "pill " + (m.status === "requires_receipting" ? "flag" : "ok"), text: pct(m.confidence) }));
+      for (const r of m.reasons || []) hint.append(el("span", { class: "pill flag", title: r.message, text: r.code.replace(/_/g, " ") }));
+    }
+    const actions = [];
+    if (st === "flag" && !S.readonly) {
+      if (m && m.value != null) actions.push(el("button", { text: "Accept", title: "Confirm the machine reading", onclick: () => commit(f.kind === "checkbox" ? (input.checked ? "true" : "false") : (input.value || m.value)) }));
+      actions.push(el("button", { text: "Blank", title: "Confirm the field is empty", onclick: () => commit("") }));
+    }
+    if (S.touched.has(f.id) && !S.readonly && !d.receipt) actions.push(el("button", { class: "link", text: "Undo", onclick: () => { S.touched.delete(f.id); markDirty(); refreshRow(f.id); renderCounts(); paintBoxes(); renderPagebar(); } }));
+    const r = el("div", { class: `field ${st}${S.active === f.id ? " active" : ""}${S.readonly ? " readonly" : ""}`, dataset: { id: f.id }, onclick: e => { if (e.target === r) focusField(f.id, false); } },
+      el("div", { class: "label", title: f.label }, f.short_label, el("span", { class: "meta", text: `p${f.page} · ${f.value_type.replace("_", " ")}` })),
+      el("div", { class: "control" }, input, ...actions),
+      hint.childNodes.length ? hint : null,
+      S.errors[f.id] ? el("div", { class: "err", text: S.errors[f.id] }) : null);
+    if (S.readonly) input.disabled = true;
+    rows.set(f.id, r);
+    return r;
+  }
+  function refreshRow(fid) {
+    const old = rows.get(fid); if (!old) return;
+    const focused = old.contains(document.activeElement);
+    const n = row(byId[fid]); old.replaceWith(n);
+    if (focused) { const i = n.querySelector("input,select"); if (i) i.focus({ preventScroll: true }); }
+  }
+  function focusField(fid, fromInput) {
+    const prev = S.active; S.active = fid;
+    const f = byId[fid];
+    if (prev && rows.get(prev)) rows.get(prev).classList.remove("active");
+    const r = rows.get(fid);
+    if (!r) { S.filter = "all"; renderList(); }
+    const rr = rows.get(fid);
+    if (rr) { rr.classList.add("active"); if (!fromInput) { rr.scrollIntoView({ block: "nearest" }); const i = rr.querySelector("input,select"); if (i) i.focus({ preventScroll: true }); } }
+    if (f.page !== S.page) showPage(f.page, fid); else { paintBoxes(); scrollToBox(fid); }
+  }
+  function nextFlag(afterId) {
+    const order = fields.filter(f => state(f) === "flag");
+    const idx = fields.findIndex(f => f.id === afterId);
+    const next = order.find(f => fields.indexOf(f) > idx) || order[0];
+    if (next) focusField(next.id, false); else toast("All flagged fields resolved.");
+  }
+  function switchMode(m) {
+    if (m === S.mode) return;
+    if (m === "full" && !confirm(`Full manual receipting: all ${fields.length} fields are entered by hand. Machine values will not be used. Continue?`)) { modeSel.value = S.mode; return; }
+    if (m === "review" && S.touched.size && !confirm("Switch back to review? Values entered so far are kept.")) { modeSel.value = S.mode; return; }
+    S.mode = m; S.filter = m === "full" ? "all" : "flagged"; S.errors = {};
+    markDirty(); renderList(); paintBoxes(); renderPagebar();
+  }
+
+  // ----- persistence -----
+  let saveTimer = null;
+  function markDirty() {
+    if (S.readonly) return;
+    S.dirty = true; saveNote.textContent = "Unsaved changes";
+    clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 1500);
+  }
+  async function saveDraft() {
+    if (!S.dirty || S.readonly || !tpl) return;
+    S.dirty = false;
+    try {
+      const r = await api("PUT", `/v1/tasks/${id}/draft`, { mode: S.mode, values: Object.fromEntries([...S.touched].map(([k, v]) => [k, v.value])) });
+      saveNote.textContent = "Draft saved " + new Date(r.updated_at).toLocaleTimeString();
+    } catch (e) { S.dirty = true; saveNote.textContent = "Draft not saved: " + e.message; }
+  }
+  async function submit() {
+    clearTimeout(saveTimer);
+    const values = {};
+    if (S.mode === "full") for (const f of fields) values[f.id] = S.touched.has(f.id) ? S.touched.get(f.id).value : null;
+    else for (const [k, v] of S.touched) values[k] = v.value;
+    if (S.mode === "full") {
+      const blanks = fields.filter(f => !S.touched.has(f.id)).length;
+      if (blanks && !confirm(`${blanks} field(s) were not entered and will be submitted blank. Submit?`)) return;
+    }
+    submitBtn.disabled = true;
+    try {
+      const r = await api("POST", `/v1/tasks/${id}/submit`, { mode: S.mode, values });
+      S.dirty = false;
+      toast(`Receipted: ${r.stats.human} entered, ${r.stats.confirmed} confirmed, ${r.stats.changed} changed`);
+      const back = takeReturn();
+      if (back) { location.hash = back; return; }
+      const next = await api("GET", "/v1/tasks?limit=5");
+      const other = next.items.find(t => t.id !== id && t.status === "open");
+      location.hash = other ? `#/tasks/${other.id}` : "#/receipting";
+    } catch (e) {
+      if (e.status === 422 && e.data && e.data.fields) {
+        S.errors = e.data.fields; S.filter = "all";
+        renderList();
+        const first = Object.keys(S.errors).find(k => byId[k]);
+        if (first) focusField(first, false);
+        toast(e.data.message);
+      } else toast(e.message);
+      renderCounts();
+    }
+  }
+  async function showHistory() {
+    const h = await api("GET", `/v1/tasks/${id}/history`);
+    $("#history-list").replaceChildren(...h.map(e => el("li", {}, el("span", { class: "muted", text: new Date(e.at).toLocaleString() + " · " }), `${e.action.replace(/_/g, " ")}${e.actor ? " by " + e.actor : ""}`)));
+    $("#history-dlg").showModal();
+  }
+  function pollRecognition() {
+    const started = d.recognition ? d.recognition.artifact_id : null;
+    const t = setInterval(async () => {
+      if (!location.hash.includes(id)) return clearInterval(t);
+      const n = await api("GET", `/v1/tasks/${id}`).catch(() => null);
+      if (n && n.task.form_artifact_id && n.task.form_artifact_id !== started) { clearInterval(t); toast("Recognition updated."); bench(id); }
+    }, 2000);
+  }
+
+  renderList();
+  const firstFlag = fields.find(f => state(f) === "flag");
+  showPage(firstFlag ? firstFlag.page : 1);
+  if (firstFlag && !S.readonly) setTimeout(() => focusField(firstFlag.id, false), 50);
+}
+
+// ---------- cases: shared ----------
+const FACTS = [
+  ["family_name", "Family name"], ["given_name", "Given name"], ["a_number", "A-Number"], ["date_of_birth", "Date of birth"],
+  ["beneficiary_family_name", "Beneficiary family name"], ["beneficiary_given_name", "Beneficiary given name"],
+  ["beneficiary_a_number", "Beneficiary A-Number"], ["beneficiary_date_of_birth", "Beneficiary date of birth"],
+];
+const ADDRESS_FACTS = [
+  ["mailing_in_care_of", "In care of"], ["mailing_street", "Street"], ["mailing_unit", "Apt, suite or floor"],
+  ["mailing_city", "City or town"], ["mailing_state", "State"], ["mailing_zip", "ZIP code"],
+  ["mailing_province", "Province"], ["mailing_postal_code", "Postal code"], ["mailing_country", "Country"],
+];
+const LETTER = { receipt: "Receipt notice", rfe: "Request for evidence", noid: "Notice of intent to deny", approval: "Approval notice", denial: "Denial notice", withdrawal: "Withdrawal acknowledgment" };
+const STATUS = {
+  open: ["Unassigned", ""], in_review: ["In review", "info"], awaiting_response: ["Awaiting response", "warn"], decided: ["Decided", "ok"],
+};
+const OUTCOME = { approved: ["Approved", "ok"], denied: ["Denied", "flag"], withdrawn: ["Withdrawn", ""], closed: ["Administratively closed", ""] };
+const CLOSURE = { duplicate: "Duplicate filing", opened_in_error: "Opened in error", transferred: "Transferred to another office", other: "Other" };
+const NOTICE = { rfe: "Request for evidence", noid: "Notice of intent to deny" };
+const RULE = { a_number_name_mismatch: "A-Number recorded under another name" };
+const SEVERITY = { high: "flag", medium: "warn", low: "info" };
+// Open findings not dismissed block approval.
+const blockingFindings = r => (r.findings || []).filter(f => f.status === "open" && f.review !== "dismissed");
+let benefitsCache = null;
+async function benefits() { return benefitsCache ||= await api("GET", "/v1/benefits"); }
+const tplCache = {};
+async function template(id) { return tplCache[id] ||= api("GET", `/v1/templates/${encodeURIComponent(id)}`); }
+function statusPill(c) {
+  if (c.status === "decided" && c.decision) { const [t, k] = OUTCOME[c.decision] || [c.decision, ""]; return el("span", { class: "pill " + k, text: t }); }
+  const [t, k] = STATUS[c.status] || [c.status, ""];
+  return el("span", { class: "pill " + k, text: t });
+}
+function applicant(c) {
+  const f = c.facts || {};
+  const name = [f.given_name, f.family_name].filter(Boolean).join(" ");
+  const ben = [f.beneficiary_given_name, f.beneficiary_family_name].filter(Boolean).join(" ");
+  return ben ? `${name || "—"} for ${ben}` : (name || "—");
+}
+// UTC, as the server compares due dates.
+function today() { return new Date().toISOString().slice(0, 10); }
+function addDays(iso, n) { const d = new Date(iso + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+function isOverdue(c) { return c.status === "awaiting_response" && c.response_due && c.response_due < today(); }
+function flags(c) {
+  return [c.open_tasks ? el("span", { class: "pill flag", text: `${c.open_tasks} to receipt` }) : null,
+    isOverdue(c) ? el("span", { class: "pill flag", text: "response overdue" }) : null];
+}
+function fmtDate(iso) { return iso ? new Date(iso).toLocaleString() : ""; }
+function errorList(e) {
+  const f = (e.data && e.data.fields) || {};
+  const items = Object.entries(f).map(([k, v]) => el("div", { text: `${k.replace(/^criteria\./, "").replace(/_/g, " ")}: ${v}` }));
+  return el("div", { class: "errs" }, el("div", { text: e.message }), items);
+}
+function askReason(title, help, min = 1) {
+  return new Promise(resolve => {
+    const d = $("#reason-dlg"), input = $("#reason-input");
+    $("#reason-title").textContent = title; $("#reason-help").textContent = help; input.value = "";
+    d.onclose = () => { const v = input.value.trim(); resolve(d.returnValue === "ok" && v.length >= min ? v : null); if (d.returnValue === "ok" && v.length < min) toast(`At least ${min} characters.`); };
+    d.showModal();
+  });
+}
+
+// Generic form dialog: fields are [key, label, element]; resolves to {key: element} or null.
+function formDialog(title, fields, okText = "Save") {
+  return new Promise(resolve => {
+    const d = $("#form-dlg");
+    $("#form-title").textContent = title; $("#form-ok").textContent = okText;
+    $("#form-body").replaceChildren(el("div", { class: "kv" }, fields.flatMap(([, label, e]) => [el("span", { class: "k", text: label }), e])));
+    d.onclose = () => resolve(d.returnValue === "ok" ? Object.fromEntries(fields.map(([k, , e]) => [k, e])) : null);
+    d.showModal();
+  });
+}
+let workersCache = null;
+async function workers(fresh) { if (fresh || !workersCache) workersCache = await api("GET", "/v1/workload/workers"); return workersCache; }
+// Assigns cases to a chosen skilled worker; over capacity asks to force.
+async function assignDialog(caseIds, formType, current) {
+  const ws = (await workers(true)).filter(w => w.skills.includes(formType));
+  if (!ws.length) { toast(`No worker is skilled for ${formType}. Add one on the Workload page.`); return false; }
+  const sel = el("select", {}, ws.map(w => el("option", { value: w.worker, selected: w.worker === current, text: `${w.worker} · ${w.load}/${w.max_cases}${w.load >= w.max_cases ? " (full)" : ""}` })));
+  const force = el("input", { type: "checkbox" });
+  const v = await formDialog(caseIds.length > 1 ? `Reassign ${caseIds.length} cases` : "Assign case",
+    [["assignee", "Worker", sel], ["force", "Exceed capacity", el("label", {}, force, " allow over max")]], "Assign");
+  if (!v) return false;
+  const send = f => api("POST", "/v1/workload/reassign", { case_ids: caseIds, assignee: sel.value, force: f });
+  try { await send(force.checked); }
+  catch (e) {
+    if (e.status === 409 && e.data && e.data.error === "over_capacity" && confirm(`${e.message}. Assign anyway?`)) await send(true);
+    else throw e;
+  }
+  return true;
+}
+const REQUEST = { add: "Add to workload", remove: "Remove from workload" };
+
+// Document chooser for opening a case or attaching evidence.
+async function chooseDocument({ title, okText, opts, onOk }) {
+  const dlg = $("#open-case-dlg"), list = $("#open-case-docs"), ok = $("#open-case-ok"), filter = $("#open-case-filter");
+  $("#open-case-title").textContent = title; ok.textContent = okText; ok.disabled = true;
+  $("#open-case-opts").replaceChildren(...(opts || []));
+  list.replaceChildren(el("div", { class: "muted", text: "Loading…" }));
+  filter.value = "";
+  dlg.showModal();
+  const docs = await api("GET", "/v1/documents/recent").catch(() => []);
+  const render = () => {
+    const q = filter.value.toLowerCase();
+    const shown = docs.filter(d => !q || (d.filename || "").toLowerCase().includes(q) || d.id.startsWith(q));
+    list.replaceChildren(...(shown.length ? shown.map(d => el("label", {},
+      el("input", { type: "radio", name: "cdoc", value: d.id, onchange: () => { ok.disabled = false; } }),
+      el("span", { style: "flex:1" }, el("div", { text: d.filename || "(no filename)" }),
+        el("div", { class: "mono muted", text: `${d.id.slice(0, 8)} · ${ago(d.created_at)}${d.labels && d.labels.receipt_number ? " · " + d.labels.receipt_number : ""}` })))) : [el("div", { class: "muted", text: "No documents." })]));
+  };
+  filter.oninput = render;
+  render();
+  dlg.onclose = async () => {
+    if (dlg.returnValue !== "ok") return;
+    const doc = list.querySelector("input[name=cdoc]:checked");
+    if (doc) await onOk(doc.value);
+  };
+}
+async function openCaseDialog(documentId) {
+  if (!await ensureUser()) return;
+  const b = await benefits();
+  const form = el("select", {}, el("option", { value: "", text: "Use recognized form" }), b.benefit.map(x => el("option", { value: x.form_type, text: x.name })));
+  const receipt = el("input", { type: "text", placeholder: "Generated when empty", maxlength: "16", spellcheck: "false" });
+  const received = el("input", { type: "date" });
+  const create = async docId => {
+    try {
+      const c = await api("POST", "/v1/cases", { document_id: docId, form_type: form.value || null, receipt_number: receipt.value.trim() || null, received_date: received.value || null });
+      location.hash = `#/cases/${c.id}`;
+    } catch (e) {
+      if (e.status === 409 && e.data && e.data.case_id) location.hash = `#/cases/${e.data.case_id}`;
+      else toast(e.message);
+    }
+  };
+  const opts = [el("span", { class: "k", text: "Benefit" }), form, el("span", { class: "k", text: "Receipt number" }), receipt, el("span", { class: "k", text: "Received" }), received];
+  if (documentId) {
+    // Pre-selected document (from search): confirm options only.
+    const dlg = $("#open-case-dlg");
+    await chooseDocument({ title: "Open case", okText: "Open case", opts, onOk: create });
+    $("#open-case-filter").value = documentId; $("#open-case-filter").dispatchEvent(new Event("input"));
+    const r = $("#open-case-docs").querySelector(`input[value="${documentId}"]`);
+    if (r) { r.checked = true; $("#open-case-ok").disabled = false; }
+    else { dlg.returnValue = "cancel"; dlg.close(); await create(documentId); }
+    return;
+  }
+  chooseDocument({ title: "Open case", okText: "Open case", opts, onOk: create });
+}
+
+// ---------- cases: worklist ----------
+const worklistState = { tab: "mine", form: "" };
+async function worklist() {
+  const user = getUser();
+  const b = await benefits();
+  const app = $("#app");
+  const tabs = [
+    ["mine", "My cases", { assignee: "me" }],
+    ["open", "Unassigned", { status: "open" }],
+    ["in_review", "In review", { status: "in_review" }],
+    ["awaiting_response", "Awaiting response", { status: "awaiting_response" }],
+    ["overdue", "Overdue", { status: "awaiting_response", overdue: "true" }],
+    ["decided", "Decided", { status: "decided" }],
+    ["all", "All", { status: "all" }],
+  ];
+  if (!user && worklistState.tab === "mine") worklistState.tab = "open";
+  const body = el("div");
+  const tabBtns = tabs.map(([k, label]) => el("button", {
+    "aria-pressed": String(worklistState.tab === k), text: label, dataset: { k }, disabled: k === "mine" && !user,
+    onclick: () => { worklistState.tab = k; tabBtns.forEach(x => x.setAttribute("aria-pressed", String(x.dataset.k === k))); load(); } }));
+  const formSel = el("select", { onchange: e => { worklistState.form = e.target.value; load(); } },
+    el("option", { value: "", text: "All benefits" }), b.benefit.map(x => el("option", { value: x.form_type, text: x.name, selected: x.form_type === worklistState.form })));
+  app.replaceChildren(el("div", { class: "queue" },
+    el("div", { class: "toolbar" }, el("div", { class: "tabs" }, tabBtns), formSel, el("div", { class: "grow" }),
+      el("a", { href: "#/search", text: "Search cases" }), el("button", { text: "Open case", onclick: () => openCaseDialog() })),
+    body));
+  const names = Object.fromEntries(b.benefit.map(x => [x.form_type, x.name]));
+  async function load() {
+    const [, , params] = tabs.find(t => t[0] === worklistState.tab);
+    const q = new URLSearchParams({ limit: "200", ...params });
+    if (params.assignee === "me") q.set("status", "open,in_review,awaiting_response");
+    if (worklistState.form) q.set("form_type", worklistState.form);
+    let d;
+    try { d = await api("GET", "/v1/cases?" + q); } catch (e) { body.replaceChildren(el("div", { class: "empty", text: e.message })); return; }
+    if (!d.items.length) { body.replaceChildren(el("div", { class: "empty", text: worklistState.tab === "mine" ? "No cases assigned to you. Request one from Unassigned, or wait for automatic assignment." : worklistState.tab === "overdue" ? "No responses overdue." : "Nothing here." })); return; }
+    body.replaceChildren(caseTable(d.items, names));
+  }
+  await load();
+}
+function caseTable(items, names) {
+  return el("table", {},
+    el("thead", {}, el("tr", {}, ["Receipt", "Benefit", "Applicant", "A-Number", "Received", "Status", "Assignee"].map(h => el("th", { text: h })))),
+    el("tbody", {}, items.map(c => el("tr", { onclick: () => location.hash = `#/cases/${c.id}` },
+      el("td", {}, el("span", { class: "receipt", text: c.receipt_number })),
+      el("td", { text: names[c.form_type] || c.form_type }),
+      el("td", { text: applicant(c) }),
+      el("td", { class: "mono", text: c.facts.a_number || "" }),
+      el("td", { text: c.received_date }),
+      el("td", {}, statusPill(c), " ", flags(c), c.status === "awaiting_response" && c.response_due ? el("div", { class: "muted", text: "due " + c.response_due }) : null),
+      el("td", { class: "muted", text: c.assignee || "" })))));
+}
+
+// ---------- cases: discovery ----------
+const searchState = { q: "", scope: "cases", status: [], form_type: "", decision: "", received_from: "", received_to: "" };
+async function discovery(params) {
+  if (params.has("q")) searchState.q = params.get("q");
+  const b = await benefits();
+  const names = Object.fromEntries(b.benefit.map(x => [x.form_type, x.name]));
+  const app = $("#app");
+  const q = el("input", { type: "search", value: searchState.q, placeholder: "Receipt number, A-Number, name, or any text…", style: "flex:1; min-width: 240px", autofocus: true,
+    onkeydown: e => { if (e.key === "Enter") { e.preventDefault(); run(); } } });
+  const scopeSel = el("select", { onchange: e => { searchState.scope = e.target.value; run(); } },
+    el("option", { value: "cases", text: "Case records", selected: searchState.scope === "cases" }),
+    el("option", { value: "documents", text: "All document text", selected: searchState.scope === "documents" }));
+  const statusBoxes = Object.entries(STATUS).map(([k, [label]]) => el("label", {},
+    el("input", { type: "checkbox", checked: searchState.status.includes(k), onchange: e => { searchState.status = e.target.checked ? [...searchState.status, k] : searchState.status.filter(x => x !== k); run(); } }), label));
+  const formSel = el("select", { onchange: e => { searchState.form_type = e.target.value; run(); } },
+    el("option", { value: "", text: "Any benefit" }), b.benefit.map(x => el("option", { value: x.form_type, text: x.name, selected: x.form_type === searchState.form_type })));
+  const decSel = el("select", { onchange: e => { searchState.decision = e.target.value; run(); } },
+    el("option", { value: "", text: "Any decision" }), Object.entries(OUTCOME).map(([k, [t]]) => el("option", { value: k, text: t, selected: k === searchState.decision })));
+  const from = el("input", { type: "date", value: searchState.received_from, onchange: e => { searchState.received_from = e.target.value; run(); } });
+  const to = el("input", { type: "date", value: searchState.received_to, onchange: e => { searchState.received_to = e.target.value; run(); } });
+  const facetsEl = el("div", { class: "facets" });
+  const resultsEl = el("div", { class: "results" });
+  const note = el("div", { class: "muted" });
+  app.replaceChildren(el("div", { class: "queue", style: "max-width: 1200px" },
+    el("div", { class: "toolbar" }, q, scopeSel, el("button", { class: "primary", text: "Search", onclick: () => run() })),
+    el("div", { class: "toolbar filters-row" }, statusBoxes, formSel, decSel,
+      el("label", {}, "Received from", from), el("label", {}, "to", to),
+      el("button", { class: "link", text: "Clear filters", onclick: () => { Object.assign(searchState, { status: [], form_type: "", decision: "", received_from: "", received_to: "" }); discovery(new URLSearchParams()); } })),
+    el("div", { class: "search-grid" }, facetsEl, el("div", {}, note, resultsEl))));
+
+  let cursor = null;
+  async function run(more) {
+    searchState.q = q.value.trim();
+    if (!more) { cursor = null; history.replaceState(null, "", "#/search" + (searchState.q ? "?q=" + encodeURIComponent(searchState.q) : "")); }
+    const body = {
+      q: searchState.q || null, scope: searchState.scope, status: searchState.status,
+      form_type: searchState.form_type || null, decision: searchState.decision || null,
+      received_from: searchState.received_from || null, received_to: searchState.received_to || null,
+      cursor: more ? cursor : null, limit: 25,
+    };
+    let r;
+    try { r = await api("POST", "/v1/cases/search", body); }
+    catch (e) { note.textContent = e.message; if (!more) resultsEl.replaceChildren(); return; }
+    cursor = r.next_cursor;
+    note.textContent = r.warning || (r.source === "database" ? "Database matches (search service not configured)." : "");
+    if (!more) renderFacets(r.facet_counts || {}, r.facet_counts_exact !== false);
+    const out = more ? [...resultsEl.querySelectorAll(".hit, .group-label")] : [];
+    if (!more && r.exact.length) {
+      out.push(el("div", { class: "group-label muted", text: "Exact match" }));
+      for (const c of r.exact) out.push(caseHit(c, []));
+    }
+    if (!more && (r.cases.length || r.documents.length)) out.push(el("div", { class: "group-label muted", text: r.source === "search" ? "Matches" : "Cases" }));
+    const exactIds = new Set(r.exact.map(c => c.id));
+    for (const h of r.cases) if (!exactIds.has(h.case.id)) out.push(caseHit(h.case, h.matches));
+    for (const d of r.documents) out.push(docHit(d));
+    if (!out.length) out.push(el("div", { class: "empty", text: "No matches." }));
+    if (cursor) out.push(el("button", { class: "group-label", text: "Load more", onclick: e => { e.target.remove(); run(true); } }));
+    resultsEl.replaceChildren(...out);
+  }
+  function caseHit(c, matches) {
+    return el("div", { class: "hit", onclick: () => location.hash = `#/cases/${c.id}` },
+      el("div", { class: "head" }, el("span", { class: "receipt", text: c.receipt_number }), el("strong", { text: applicant(c) }),
+        el("span", { class: "muted", text: names[c.form_type] || c.form_type }), statusPill(c), flags(c),
+        el("span", { class: "muted", text: "received " + c.received_date }), c.assignee ? el("span", { class: "muted", text: "· " + c.assignee }) : null),
+      c.facts.a_number ? el("div", { class: "mono muted", text: "A" + c.facts.a_number }) : null,
+      matches.filter(m => m.highlight || m.matched_pages.length).map(m => {
+        const snip = el("div", { class: "snip" }, el("span", { class: "pill", text: m.role }), " ");
+        if (m.highlight) { const s = el("span"); s.innerHTML = m.highlight; snip.append(s); }
+        if (m.matched_pages.length) snip.append(el("span", { text: ` · pages ${m.matched_pages.join(", ")}` }));
+        return snip;
+      }));
+  }
+  function docHit(d) {
+    const snip = el("div", { class: "snip" });
+    if (d.highlight) snip.innerHTML = d.highlight;
+    return el("div", { class: "hit", onclick: e => { if (e.target.tagName !== "BUTTON") window.open(`/v1/documents/${d.document_id}/pages/1`, "_blank"); } },
+      el("div", { class: "head" }, el("strong", { text: d.filename || "(no filename)" }), el("span", { class: "pill warn", text: "not in a case" }),
+        el("span", { class: "mono muted", text: d.document_id.slice(0, 8) }), el("div", { class: "grow", style: "flex:1" }),
+        el("button", { text: "Open case", onclick: () => openCaseDialog(d.document_id) })),
+      d.highlight ? snip : null);
+  }
+  function renderFacets(fc, exact) {
+    const groups = [["case_status", "Status", v => (STATUS[v] || [v])[0]], ["benefit", "Benefit", v => names[v] || v], ["decision", "Decision", v => (OUTCOME[v] || [v])[0]]];
+    facetsEl.replaceChildren(...groups.filter(([k]) => (fc[k] || []).length).map(([k, label, fmt]) => el("div", {},
+      el("h4", { text: label }),
+      fc[k].map(({ value, count }) => {
+        const active = k === "case_status" ? searchState.status.includes(value) : k === "benefit" ? searchState.form_type === value : searchState.decision === value;
+        return el("button", { "aria-pressed": String(active), onclick: () => {
+          if (k === "case_status") searchState.status = active ? searchState.status.filter(x => x !== value) : [...searchState.status, value];
+          else if (k === "benefit") searchState.form_type = active ? "" : value;
+          else searchState.decision = active ? "" : value;
+          discovery(new URLSearchParams(searchState.q ? { q: searchState.q } : {}));
+        } }, el("span", { text: fmt(value) }), el("span", { class: "muted", text: exact ? String(count) : `${count}+` }));
+      }))));
+  }
+  await run();
+}
+
+// ---------- cases: case view ----------
+const caseUi = {};
+async function caseView(id) {
+  const app = $("#app");
+  if (!caseUi[id]) app.replaceChildren(el("div", { class: "queue" }, el("div", { class: "empty", text: "Loading case…" })));
+  let d;
+  try { d = await api("GET", `/v1/cases/${id}`); } catch (e) { app.replaceChildren(el("div", { class: "queue" }, el("div", { class: "empty", text: e.message }))); return; }
+  const user = getUser();
+  const c = d.case, bf = d.benefit;
+  const U = caseUi[id] ||= { tab: "overview", doc: c.primary_document_id, filter: "filled" };
+  if (!d.documents.some(x => x.document_id === U.doc)) U.doc = c.primary_document_id;
+  const decided = c.status === "decided";
+  const mine = !!user && c.assignee === user;
+  const canEdit = !decided && !!user && (!c.assignee || mine);
+  const canAssess = !decided && mine;
+  const reload = () => caseView(id);
+  const act = async (fn, okMsg) => { try { if (await fn() === false) return; if (okMsg) toast(okMsg); reload(); refreshCounts(); } catch (e) { toast(e.message); } };
+  const myRequest = (d.requests || []).find(q => q.worker === user);
+  const findingsP = api("GET", `/v1/cases/${id}/findings`).catch(e => ({ enabled: true, error: e.message, findings: [] }));
+
+  // ----- header -----
+  const head = el("div", { class: "bench-head" },
+    el("a", { href: "#/", text: "← Cases" }),
+    el("div", {}, el("div", { class: "title" }, el("span", { class: "receipt", text: c.receipt_number }), " · ", applicant(c)),
+      el("div", { class: "muted", text: `${bf ? bf.name : c.form_type} · received ${c.received_date}` })),
+    statusPill(c), flags(c),
+    c.assignee ? el("span", { class: "muted", text: "Assigned to " + c.assignee }) : null,
+    el("div", { class: "spacer" }),
+    !decided && isManager() ? el("button", { class: c.assignee ? "" : "primary", text: c.assignee ? "Reassign" : "Assign", onclick: () => act(() => assignDialog([id], c.form_type, c.assignee), null) }) : null,
+    !decided && isManager() && c.assignee ? el("button", { text: "Unassign", onclick: () => { if (confirm("Return this case to the unassigned pool? Assignment rules may give it to another worker.")) act(() => api("POST", `/v1/cases/${id}/unassign`), "Unassigned"); } }) : null,
+    !decided && user && !myRequest ? el("button", { text: mine ? "Request removal" : "Request case", onclick: async () => {
+      const reason = await askReason(mine ? "Request removal" : "Request this case", "A manager reviews the request. Reason (optional):", 0);
+      if (reason !== null) act(() => api("POST", `/v1/cases/${id}/requests`, { kind: mine ? "remove" : "add", reason: reason || null }), "Request sent");
+    } }) : null,
+    myRequest ? el("span", { class: "pill info", text: `${REQUEST[myRequest.kind]} requested` }) : null,
+    myRequest ? el("button", { class: "link", text: "Withdraw", onclick: () => act(() => api("POST", `/v1/workload/requests/${myRequest.id}/withdraw`), "Request withdrawn") }) : null);
+
+  // ----- banners -----
+  const banners = el("div");
+  if (decided && d.decision) {
+    const [t, k] = OUTCOME[c.decision] || [c.decision, ""];
+    banners.append(el("div", { class: "banner " + (k === "ok" ? "ok" : k === "flag" ? "flag" : "") },
+      el("strong", { text: t }), ` by ${c.decided_by} ${fmtDate(c.decided_at)}`,
+      el("div", { class: "spacer", style: "flex:1" }),
+      el("button", { text: "Reopen", onclick: async () => {
+        if (!await ensureUser()) return;
+        const reason = await askReason("Reopen case", "Motion to reopen or reconsider, service error, or supervisory review. You become the assignee.", 20);
+        if (reason) act(() => api("POST", `/v1/cases/${id}/reopen`, { reason }), "Case reopened");
+      } })));
+  }
+  const openNotice = d.notices.find(n => !n.responded_at && !n.rescinded_at);
+  if (c.status === "awaiting_response" && openNotice) {
+    banners.append(el("div", { class: "banner warn" },
+      el("strong", { text: NOTICE[openNotice.kind] }), ` issued ${fmtDate(openNotice.issued_at)} · response due ${openNotice.due_date}`,
+      openNotice.original_due_date ? el("span", { class: "muted", text: ` (extended from ${openNotice.original_due_date})` }) : null,
+      isOverdue(c) ? el("span", { class: "pill flag", text: "overdue" }) : null,
+      el("div", { class: "spacer", style: "flex:1" }),
+      el("button", { text: "Extend due date", disabled: !canAssess, onclick: async () => {
+        const due = el("input", { type: "date", min: addDays(openNotice.due_date > today() ? openNotice.due_date : today(), 1) });
+        const reason = el("textarea", { rows: 3, maxlength: 2000, placeholder: "e.g. applicant requested more time" });
+        const r = await formDialog("Extend response due date", [["due", "New due date", due], ["reason", "Reason", reason]], "Extend");
+        if (!r) return;
+        act(() => api("POST", `/v1/cases/${id}/notices/${openNotice.id}/extension`, { due_date: due.value, reason: reason.value }), "Due date extended");
+      } }),
+      el("button", { text: "Rescind", disabled: !canAssess, onclick: async () => {
+        const reason = await askReason(`Rescind ${NOTICE[openNotice.kind].toLowerCase()}`, "Withdraws the notice; the case returns to review. Reason, e.g. issued in error:", 20);
+        if (reason) act(() => api("POST", `/v1/cases/${id}/notices/${openNotice.id}/rescind`, { reason }), "Notice rescinded");
+      } }),
+      el("button", { text: "Record response", disabled: !canEdit, onclick: async () => {
+        if (!await ensureUser()) return;
+        const note = await askReason("Record response", "Describe what was received. Uploads labeled with this receipt number are attached and recorded automatically.");
+        if (note) act(() => api("POST", `/v1/cases/${id}/notices/${openNotice.id}/response`, { note }), "Response recorded");
+      } })));
+  }
+  for (const doc of d.documents.filter(x => x.active_task)) {
+    banners.append(el("div", { class: "banner flag" },
+      el("strong", { text: "Receipting open" }), ` for ${doc.filename || doc.document_id.slice(0, 8)} (${doc.role})`,
+      el("a", { href: `#/tasks/${doc.active_task.id}`, text: "Open receipting", onclick: () => setReturn(`#/cases/${id}`) })));
+  }
+  const primary = d.documents.find(x => x.role === "primary");
+  if (!decided && !d.form_final && primary && !primary.active_task) {
+    banners.append(el("div", { class: "banner warn" },
+      el("strong", { text: "Primary form not receipted." }), primary.form_type && primary.form_type !== c.form_type ? ` Recognized as ${primary.form_type}.` : "",
+      el("button", { text: "Start receipting", disabled: !user, onclick: async () => {
+        try {
+          const t = await api("POST", "/v1/tasks", { document_id: primary.document_id, form_type: c.form_type });
+          setReturn(`#/cases/${id}`); location.hash = `#/tasks/${t.id}`;
+        } catch (e) { if (e.status === 409 && e.data && e.data.task_id) { setReturn(`#/cases/${id}`); location.hash = `#/tasks/${e.data.task_id}`; } else toast(e.message); }
+      } })));
+  }
+  findingsP.then(r => {
+    const n = blockingFindings(r).length;
+    if (decided || !r.enabled || !n) return;
+    banners.append(el("div", { class: "banner flag" },
+      el("strong", { text: `${n} open finding(s)` }), " Approval is blocked until each is resolved by correcting case data, or dismissed.",
+      el("button", { class: "link", text: "Review findings", onclick: () => { U.tab = "overview"; renderPane(); } })));
+  });
+  if (!decided && c.assignee && !mine) banners.append(el("div", { class: "banner" }, `Assigned to ${c.assignee}; read-only for you.`));
+  if (isManager()) for (const q of d.requests || []) {
+    banners.append(el("div", { class: "banner" },
+      el("strong", { text: `${q.worker}: ${REQUEST[q.kind]}` }), q.reason ? ` — ${q.reason}` : "", el("span", { class: "muted", text: ago(q.created_at) }),
+      el("div", { class: "spacer", style: "flex:1" }),
+      el("button", { class: "ok", text: "Approve", onclick: () => act(() => approveRequest(q), "Approved") }),
+      el("button", { class: "danger", text: "Deny", onclick: () => act(() => denyRequest(q), "Denied") })));
+  }
+
+  // ----- viewer -----
+  const docbar = el("div", { class: "docbar" });
+  const pagebar = el("div", { class: "pagebar" });
+  const pageEl = el("div", { class: "page" });
+  const viewer = el("div", { class: "viewer" }, docbar, pagebar, el("div", { class: "scroll" }, pageEl));
+  const tabsEl = el("div", { class: "ptabs" });
+  const pane = el("div", { class: "pane" });
+  const panel = el("div", { class: "fields" }, tabsEl, pane);
+  app.replaceChildren(el("div", { class: "bench" }, head, banners, el("div", { class: "split" }, viewer, panel)));
+
+  const V = { form: null, tpl: null, page: 1, active: null, boxes: new Map(), editing: false, edits: new Map(), query: "" };
+  function renderDocbar() {
+    docbar.replaceChildren(...d.documents.map(x => el("button", { "aria-pressed": String(x.document_id === U.doc), title: x.filename || x.document_id,
+      onclick: () => { U.doc = x.document_id; V.editing = false; V.edits.clear(); loadDoc(); } },
+      el("span", { class: "pill", text: x.role, style: "margin-right:4px" }), (x.filename || x.document_id.slice(0, 8)).slice(0, 28))));
+  }
+  function values() {
+    // id -> {value, provenance, changed}
+    const out = {};
+    const f = V.form;
+    if (!f) return out;
+    if (f.receipt) for (const x of f.receipt.fields) out[x.id] = { value: x.value, provenance: x.provenance, changed: x.changed };
+    else if (f.recognition) for (const x of f.recognition.fields) if (x.status === "filled") out[x.id] = { value: x.value, provenance: "machine", changed: false };
+    return out;
+  }
+  async function loadDoc() {
+    renderDocbar();
+    pageEl.replaceChildren(el("div", { class: "empty", text: "Loading document…" }));
+    try { V.form = await api("GET", `/v1/documents/${U.doc}/form`); } catch (e) { pageEl.replaceChildren(el("div", { class: "empty", text: e.message })); V.form = null; renderPane(); return; }
+    const tid = (V.form.receipt && (V.form.receipt.template_id || V.form.receipt.form_type)) || (V.form.recognition && V.form.recognition.form && V.form.recognition.form.template_id);
+    V.tpl = tid ? await template(tid).catch(() => null) : null;
+    showPage(1);
+    renderPane();
+  }
+  function shifts() {
+    const r = V.form && V.form.recognition;
+    return r && r.form && sameTemplate(V.tpl, r.form.template_id) ? r.form.page_shifts : [];
+  }
+  function showPage(n, focusId) {
+    V.page = n;
+    const pages = V.form ? V.form.pages : [];
+    pagebar.replaceChildren(el("span", { class: "muted", text: "Page" }), ...pages.map(p => el("button", { "aria-pressed": String(p.number === n), text: String(p.number), onclick: () => showPage(p.number) })),
+      el("div", { style: "flex:1" }), el("a", { href: `/v1/documents/${U.doc}/pages/${n}`, target: "_blank", rel: "noopener", text: "Open image" }));
+    const pinfo = pages[n - 1] || { width: 612, height: 792 };
+    const img = el("img", { src: `/v1/documents/${U.doc}/pages/${n}`, alt: `Page ${n}` });
+    V.boxes.clear();
+    const vals = values();
+    const [dx, dy] = shifts()[n - 1] || [0, 0];
+    const overlays = (V.tpl ? V.tpl.fields : []).filter(f => f.page === n && (V.editing || vals[f.id] || V.active === f.id)).map(f => {
+      const [x0, y0, x1, y1] = f.rect;
+      const b = el("div", { class: "box", title: `${f.short_label}: ${(vals[f.id] && vals[f.id].value) || "blank"}`, onclick: () => focusField(f.id) });
+      Object.assign(b.style, { left: ((x0 + dx) / pinfo.width * 100) + "%", top: ((pinfo.height - (y1 + dy)) / pinfo.height * 100) + "%",
+        width: ((x1 - x0) / pinfo.width * 100) + "%", height: ((y1 - y0) / pinfo.height * 100) + "%" });
+      V.boxes.set(f.id, b);
+      return b;
+    });
+    pageEl.replaceChildren(img, ...overlays);
+    paintBoxes();
+    if (focusId) { const b = V.boxes.get(focusId); if (b) { const go = () => b.scrollIntoView({ block: "center", behavior: "smooth" }); if (!img.complete) img.addEventListener("load", go, { once: true }); else go(); } }
+  }
+  function paintBoxes() {
+    const vals = values();
+    for (const [fid, b] of V.boxes) {
+      const v = vals[fid];
+      const st = V.edits.has(fid) ? "changed" : !v ? "blank" : v.provenance === "machine" ? "machine" : v.changed ? "changed" : "resolved";
+      b.className = "box " + st + (V.active === fid ? " active" : "");
+    }
+  }
+  function focusField(fid) {
+    V.active = fid;
+    if (U.tab !== "form") { U.tab = "form"; renderPane(); }
+    const f = V.tpl && V.tpl.fields.find(x => x.id === fid);
+    if (f && f.page !== V.page) showPage(f.page, fid); else { showPage(V.page, fid); }
+    const row = pane.querySelector(`[data-fid="${CSS.escape(fid)}"]`);
+    if (!row) { U.filter = "all"; renderPane(); }
+    const r2 = pane.querySelector(`[data-fid="${CSS.escape(fid)}"]`);
+    if (r2) { pane.querySelectorAll(".field.active").forEach(x => x.classList.remove("active")); r2.classList.add("active"); r2.scrollIntoView({ block: "nearest" }); }
+  }
+
+  // ----- panel tabs -----
+  const TABS = [["overview", "Overview"], ["form", "Form values"], ["assessment", "Assessment"], ["decision", decided ? "Decision" : "Decide"], ["timeline", "Timeline"]];
+  function renderPane() {
+    tabsEl.replaceChildren(...TABS.map(([k, label]) => el("button", { "aria-pressed": String(U.tab === k), text: label, onclick: () => { U.tab = k; renderPane(); } })));
+    const fn = { overview: overviewPane, form: formPane, assessment: assessmentPane, decision: decisionPane, timeline: timelinePane }[U.tab];
+    pane.replaceChildren(el("div", { class: "muted", style: "padding:12px", text: "Loading…" }));
+    Promise.resolve(fn()).then(node => pane.replaceChildren(node));
+  }
+
+  function overviewPane() {
+    const hasBen = FACTS.some(([k]) => k.startsWith("beneficiary_") && ((bf && bf.facts[k]) || c.facts[k]));
+    const inputs = {};
+    const factRow = ([k, label]) => {
+      const overridden = c.overridden.includes(k);
+      const input = el("input", { type: "text", value: c.facts[k] || "", disabled: !canEdit, spellcheck: "false", placeholder: "—" });
+      inputs[k] = input;
+      return [el("span", { class: "k" }, label, overridden ? el("span", { class: "pill warn", text: "edited", title: "Not updated from the form", style: "margin-left:6px" }) : null),
+        el("div", { class: "control", style: "display:flex; gap:4px" }, input,
+          overridden && canEdit ? el("button", { class: "link", text: "Reset", title: "Use the form value", onclick: () => act(() => api("PATCH", `/v1/cases/${id}`, { reset: [k] }), "Reset to form value") }) : null)];
+    };
+    const factRows = FACTS.filter(([k]) => !k.startsWith("beneficiary_") || hasBen).flatMap(factRow);
+    const addressRows = ADDRESS_FACTS.flatMap(factRow);
+    const en = d.e_notification;
+    const contactRows = en ? [el("span", { class: "k", text: "E-notification" }),
+      el("span", { text: [en.email, en.mobile_phone].filter(Boolean).join(" · ") || "Form G-1145 on file, no contact read" })] : [];
+    const corr = el("div", { class: "section" }, el("h3", { text: "Correspondence" }), el("div", { class: "muted", text: "Loading…" }));
+    const letterRow = l => el("div", { class: "doc-row" },
+      el("div", {}, l.pdf_artifact_id ? el("a", { href: `/v1/letters/${l.id}/pdf`, target: "_blank", rel: "noopener", text: LETTER[l.kind] || l.kind }) : el("strong", { text: LETTER[l.kind] || l.kind }),
+        el("div", { class: "meta" },
+          l.status === "held" ? [el("span", { class: "pill flag", text: "held" }), el("span", { text: l.hold_reason || "" })] : el("span", { text: `generated ${ago(l.generated_at)}` }),
+          l.deliveries.map(v => el("span", { class: "pill " + (v.status === "sent" ? "ok" : v.status === "failed" ? "flag" : "warn"),
+            title: v.last_error || v.address, text: `${v.channel === "mail" ? "mail" : "e-mail"} ${v.status}` })))),
+      l.status === "held" ? el("button", { class: "link", text: "Retry", disabled: !user, onclick: () => act(() => api("POST", `/v1/letters/${l.id}/retry`), null) }) : el("span"));
+    api("GET", `/v1/cases/${id}/letters`).then(r => {
+      if (!r.enabled) { corr.remove(); return; }
+      corr.replaceChildren(el("h3", { text: "Correspondence" }), r.letters.length ? r.letters.map(letterRow) : el("div", { class: "muted", text: "No letters yet." }));
+    }).catch(e => corr.replaceChildren(el("h3", { text: "Correspondence" }), el("div", { class: "muted", text: e.message })));
+    const fnd = el("div", { class: "section" }, el("h3", { text: "Findings" }), el("div", { class: "muted", text: "Loading…" }));
+    const review = (f, disposition) => act(async () => {
+      let note = null;
+      if (disposition === "dismissed") { note = await askReason("Dismiss finding", "Why is this not a conflict (e.g. name change by marriage, same person)?"); if (!note) return false; }
+      await api("POST", `/v1/cases/${id}/findings/${f.id}/review`, { disposition, note });
+    }, disposition === "confirmed" ? "Finding confirmed" : disposition === "dismissed" ? "Finding dismissed" : "Review cleared");
+    const party = p => el("li", {},
+      p.case_id === id ? el("span", { class: "receipt", text: p.receipt_number }) : el("a", { class: "receipt", href: `#/cases/${p.case_id}`, text: p.receipt_number }),
+      ` ${p.role}: ${[p.family_name, p.given_name].filter(Boolean).join(", ") || "no name"}`, p.date_of_birth ? el("span", { class: "muted", text: ` · born ${p.date_of_birth}` }) : null);
+    const findingRow = f => {
+      const ev = f.evidence || {};
+      const seen = new Set();
+      const parties = [...(ev.holders || []), ...(ev.conflicting || [])].filter(p => !seen.has(p.case_id + p.role) && seen.add(p.case_id + p.role));
+      return el("div", { class: "doc-row" },
+        el("div", {},
+          el("div", {}, el("span", { class: "pill " + (SEVERITY[f.severity] || ""), text: f.severity, style: "margin-right:6px" }), el("strong", { text: RULE[f.rule] || f.rule })),
+          el("div", { text: f.summary }),
+          parties.length ? el("ul", { style: "margin:4px 0 0; padding-left:18px" }, parties.map(party)) : null,
+          el("div", { class: "meta" }, el("span", { text: `raised ${ago(f.raised_at)}` }),
+            f.review ? el("span", { class: "pill " + (f.review === "dismissed" ? "" : "flag"), text: `${f.review} by ${f.reviewed_by}` }) : el("span", { class: "pill warn", text: "not reviewed" }),
+            f.review_note ? el("span", { text: f.review_note }) : null)),
+        canAssess ? el("div", { style: "display:grid; gap:4px; align-content:start" },
+          f.review !== "confirmed" ? el("button", { text: "Confirm", title: "A real conflict: correct the case data or deny", onclick: () => review(f, "confirmed") }) : null,
+          f.review !== "dismissed" ? el("button", { text: "Dismiss", onclick: () => review(f, "dismissed") }) : null,
+          f.review ? el("button", { class: "link", text: "Clear review", onclick: () => review(f, null) }) : null) : el("span"));
+    };
+    findingsP.then(r => {
+      if (!r.enabled) { fnd.remove(); return; }
+      fnd.replaceChildren(el("h3", { text: "Findings" }),
+        r.error ? el("div", { class: "muted", text: r.error })
+          : r.findings.length ? r.findings.map(findingRow) : el("div", { class: "muted", text: "No open findings." }));
+    });
+    const b = benefitsCache;
+    const formSel = el("select", { disabled: !canEdit }, (b ? b.benefit : []).map(x => el("option", { value: x.form_type, text: x.name, selected: x.form_type === c.form_type })));
+    const received = el("input", { type: "date", value: c.received_date, disabled: !canEdit });
+    const errs = el("div");
+    const save = el("button", { class: "primary", text: "Save changes", disabled: !canEdit, onclick: async () => {
+      const facts = {};
+      for (const [k, i] of Object.entries(inputs)) if (i.value.trim() !== (c.facts[k] || "")) facts[k] = i.value.trim();
+      const body = { facts };
+      if (formSel.value && formSel.value !== c.form_type) body.form_type = formSel.value;
+      if (received.value && received.value !== c.received_date) body.received_date = received.value;
+      if (!Object.keys(facts).length && !body.form_type && !body.received_date) { toast("No changes."); return; }
+      const reason = await askReason("Edit case", "Why are these values being changed?");
+      if (!reason) return;
+      body.reason = reason;
+      try { await api("PATCH", `/v1/cases/${id}`, body); toast("Case updated"); reload(); } catch (e) { errs.replaceChildren(errorList(e)); }
+    } });
+    const docs = d.documents.map(x => el("div", { class: "doc-row" },
+      el("div", {}, el("a", { href: "#", text: x.filename || x.document_id.slice(0, 8), onclick: e => { e.preventDefault(); U.doc = x.document_id; loadDoc(); } }),
+        el("div", { class: "meta" }, el("span", { class: "pill", text: x.role }), x.form_type ? el("span", { text: x.form_type }) : null,
+          !x.available ? el("span", { class: "pill flag", text: "missing from storage" }) : null,
+          x.active_task ? el("a", { class: "pill flag", href: `#/tasks/${x.active_task.id}`, text: "receipting open", onclick: () => setReturn(`#/cases/${id}`) })
+            : x.receipt_artifact_id ? el("span", { class: "pill ok", text: "receipted" })
+            : x.requires_receipting ? el("span", { class: "pill warn", text: `${x.requires_receipting} flagged` })
+            : x.recognition_artifact_id ? el("span", { class: "pill info", text: "machine read" }) : null,
+          el("span", { text: `added ${ago(x.added_at)}${x.added_by ? " by " + x.added_by : ""}` }))),
+      x.role !== "primary" && canEdit ? el("div", { style: "display:grid; gap:4px; align-content:start" },
+        el("button", { class: "link", text: "Make primary", title: "Use this document as the case's benefit form; the current primary becomes supporting", onclick: async () => {
+          const reason = await askReason("Make primary document", `Replace the primary document with ${x.filename || x.document_id.slice(0, 8)}. Facts are read from its form values; a different benefit form changes the case's form type and clears assessments. Reason:`);
+          if (reason) act(() => api("POST", `/v1/cases/${id}/primary`, { document_id: x.document_id, reason }), "Primary document changed");
+        } }),
+        el("button", { class: "link", text: "Remove", onclick: () => { if (confirm("Remove this document from the case?")) act(() => api("DELETE", `/v1/cases/${id}/documents/${x.document_id}`), "Removed"); } })) : el("span")));
+    return el("div", {},
+      el("div", { class: "section" }, el("h3", { text: "Case" }),
+        el("div", { class: "kv" }, el("span", { class: "k", text: "Receipt number" }), el("span", { class: "receipt", text: c.receipt_number }),
+          el("span", { class: "k", text: "Benefit" }), formSel, el("span", { class: "k", text: "Received" }), received,
+          c.response_due ? [el("span", { class: "k", text: "Response due" }), el("span", { text: c.response_due })] : null)),
+      el("div", { class: "section" }, el("h3", { text: "Applicant" }), el("div", { class: "kv" }, factRows, contactRows)),
+      el("div", { class: "section" }, el("h3", { text: "Mailing address" }), el("div", { class: "kv" }, addressRows), errs,
+        canEdit ? el("div", {}, save) : null),
+      d.highlights.length ? el("div", { class: "section" }, el("h3", { text: "From the form" }),
+        el("div", { class: "kv" }, d.highlights.flatMap(h => [el("span", { class: "k", text: h.label }), el("span", { text: h.value })]))) : null,
+      fnd,
+      el("div", { class: "section" }, el("h3", {}, "Documents", el("span", { class: "spacer" }),
+        el("button", { text: "Attach document", disabled: !canEdit, onclick: () => chooseDocument({ title: "Attach document", okText: "Attach", onOk: docId => act(() => api("POST", `/v1/cases/${id}/documents`, { document_id: docId }), "Attached") }) })),
+        docs),
+      d.notices.length ? el("div", { class: "section" }, el("h3", { text: "Notices" }), d.notices.map(n => el("div", { class: "doc-row" },
+        el("div", {}, el("strong", { text: NOTICE[n.kind] }), el("div", { class: "meta" }, `issued ${fmtDate(n.issued_at)} by ${n.issued_by} · due ${n.due_date}${n.original_due_date ? ` (extended from ${n.original_due_date})` : ""}`,
+          n.responded_at ? el("span", { class: "pill ok", text: "responded " + ago(n.responded_at) })
+            : n.rescinded_at ? el("span", { class: "pill", text: `rescinded ${ago(n.rescinded_at)} by ${n.rescinded_by}` })
+            : el("span", { class: "pill warn", text: "open" })),
+          el("ul", { style: "margin:4px 0 0; padding-left: 18px" }, n.items.map(i => el("li", { text: i }))),
+          n.message ? el("div", { class: "pre muted", text: n.message }) : null,
+          n.response_note ? el("div", { class: "muted", text: "Response: " + n.response_note }) : null,
+          n.rescind_reason ? el("div", { class: "muted", text: "Rescinded: " + n.rescind_reason }) : null), el("span")))) : null,
+      corr);
+  }
+
+  function formPane() {
+    const f = V.form, tpl = V.tpl;
+    if (!f) return el("div", { class: "empty", style: "margin:16px", text: "Document not loaded." });
+    if (!tpl) return el("div", { class: "empty", style: "margin:16px", text: f.active_task ? "Form type not set; complete receipting first." : "Not a recognized form." });
+    const vals = values();
+    const src = f.receipt ? `Receipted by ${f.receipt.receipted_by} ${ago(f.receipt.receipted_at)} (${f.receipt.mode})` : f.recognition ? "Machine-read values; not receipted" : "";
+    const docCase = d.documents.find(x => x.document_id === U.doc);
+    const amendable = canEdit && !f.active_task && (f.receipt || (f.recognition && f.recognition.stats && !f.recognition.stats.requires_receipting));
+    const list = el("div", { class: "list" });
+    const filters = el("div", { class: "row filters" }, ["filled", "changed", "all"].map(k => el("button", { "aria-pressed": String(U.filter === k), text: { filled: "Filled", changed: "Human-entered", all: "All" }[k], onclick: () => { U.filter = k; renderPane(); } })));
+    const search = el("input", { type: "text", placeholder: "Filter fields…", value: V.query, oninput: e => { V.query = e.target.value.toLowerCase(); renderList(); } });
+    const saveBtn = el("button", { class: "primary", text: "Save corrections", disabled: true, onclick: async () => {
+      const reason = await askReason("Correct form values", `${V.edits.size} field(s) changed. The reason is stored with the amended receipt.`);
+      if (!reason) return;
+      try {
+        const r = await api("POST", `/v1/cases/${id}/documents/${U.doc}/amend`, { values: Object.fromEntries(V.edits), reason });
+        toast(`Amended ${r.edited} field(s)`); V.editing = false; V.edits.clear(); reload();
+      } catch (e) {
+        if (e.data && e.data.fields) { V.errors = e.data.fields; renderList(); }
+        toast(e.message);
+      }
+    } });
+    V.errors = V.errors || {};
+    function renderList() {
+      const out = []; let key = null;
+      for (const fld of tpl.fields) {
+        const v = vals[fld.id];
+        if (!V.editing || U.filter !== "all") {
+          if (U.filter === "filled" && !(v && v.value) && !V.edits.has(fld.id)) continue;
+          if (U.filter === "changed" && !(v && v.provenance === "human") && !V.edits.has(fld.id)) continue;
+        }
+        if (V.query && !(fld.short_label + " " + fld.label + " " + fld.id).toLowerCase().includes(V.query)) continue;
+        const k = `Page ${fld.page}${fld.section ? " · " + fld.section : ""}`;
+        if (k !== key) { out.push(el("div", { class: "group-head", text: k })); key = k; }
+        const cur = V.edits.has(fld.id) ? V.edits.get(fld.id) : (v ? v.value : null);
+        let control;
+        if (V.editing) {
+          const commit = val => { const orig = v ? v.value : null; const n = val === "" ? null : val; if (n === orig) V.edits.delete(fld.id); else V.edits.set(fld.id, n); saveBtn.disabled = !V.edits.size; paintBoxes(); };
+          if (fld.kind === "checkbox") control = el("input", { type: "checkbox", checked: cur === "true", onchange: e => commit(e.target.checked ? "true" : "") });
+          else if (fld.options && fld.options.length) control = el("select", { onchange: e => commit(e.target.value) }, el("option", { value: "", text: "—" }), fld.options.map(o => el("option", { value: o, text: o, selected: o === cur })));
+          else control = el("input", { type: "text", value: cur || "", maxlength: fld.max_len || undefined, spellcheck: "false", onchange: e => commit(e.target.value.trim()) });
+          control.addEventListener("focus", () => { V.active = fld.id; if (fld.page !== V.page) showPage(fld.page, fld.id); else { paintBoxes(); const b = V.boxes.get(fld.id); if (b) b.scrollIntoView({ block: "center", behavior: "smooth" }); } });
+        } else {
+          control = el("span", { class: cur ? "" : "muted", text: cur == null ? "blank" : fld.kind === "checkbox" ? (cur === "true" ? "☑ checked" : "☐") : cur });
+        }
+        const prov = v && v.value ? el("span", { class: "pill " + (v.provenance === "machine" ? "info" : v.changed ? "warn" : "ok"), text: v.provenance + (v.changed ? " · changed" : "") }) : null;
+        out.push(el("div", { class: `field${V.active === fld.id ? " active" : ""}${V.edits.has(fld.id) ? " changed" : ""}`, dataset: { fid: fld.id },
+          onclick: e => { if (!V.editing && e.currentTarget === e.target.closest(".field")) focusField(fld.id); } },
+          el("div", { class: "label", title: fld.label }, fld.short_label, el("span", { class: "meta", text: `p${fld.page} · ${fld.value_type.replace("_", " ")}` })),
+          el("div", { class: "control" }, control, prov),
+          V.errors[fld.id] ? el("div", { class: "err", text: V.errors[fld.id] }) : null));
+      }
+      list.replaceChildren(...(out.length ? out : [el("div", { class: "empty", style: "margin:16px", text: "No fields match." })]));
+    }
+    renderList();
+    return el("div", { style: "display:flex; flex-direction:column; height:100%" },
+      el("div", { class: "fieldbar" },
+        el("div", { class: "row" }, el("strong", { text: `${tpl.form_number} · ${docCase ? docCase.role : ""}` }), el("span", { class: "muted", text: src })),
+        filters, el("div", { class: "row" }, search),
+        el("div", { class: "row" },
+          !V.editing && amendable ? el("button", { text: "Correct values", onclick: () => { V.editing = true; V.errors = {}; U.filter = "filled"; renderPane(); showPage(V.page); } }) : null,
+          V.editing ? saveBtn : null,
+          V.editing ? el("button", { text: "Discard", onclick: () => { V.editing = false; V.edits.clear(); V.errors = {}; renderPane(); showPage(V.page); } }) : null,
+          f.active_task ? el("a", { href: `#/tasks/${f.active_task.id}`, text: "Receipting open", onclick: () => setReturn(`#/cases/${id}`) }) : null)),
+      list);
+  }
+
+  function assessmentPane() {
+    if (!bf) return el("div", { class: "empty", style: "margin:16px", text: "Benefit not configured." });
+    const crit = c.criteria || {};
+    const done = bf.criteria.filter(x => crit[x.id]).length;
+    const errs = el("div");
+    const save = async (cid, result, note) => {
+      try { await api("PUT", `/v1/cases/${id}/criteria`, { criteria: { [cid]: result ? { result, note: note || null } : null } }); const n = await api("GET", `/v1/cases/${id}`); Object.assign(c, n.case); errs.replaceChildren(); pane.replaceChildren(assessmentPane()); }
+      catch (e) { errs.replaceChildren(errorList(e)); }
+    };
+    return el("div", { class: "section" },
+      el("h3", {}, "Eligibility criteria", el("span", { class: "spacer" }), el("span", { class: "muted", text: `${done} of ${bf.criteria.length} assessed` })),
+      !canAssess ? el("div", { class: "muted", text: decided ? "Case decided; assessment is read-only." : "Assign the case to yourself to assess." }) : null,
+      errs,
+      bf.criteria.map(cr => {
+        const a = crit[cr.id];
+        const note = el("textarea", { rows: 2, placeholder: "Evidence reviewed, findings…", disabled: !canAssess, text: "" });
+        note.value = (a && a.note) || "";
+        const btn = (r, label) => el("button", { class: r, "aria-pressed": String(!!a && a.result === r), text: label, disabled: !canAssess || (r === "na" && cr.required),
+          title: r === "na" && cr.required ? "Required criterion" : "", onclick: () => save(cr.id, a && a.result === r ? null : r, note.value.trim()) });
+        note.addEventListener("change", () => { if (a) save(cr.id, a.result, note.value.trim()); });
+        return el("div", { class: "crit " + (a ? a.result : "") },
+          el("div", { class: "row" }, el("strong", { text: cr.label }), cr.required ? null : el("span", { class: "pill", text: "if applicable" })),
+          el("div", { class: "row seg" }, btn("met", "Met"), btn("not_met", "Not met"), btn("na", "N/A"),
+            a ? el("span", { class: "muted", text: `${a.by} · ${ago(a.at)}` }) : null),
+          note);
+      }));
+  }
+
+  function decisionPane() {
+    if (decided && d.decision) return decisionRecord(d.decision);
+    if (!bf) return el("div", { class: "empty", style: "margin:16px", text: "Benefit not configured." });
+    const crit = c.criteria || {};
+    const unassessed = bf.criteria.filter(x => !crit[x.id]);
+    const notMet = bf.criteria.filter(x => crit[x.id] && crit[x.id].result === "not_met");
+    const readyChecks = [
+      [c.open_tasks === 0, c.open_tasks ? `${c.open_tasks} receipting task(s) open` : "Receipting complete"],
+      [d.form_final, d.form_final ? "Primary form values final" : "Primary form not receipted"],
+      [!unassessed.length, unassessed.length ? `${unassessed.length} criterion(s) not assessed` : "All criteria assessed"],
+      [!notMet.length, notMet.length ? `${notMet.length} criterion(s) not met` : "No criteria marked not met"],
+      [c.status !== "awaiting_response", c.status === "awaiting_response" ? "Notice outstanding" : "No notice outstanding"],
+    ];
+    const findingCheck = el("div", { class: "muted", text: "Checking findings…" });
+    findingsP.then(r => {
+      if (!r.enabled) { findingCheck.remove(); return; }
+      const n = blockingFindings(r).length;
+      const ok = !r.error && !n;
+      findingCheck.className = ok ? "good" : "bad";
+      findingCheck.textContent = (ok ? "✓ " : "✗ ") + (r.error ? "Findings unavailable: " + r.error : n ? `${n} open finding(s) not dismissed` : "No open findings");
+    });
+    const disabled = !canAssess;
+    const post = async (errsEl, body, msg) => {
+      try { await api("POST", `/v1/cases/${id}/decision`, body); toast(msg); U.tab = "decision"; reload(); refreshCounts(); }
+      catch (e) { errsEl.replaceChildren(errorList(e)); }
+    };
+    // approve
+    const apErr = el("div"), apNote = el("textarea", { rows: 2, placeholder: "Optional remarks", disabled });
+    const approve = el("div", { class: "action" }, el("h4", { text: "Approve" }),
+      el("div", { class: "checks" }, readyChecks.map(([ok, t]) => el("div", { class: ok ? "good" : "bad", text: (ok ? "✓ " : "✗ ") + t })), findingCheck),
+      apNote, apErr,
+      el("div", {}, el("button", { class: "ok", text: "Approve benefit", disabled, onclick: () => { if (confirm(`Approve ${bf.name} for ${c.receipt_number}?`)) post(apErr, { outcome: "approved", rationale: apNote.value }, "Approved"); } })));
+    // deny
+    const dnErr = el("div"), dnWhy = el("textarea", { rows: 4, placeholder: "Rationale: the facts, the requirement not met, and the evidence considered (at least 20 characters)", disabled });
+    if (notMet.length && !dnWhy.value) dnWhy.value = notMet.map(x => `${x.label}: ${crit[x.id].note || ""}`).join("\n");
+    const grounds = d.grounds.map(g => el("label", { style: "display:flex; gap:6px" }, el("input", { type: "checkbox", value: g.id, disabled }), g.label));
+    const deny = el("div", { class: "action" }, el("h4", { text: "Deny" }), el("div", { class: "checks" }, grounds), dnWhy, dnErr,
+      el("div", {}, el("button", { class: "danger", text: "Deny benefit", disabled, onclick: () => {
+        const gs = grounds.map(l => l.querySelector("input")).filter(i => i.checked).map(i => i.value);
+        if (confirm(`Deny ${bf.name} for ${c.receipt_number}?`)) post(dnErr, { outcome: "denied", grounds: gs, rationale: dnWhy.value }, "Denied");
+      } })));
+    // notice
+    const ntErr = el("div");
+    const kind = el("select", { disabled: disabled || c.status !== "in_review" }, el("option", { value: "rfe", text: NOTICE.rfe }), el("option", { value: "noid", text: NOTICE.noid }));
+    const items = el("textarea", { rows: 4, placeholder: "One requested item or deficiency per line", disabled: disabled || c.status !== "in_review" });
+    const msg = el("textarea", { rows: 2, placeholder: "Optional message", disabled: disabled || c.status !== "in_review" });
+    const due = el("input", { type: "date", disabled: disabled || c.status !== "in_review", title: "Defaults to the configured response window" });
+    const notice = el("div", { class: "action" }, el("h4", { text: "Request evidence or notify intent to deny" }),
+      c.status === "awaiting_response" ? el("div", { class: "muted", text: "A notice is outstanding; record the response first." }) : null,
+      el("div", { class: "kv" }, el("span", { class: "k", text: "Notice" }), kind, el("span", { class: "k", text: "Due (optional)" }), due), items, msg, ntErr,
+      el("div", {}, el("button", { text: "Issue notice", disabled: disabled || c.status !== "in_review", onclick: async () => {
+        try {
+          await api("POST", `/v1/cases/${id}/notices`, { kind: kind.value, items: items.value.split("\n"), message: msg.value || null, due_date: due.value || null });
+          toast("Notice issued"); reload(); refreshCounts();
+        } catch (e) { ntErr.replaceChildren(errorList(e)); }
+      } })));
+    // withdraw
+    const wdErr = el("div"), wdWhy = el("textarea", { rows: 2, placeholder: "How and when the withdrawal was received (at least 20 characters)", disabled });
+    const withdraw = el("div", { class: "action" }, el("h4", { text: "Record withdrawal" }), wdWhy, wdErr,
+      el("div", {}, el("button", { text: "Record withdrawal", disabled, onclick: () => { if (confirm("Record that the filing was withdrawn?")) post(wdErr, { outcome: "withdrawn", rationale: wdWhy.value }, "Withdrawal recorded"); } })));
+    // administrative closure: the assignee, or a manager
+    const canClose = canAssess || (!decided && !!user && isManager());
+    const clErr = el("div"), clWhy = el("textarea", { rows: 2, placeholder: "Explanation, e.g. the receipt number of the duplicate (at least 20 characters)", disabled: !canClose });
+    const clReason = el("select", { disabled: !canClose }, el("option", { value: "", text: "Reason…" }), Object.entries(CLOSURE).map(([k, t]) => el("option", { value: k, text: t })));
+    const close = el("div", { class: "action" }, el("h4", { text: "Close administratively" }),
+      el("div", { class: "muted", text: "Ends the case without a decision on the merits. No letter is sent." }), clReason, clWhy, clErr,
+      el("div", {}, el("button", { text: "Close case", disabled: !canClose, onclick: () => {
+        if (confirm(`Close ${c.receipt_number} administratively?`)) post(clErr, { outcome: "closed", closure_reason: clReason.value || null, rationale: clWhy.value }, "Case closed");
+      } })));
+    return el("div", { class: "section" },
+      !canAssess ? el("div", { class: "banner" }, canClose ? "Assign the case to yourself to decide it; as a manager you can close it administratively." : "Assign the case to yourself to act on it.") : null,
+      approve, notice, deny, withdraw, close);
+  }
+  function decisionRecord(x) {
+    const [t, k] = OUTCOME[x.outcome] || [x.outcome, ""];
+    return el("div", { class: "section" },
+      el("div", { class: "decision-box " + x.outcome },
+        el("div", {}, el("strong", { text: t }), ` · ${x.benefit} · ${x.receipt_number}`),
+        el("div", { class: "muted", text: `Decided by ${x.decided_by} ${fmtDate(x.decided_at)}` }),
+        x.closure_reason ? el("div", {}, el("strong", { text: "Reason: " }), CLOSURE[x.closure_reason] || x.closure_reason) : null,
+        x.grounds && x.grounds.length ? el("div", {}, el("strong", { text: "Grounds" }), el("ul", { style: "margin:4px 0; padding-left:18px" }, x.grounds.map(g => el("li", { text: g.label })))) : null,
+        x.rationale ? el("div", { class: "pre", text: x.rationale }) : null,
+        x.supersedes ? el("div", { class: "muted mono", text: "Supersedes decision " + x.supersedes }) : null),
+      el("h3", { text: "Criteria at decision" }),
+      x.criteria.map(cr => el("div", { class: "crit " + (cr.result || "") },
+        el("div", { class: "row" }, el("strong", { text: cr.label }), el("span", { class: "pill", text: (cr.result || "not assessed").replace("_", " ") })),
+        cr.note ? el("div", { class: "pre muted", text: cr.note }) : null)),
+      x.findings && x.findings.length ? [el("h3", { text: "Open findings at decision" }),
+        x.findings.map(f => el("div", { class: "crit" },
+          el("div", { class: "row" }, el("span", { class: "pill " + (SEVERITY[f.severity] || ""), text: f.severity }), el("strong", { text: RULE[f.rule] || f.rule }),
+            el("span", { class: "pill", text: f.review ? `${f.review} by ${f.reviewed_by}` : "not reviewed" })),
+          el("div", { text: f.summary }),
+          f.review_note ? el("div", { class: "pre muted", text: f.review_note }) : null))] : null,
+      el("div", { class: "muted mono", text: "Decision record stored with the primary document (workbench.decision.v1)." }));
+  }
+
+  async function timelinePane() {
+    const h = await api("GET", `/v1/cases/${id}/history`).catch(() => []);
+    const text = el("textarea", { rows: 3, placeholder: "Add a note for the case file", disabled: !user });
+    const describe = e => {
+      const x = e.details || {};
+      switch (e.action) {
+        case "opened": return `Case opened as ${x.receipt_number}`;
+        case "assigned": return `Assigned to ${x.assignee}${x.previous ? ` (was ${x.previous})` : ""}${x.via === "rule" ? " by rule" : x.via === "request" ? " on request" : ""}`;
+        case "unassigned": return `Returned to the pool${x.previous ? ` from ${x.previous}` : ""}${x.via === "request" ? " on request" : x.via === "form_type" ? " (not skilled for the new form)" : ""}`;
+        case "workload_requested": return `${REQUEST[x.kind] || x.kind} requested${x.reason ? ` — ${x.reason}` : ""}`;
+        case "workload_request_resolved": return `${x.worker}'s request (${(REQUEST[x.kind] || x.kind).toLowerCase()}) ${x.status}${x.note ? ` — ${x.note}` : ""}`;
+        case "edited": return `Edited ${Object.keys(x.changes || {}).filter(k => k !== "criteria_cleared").map(k => k.replace(/_/g, " ")).join(", ")}${x.changes && x.changes.criteria_cleared ? "; criterion assessments cleared" : ""}${x.reason ? ` — ${x.reason}` : ""}`;
+        case "assessed": return `Assessed ${Object.entries(x.criteria || {}).map(([k, v]) => `${k.replace(/_/g, " ")}: ${(v || "cleared").replace("_", " ")}`).join(", ")}`;
+        case "notice_issued": return `${NOTICE[x.kind] || x.kind} issued (${x.items} item(s), due ${x.due_date})`;
+        case "response_received": return `Response recorded${x.note ? `: ${x.note}` : ""}`;
+        case "notice_extended": return `${NOTICE[x.kind] || x.kind} due date extended from ${x.from} to ${x.to} — ${x.reason}`;
+        case "notice_rescinded": return `${NOTICE[x.kind] || x.kind} rescinded — ${x.reason}`;
+        case "document_added": return `Document added (${x.role}): ${x.filename || x.document_id}`;
+        case "document_removed": return `Document removed: ${x.document_id}`;
+        case "receipted": return `Form receipted (${x.mode})`;
+        case "amended": return `Form values corrected (${x.edited} field(s)) — ${x.reason}`;
+        case "form_type_changed": return `Benefit form changed from ${x.from} to ${x.to}${x.criteria_cleared && Object.keys(x.criteria_cleared).length ? "; criterion assessments cleared" : ""}`;
+        case "decided": return `Decision: ${(OUTCOME[x.outcome] || [x.outcome])[0]}${x.grounds && x.grounds.length ? ` (${x.grounds.join(", ")})` : ""}${x.closure_reason ? ` (${(CLOSURE[x.closure_reason] || x.closure_reason).toLowerCase()})` : ""}`;
+        case "primary_changed": return `Primary document changed to ${x.filename || x.to}${x.changes && x.changes.form_type ? `; benefit form ${x.changes.form_type.from} → ${x.changes.form_type.to}` : ""}${x.changes && x.changes.criteria_cleared ? "; criterion assessments cleared" : ""} — ${x.reason}`;
+        case "reopened": return `Reopened — ${x.reason}`;
+        case "letter_generated": return `${LETTER[x.kind] || x.kind} generated (${(x.channels || []).join(", ")})`;
+        case "letter_held": return `${LETTER[x.kind] || x.kind} held — ${x.reason}`;
+        case "letter_sent": return `${LETTER[x.kind] || x.kind} ${x.channel === "mail" ? "mailed" : "e-mailed"}${x.sent_by ? " by " + x.sent_by : ""}`;
+        case "letter_failed": return `${LETTER[x.kind] || x.kind} ${x.channel} delivery failed — ${x.error}`;
+        case "finding_reviewed": return `Finding ${x.disposition || "review cleared"}: ${x.summary || RULE[x.rule] || x.rule}${x.note ? ` — ${x.note}` : ""}`;
+        case "note": return "Note";
+        default: return e.action.replace(/_/g, " ");
+      }
+    };
+    return el("div", { class: "section" },
+      el("div", {}, text, el("div", { style: "margin-top:6px" }, el("button", { text: "Add note", disabled: !user, onclick: async () => {
+        if (!text.value.trim()) return;
+        try { await api("POST", `/v1/cases/${id}/notes`, { text: text.value }); renderPane(); } catch (e) { toast(e.message); }
+      } }))),
+      el("ul", { class: "timeline" }, h.slice().reverse().map(e => el("li", {},
+        el("span", { class: "when", text: `${fmtDate(e.at)}${e.actor ? " · " + e.actor : ""}` }),
+        el("span", { text: describe(e) }),
+        e.action === "note" ? el("div", { class: "note", text: e.details.text }) : null))));
+  }
+
+  renderPane();
+  loadDoc();
+}
+
+// ---------- workload ----------
+async function approveRequest(q) {
+  const note = await askReason("Approve request", `${q.worker}: ${REQUEST[q.kind]} ${q.receipt_number}. Note (optional):`, 0);
+  if (note === null) return false;
+  const send = force => api("POST", `/v1/workload/requests/${q.id}/approve`, { note: note || null, force });
+  try { await send(false); }
+  catch (e) {
+    if (e.status === 409 && e.data && e.data.error === "over_capacity" && confirm(`${e.message}. Approve anyway?`)) await send(true);
+    else throw e;
+  }
+}
+async function denyRequest(q) {
+  const note = await askReason("Deny request", `${q.worker}: ${REQUEST[q.kind]} ${q.receipt_number}. Note for the worker (optional):`, 0);
+  if (note === null) return false;
+  await api("POST", `/v1/workload/requests/${q.id}/deny`, { note: note || null });
+}
+async function workload() {
+  const app = $("#app");
+  const user = getUser(), mgr = isManager();
+  const b = await benefits();
+  const names = Object.fromEntries(b.benefit.map(x => [x.form_type, x.name]));
+  const body = el("div", { style: "display:grid;gap:16px" });
+  app.replaceChildren(el("div", { class: "queue" }, body));
+  const act = async (fn, okMsg) => { try { if (await fn() === false) return; if (okMsg) toast(okMsg); render(); refreshCounts(); } catch (e) { toast(e.message); } };
+  const section = (title, ...children) => el("div", { style: "display:grid;gap:8px" }, el("div", { class: "toolbar", style: "margin:0" }, el("strong", { text: title }), el("div", { class: "grow" }), ...children.slice(0, -1)), children[children.length - 1]);
+  const skillsText = s => s.map(f => names[f] || f).join(", ") || "none";
+  const reqTable = (items, manage) => items.length ? el("table", {},
+    el("thead", {}, el("tr", {}, ["Receipt", "Worker", "Request", "Reason", "Status", ""].map(h => el("th", { text: h })))),
+    el("tbody", {}, items.map(q => el("tr", { onclick: () => location.hash = `#/cases/${q.case_id}` },
+      el("td", {}, el("span", { class: "receipt", text: q.receipt_number }), el("div", { class: "muted", text: `${names[q.form_type] || q.form_type}${q.assignee ? " · " + q.assignee : " · unassigned"}` })),
+      el("td", { text: q.worker }), el("td", { text: REQUEST[q.kind] }),
+      el("td", { class: "muted", text: q.reason || "" }),
+      el("td", {}, el("span", { class: "pill " + ({ pending: "info", approved: "ok", denied: "flag" }[q.status] || ""), text: q.status }),
+        q.resolution_note ? el("div", { class: "muted", text: q.resolution_note }) : null),
+      el("td", { onclick: e => e.stopPropagation() },
+        q.status === "pending" && manage ? [el("button", { class: "ok", text: "Approve", onclick: () => act(() => approveRequest(q), "Approved") }), " ",
+          el("button", { class: "danger", text: "Deny", onclick: () => act(() => denyRequest(q), "Denied") })] : null,
+        q.status === "pending" && q.worker === user ? el("button", { class: "link", text: "Withdraw", onclick: () => act(() => api("POST", `/v1/workload/requests/${q.id}/withdraw`), "Withdrawn") }) : null))))) :
+    el("div", { class: "empty", text: "No requests." });
+
+  async function editWorker(w) {
+    const name = el("input", { type: "text", maxlength: "64", value: w ? w.worker : "", disabled: !!w });
+    const max = el("input", { type: "text", inputmode: "numeric", value: w ? String(w.max_cases) : "10" });
+    const auto = el("input", { type: "checkbox", checked: w ? w.auto_assign : true });
+    const skills = b.benefit.map(x => el("input", { type: "checkbox", value: x.form_type, checked: !!w && w.skills.includes(x.form_type) }));
+    const v = await formDialog(w ? `Worker ${w.worker}` : "Add worker", [
+      ["name", "Name", name], ["max", "Max cases", max],
+      ["auto", "Automatic assignment", el("label", {}, auto, " receive cases from rules")],
+      ["skills", "Skilled for", el("div", { class: "doclist" }, skills.map((c, i) => el("label", {}, c, b.benefit[i].name)))]]);
+    if (!v) return false;
+    const n = name.value.trim();
+    if (!n) { toast("Enter a name."); return false; }
+    await api("PUT", `/v1/workload/workers/${encodeURIComponent(n)}`, {
+      max_cases: parseInt(max.value, 10), auto_assign: auto.checked, skills: skills.filter(c => c.checked).map(c => c.value) });
+  }
+  async function reassignAll(w) {
+    const d = await api("GET", `/v1/cases?assignee=${encodeURIComponent(w.worker)}&limit=500`);
+    if (!d.items.length) { toast(`${w.worker} holds no cases.`); return false; }
+    const byForm = {};
+    for (const c of d.items) (byForm[c.form_type] ||= []).push(c.id);
+    for (const [ft, ids] of Object.entries(byForm)) if (await assignDialog(ids, ft) === false) return false;
+  }
+  async function editRule(r) {
+    const name = el("input", { type: "text", maxlength: "200", value: r ? r.name : "" });
+    const form = el("select", {}, b.benefit.map(x => el("option", { value: x.form_type, text: x.name, selected: r && r.form_type === x.form_type })));
+    const pool = el("input", { type: "text", placeholder: "Empty = every skilled worker", value: r ? r.workers.join(", ") : "" });
+    const prio = el("input", { type: "text", inputmode: "numeric", value: r ? String(r.priority) : "100" });
+    const on = el("input", { type: "checkbox", checked: r ? r.enabled : true });
+    const v = await formDialog(r ? "Edit rule" : "Add assignment rule", [
+      ["name", "Name", name], ["form", "Benefit", form], ["pool", "Workers", pool],
+      ["prio", "Priority (lower first)", prio], ["on", "Enabled", el("label", {}, on, " assign automatically")]]);
+    if (!v) return false;
+    const payload = { name: name.value, form_type: form.value, workers: pool.value.split(",").map(x => x.trim()).filter(Boolean), priority: parseInt(prio.value, 10), enabled: on.checked };
+    if (r) await api("PUT", `/v1/workload/rules/${r.id}`, payload); else await api("POST", "/v1/workload/rules", payload);
+  }
+
+  async function render() {
+    const [ws, rules, mineReqs, pending] = await Promise.all([
+      workers(true), api("GET", "/v1/workload/rules"),
+      user ? api("GET", "/v1/workload/requests?status=all&worker=me&limit=50") : [],
+      mgr ? api("GET", "/v1/workload/requests") : []]).catch(e => { toast(e.message); return [[], [], [], []]; });
+    const me = ws.find(w => w.worker === user);
+    const parts = [];
+    parts.push(section("My workload", me
+      ? el("div", { class: "action" },
+          el("div", {}, el("strong", { text: `${me.load} of ${me.max_cases} cases` }), me.load >= me.max_cases ? el("span", { class: "pill warn", text: "full" }) : null,
+            el("span", { class: "muted", text: me.auto_assign ? " · automatic assignment on" : " · automatic assignment off" })),
+          el("div", { class: "muted", text: "Skilled for: " + skillsText(me.skills) }),
+          el("div", {}, el("a", { href: "#/", text: "Open my cases" })))
+      : el("div", { class: "empty", text: user ? "You are not registered as a worker. A manager can add you." : "Set your name to see your workload." })));
+    if (user) parts.push(section("My requests", reqTable(mineReqs, false)));
+    if (mgr) {
+      parts.push(section(`Pending requests (${pending.length})`, reqTable(pending, true)));
+      parts.push(section("Workers",
+        el("button", { text: "Add worker", onclick: () => act(() => editWorker(null), "Worker saved") }),
+        ws.length ? el("table", {},
+          el("thead", {}, el("tr", {}, ["Worker", "Load", "Skills", "Automatic", ""].map(h => el("th", { text: h })))),
+          el("tbody", {}, ws.map(w => el("tr", { onclick: () => act(() => editWorker(w), "Worker saved") },
+            el("td", { text: w.worker }),
+            el("td", {}, `${w.load} / ${w.max_cases} `, w.load >= w.max_cases ? el("span", { class: "pill warn", text: "full" }) : null,
+              w.pending_requests ? el("span", { class: "pill info", text: `${w.pending_requests} request(s)` }) : null),
+            el("td", { text: skillsText(w.skills) }),
+            el("td", { text: w.auto_assign ? "on" : "off" }),
+            el("td", { onclick: e => e.stopPropagation() },
+              el("button", { text: "Reassign cases", disabled: !w.load, onclick: () => act(() => reassignAll(w), "Reassigned") }), " ",
+              el("button", { class: "danger", text: "Remove", onclick: () => { if (confirm(`Remove worker ${w.worker}?`)) act(() => api("DELETE", `/v1/workload/workers/${encodeURIComponent(w.worker)}`), "Removed"); } })))))) :
+          el("div", { class: "empty", text: "No workers. Add workers and their skills before creating rules." })));
+      parts.push(section("Assignment rules",
+        el("button", { text: "Run assignment now", onclick: () => act(async () => { const r = await api("POST", "/v1/workload/sweep"); toast(`${r.assigned} case(s) assigned`); }, null) }),
+        el("button", { text: "Add rule", onclick: () => act(() => editRule(null), "Rule saved") }),
+        rules.length ? el("table", {},
+          el("thead", {}, el("tr", {}, ["Rule", "Benefit", "Workers", "Priority", "Status", ""].map(h => el("th", { text: h })))),
+          el("tbody", {}, rules.map(r => el("tr", { onclick: () => act(() => editRule(r), "Rule saved") },
+            el("td", { text: r.name }), el("td", { text: names[r.form_type] || r.form_type }),
+            el("td", { class: r.workers.length ? "" : "muted", text: r.workers.join(", ") || "every skilled worker" }),
+            el("td", { text: String(r.priority) }),
+            el("td", {}, el("span", { class: "pill " + (r.enabled ? "ok" : ""), text: r.enabled ? "enabled" : "disabled" })),
+            el("td", { onclick: e => e.stopPropagation() },
+              el("button", { class: "danger", text: "Delete", onclick: () => { if (confirm(`Delete rule ${r.name}?`)) act(() => api("DELETE", `/v1/workload/rules/${r.id}`), "Deleted"); } })))))) :
+          el("div", { class: "empty", text: "No rules: new cases stay unassigned until a manager assigns them." })));
+    } else {
+      parts.push(section("Assignment rules", rules.length ? el("table", {},
+        el("thead", {}, el("tr", {}, ["Rule", "Benefit", "Workers", "Priority"].map(h => el("th", { text: h })))),
+        el("tbody", {}, rules.filter(r => r.enabled).map(r => el("tr", {},
+          el("td", { text: r.name }), el("td", { text: names[r.form_type] || r.form_type }),
+          el("td", { text: r.workers.join(", ") || "every skilled worker" }), el("td", { text: String(r.priority) }))))) :
+        el("div", { class: "empty", text: "No assignment rules." })));
+    }
+    body.replaceChildren(...parts);
+  }
+  await render();
+}
+
+renderUser();
+route();
+</script>
+</body>
+</html>

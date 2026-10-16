@@ -1,0 +1,5 @@
+---
+source: shepherd-search/src/backend/postgres.rs
+expression: "build_facets(&p, 100_000).into_string()"
+---
+WITH m AS (SELECT c.facets FROM search.cards c CROSS JOIN (SELECT websearch_to_tsquery('english', $1) AS query, $2::text AS text) AS q WHERE TRUE AND (c.tsv @@ q.query OR c.filename % q.text OR c.doc_id = ANY(ARRAY(SELECT p.doc_id FROM search.pages p WHERE NOT p.in_card AND p.tsv @@ q.query LIMIT 100000))) AND c."status" = $3::text AND c.facets && $4::text[] AND c."status" = ANY($5::text[]) AND c."amount" >= $6::numeric AND c."amount" < $7::numeric AND c.fields @> $8 AND c.facets @> ARRAY[$9]::text[] LIMIT 100000), t AS (SELECT count(*) AS total FROM m) SELECT t.total, f.facet, f.n FROM t LEFT JOIN (SELECT v.value AS facet, count(*) AS n FROM m CROSS JOIN LATERAL unnest(m.facets) AS v(value) WHERE split_part(v.value, '/', 1) = ANY($10::text[]) GROUP BY v.value) f ON TRUE ORDER BY f.n DESC, f.facet

@@ -1,0 +1,31 @@
+{
+  "schema": "intake.ir.v1",
+  "extractor": { "name": "shepherd-intake", "version": "0.1.0", "engine": "pdf-extract/0.12" },
+  "source": {
+    "document_id": "00000000-0000-0000-0000-000000000000",
+    "artifact_id": "00000000-0000-0000-0000-000000000000",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "filename": "claim-001.pdf",
+    "size_bytes": 634
+  },
+  "metadata": {
+    "title": "Property damage claim",
+    "author": "Northwind Mutual",
+    "subject": "Water damage to kitchen ceiling after upstairs pipe failure.",
+    "keywords": null,
+    "creator": null,
+    "producer": null,
+    "created": "2026-08-28T14:30:00Z",
+    "modified": null,
+    "pdf_version": "1.7",
+    "encrypted": false
+  },
+  "title": "Property damage claim",
+  "pages": [
+    { "number": 1, "text": "Claim form. Policy HX-44821. Date of loss 2026-08-25.", "chars": 53, "has_text": true, "error": null },
+    { "number": 2, "text": "Contractor estimate: drywall replacement, ceiling repaint, mold remediation.", "chars": 76, "has_text": true, "error": null },
+    { "number": 3, "text": "", "chars": 0, "has_text": false, "error": null }
+  ],
+  "stats": { "pages": 3, "text_pages": 2, "empty_pages": 1, "chars": 129 },
+  "flags": { "needs_ocr": true, "empty_pages": [3], "failed_pages": [] }
+}

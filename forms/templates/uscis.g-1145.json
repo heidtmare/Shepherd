@@ -1,0 +1,102 @@
+{
+  "id": "uscis.g-1145",
+  "form_number": "G-1145",
+  "title": "e-Notification of Application/Petition Acceptance",
+  "edition": null,
+  "blank_pdf": "uscis/g-1145.pdf",
+  "blank_sha256": "f06c73937567793cbad9e5c0a5a025ba3823406ebc16b69bb1aee9964cf5b8f8",
+  "pages": [
+    {
+      "number": 1,
+      "width": 612.0,
+      "height": 792.0
+    }
+  ],
+  "fields": [
+    {
+      "id": "form1[0].#subform[0].LastName[0]",
+      "label": "Complete this form and clip it on top of the first page of your immigration form or forms. Enter Applicant or Petitioner Full Last Name.",
+      "short_label": "Applicant or Petitioner Full Last Name",
+      "section": null,
+      "page": 1,
+      "rect": [
+        37.395,
+        119.974,
+        211.394,
+        135.094
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": 30,
+      "required": false
+    },
+    {
+      "id": "form1[0].#subform[0].FirstName[0]",
+      "label": "Complete this form and clip it on top of the first page of your immigration form or forms. Enter Applicant or Petitioner Full First Name.",
+      "short_label": "Applicant or Petitioner Full First Name",
+      "section": null,
+      "page": 1,
+      "rect": [
+        218.044,
+        119.974,
+        392.043,
+        135.094
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": 18,
+      "required": false
+    },
+    {
+      "id": "form1[0].#subform[0].MiddleName[0]",
+      "label": "Complete this form and clip it on top of the first page of your immigration form or forms. Enter Applicant or Petitioner Full Middle Name.",
+      "short_label": "Applicant or Petitioner Full Middle Name",
+      "section": null,
+      "page": 1,
+      "rect": [
+        402.001,
+        118.032,
+        574.002,
+        133.152
+      ],
+      "kind": "text",
+      "value_type": "name",
+      "max_len": 18,
+      "required": false
+    },
+    {
+      "id": "form1[0].#subform[0].Email[0]",
+      "label": "Complete this form and clip it on top of the first page of your immigration form or forms. Enter E-mail Address.",
+      "short_label": "E-mail Address",
+      "section": null,
+      "page": 1,
+      "rect": [
+        37.395,
+        86.666,
+        335.18,
+        101.786
+      ],
+      "kind": "text",
+      "value_type": "email",
+      "max_len": null,
+      "required": false
+    },
+    {
+      "id": "form1[0].#subform[0].MobilePhoneNumber[0]",
+      "label": "Complete this form and clip it on top of the first page of your immigration form or forms. Enter Mobile Telephone Number without spaces, dashes, slashes or parenthesis; for example (011) 555-0101 enter as 0115550101.",
+      "short_label": "Mobile Telephone Number without spaces, dashes, slashes or parenthesis; for example (01...",
+      "section": null,
+      "page": 1,
+      "rect": [
+        345.348,
+        86.666,
+        574.348,
+        101.786
+      ],
+      "kind": "text",
+      "value_type": "phone",
+      "max_len": 15,
+      "required": false
+    }
+  ]
+}
