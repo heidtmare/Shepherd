@@ -1,6 +1,6 @@
 # shepherd
 
-End-to-end document processing and adjudication. PDFs are stored, extracted, recognized, indexed and routed to human review; USCIS benefit cases are receipted, reviewed and decided, and notices are sent to applicants.
+End-to-end document processing and adjudication. PDFs are stored, extracted, recognized, indexed and routed to human review; USCIS benefit forms are used as a usecase example. Cases are receipted, reviewed and decided, and notices are sent to applicants.
 
 Rust workspace of services with one responsibility each. Services communicate through NATS JetStream events and storage's HTTP API; each owns a Postgres schema in a shared database.
 
