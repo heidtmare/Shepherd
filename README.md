@@ -4,6 +4,10 @@ End-to-end document processing and adjudication. PDFs are stored, extracted, rec
 
 Rust workspace of services with one responsibility each. Services communicate through NATS JetStream events and storage's HTTP API; each owns a Postgres schema in a shared database.
 
+[![Workbench tour: worklist, case view, assessment, receipting, decision, workload assignment](docs/tour.gif)](docs/tour.mp4)
+
+*Workbench tour. [Full-resolution video](docs/tour.mp4).*
+
 ## Architecture
 
 ```mermaid
